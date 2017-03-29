@@ -1,0 +1,6 @@
+*-local
+*.o
+*.a
+*.obj
+*.lib
+*.exe
