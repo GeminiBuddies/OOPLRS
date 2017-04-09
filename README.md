@@ -30,7 +30,7 @@
    - 负责客户端的启动，启动`ClientConnection`类；
 
 
-   - 提供基类`Character`，以及所有派生类；
+- 提供基类`Character`，以及所有派生类；
    - 在派生类中处理UI，并且获得UI消息，传回`ClientConnection`；
    - 建议使用Qt完成。
 
@@ -38,15 +38,7 @@
    - 美工：寻找图片，etc；
    - 缺少人手的时候支援。
 
-请各位在2-5中认领一个。认领发到微信群中，我会再安排。
-
-## 接口
-
-接口将放在`cih`（`Common Interface Header`）文件夹里。
-
-## After all, Things you still need to do
-
-1. 仍然是学习`git`；
-2. 以这个提交为起点，建立自己的分支，推送到仓库；各位的写权限将很快打开；
-3. 学习任务很重，但是大作业的情况就是这样。希望大家能从大作业中学习有用的东西。
-
+## Thing need to do
+1. 学习`git`；
+2. 同和自己对接的同学商量接口。放到`protocol`文件夹；
+3. `pull -> checkout -> merge -> push`。
