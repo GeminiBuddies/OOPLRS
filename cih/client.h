@@ -9,11 +9,11 @@ namespace client {
 
     class ClientConnection {
     public :
-        typedef void (*onGameStart)();
+        typedef Character* (*onGameStart)(Identity);
 
         ClientConnection();
 
-        void start();
+        void start(); // 
         ServerInfoCollection getServerList();
         bool Connect(ServerInfo server);
         void Disconnect();
@@ -25,11 +25,7 @@ namespace client {
     public :
         Character();
 
-        template <typename Arg>
-        void forward(Arg arg);
-
-        template <typename Arg>
-        void registerBackward(void (*handler)(Arg));
+        virtual void OnMsg(string json);
     }
 }
 }

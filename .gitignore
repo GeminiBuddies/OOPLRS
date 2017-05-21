@@ -4,3 +4,9 @@
 *.obj
 *.lib
 *.exe
+debug/
+release/
+Makefile*
+*.stash
+
+*.db

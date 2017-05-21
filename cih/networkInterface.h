@@ -86,7 +86,3 @@ namespace net {
     };
 }
 }
-
-#ifdef XMX_DEBUG
-# include "../src/network/networkInterface.cpp"
-#endif 
