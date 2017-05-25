@@ -8,5 +8,7 @@ debug/
 release/
 Makefile*
 *.stash
-
+*.user
 *.db
+
+build-*/
