@@ -12,8 +12,10 @@ class ClientConn : public QObject
 public:
     explicit ClientConn(QObject *parent = 0);
 
+    void start();
     bool connect(Conn server);
     void disconnect();
+    void close();
 
     void sendData(byteseq data, int length);
 
