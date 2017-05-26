@@ -4,6 +4,7 @@
 #include "../cih/globalConf.cpp"
 
 #include <QObject>
+#include <QSet>
 
 class ClientConn : public QObject
 {
@@ -16,9 +17,12 @@ public:
 
     void sendData(byteseq data, int length);
 
+    typedef const QSet<Conn>* ServerList;
+    ServerList getServers();
+
 signals:
-    void onBroadcast(Conn sender, byteseq data, int length);
     void onServerData(byteseq data, int length);
+    void onServerDisconnect();
 };
 
 #endif // CLIENTCONN_H
