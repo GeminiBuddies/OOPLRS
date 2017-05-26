@@ -14,7 +14,7 @@ class ServerConn : public QObject {
 public:
     explicit ServerConn(QObject *parent = 0);
 
-    void start();
+    void start(QString name);
     void beginAcceptConnection();
     void endAccecptConnection();
     void close();

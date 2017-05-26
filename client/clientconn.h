@@ -12,7 +12,7 @@ class ClientConn : public QObject
 public:
     explicit ClientConn(QObject *parent = 0);
 
-    void start();
+    void start(QString name);
     bool connect(Conn server);
     void disconnect();
     void close();
