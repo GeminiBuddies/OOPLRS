@@ -4,7 +4,8 @@ QT += qml quick network
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    clientconn.cpp
+    clientconn.cpp \
+    ../cih/globalConf.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,5 +31,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-    clientconn.h
+HEADERS += clientconn.h \
+    ../cih/globalConf.h

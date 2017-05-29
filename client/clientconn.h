@@ -1,16 +1,19 @@
 #ifndef CLIENTCONN_H
 #define CLIENTCONN_H
 
-#include "../cih/globalConf.cpp"
+#include "../cih/globalConf.h"
 
 #include <QObject>
 #include <QSet>
+#include <QThread>
 
 class ClientConn : public QObject
 {
     Q_OBJECT
+    friend class ClientConnListener;
 public:
-    explicit ClientConn(QObject *parent = 0);
+    ClientConn();
+    explicit ClientConn(QObject *parent);
 
     void start(QString name);
     bool connect(Conn server);
@@ -25,6 +28,33 @@ public:
 signals:
     void onServerData(byteseq data, int length);
     void onServerDisconnect();
+
+private:
+    enum class clientStatus {
+        Closed,
+        Started,
+        Connected,
+    };
+
+    clientStatus status;
+
+    QSet<Conn> servers;
+    QTcpSocket *sock;
+
+    ClientConnListener *threadListener;
+
+    QString name;
+};
+
+class ClientConnListener : public QThread {
+    Q_OBJECT
+public:
+    ClientConnListener() = delete;
+    ClientConnListener(QObject *parent, ClientConn *conn);
+private:
+    ClientConn *conn;
+protected:
+    void run();
 };
 
 #endif // CLIENTCONN_H

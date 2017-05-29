@@ -1,9 +1,10 @@
 #ifndef SERVERCONN_H
 #define SERVERCONN_H
 
-#include "../cih/globalConf.cpp"
+#include "../cih/globalConf.h"
 
 #include <QObject>
+#include <QMap>
 #include <QThread>
 
 class ServerConn : public QObject {
@@ -12,7 +13,8 @@ class ServerConn : public QObject {
     friend class ServerConnBroadcaster;
     friend class ServerConnListener;
 public:
-    explicit ServerConn(QObject *parent = 0);
+    ServerConn();
+    explicit ServerConn(QObject *parent);
 
     void start(QString name);
     void beginAcceptConnection();
@@ -28,16 +30,43 @@ signals:
     void onClientDisconnected(Conn remote);
     void onClientData(Conn remote, byteseq data, int length);
 
+public slots:
+    void socketReady();
+    void socketDisconnected();
+
 private:
+    QString name;
+
+    enum class serverStatus {
+        Closed,
+        Started,
+        Listening,
+    };
+
+    serverStatus status;
+
+    void sendDataBySocket(QTcpSocket *sock, byteseq data, int length);
+
     void emitOnClientConnected(Conn remote);
     void emitOnClientDisconnected(Conn remote);
     void emitOnClientData(Conn remote, byteseq data, int length);
+
+    QHostAddress broadcastAddress;
+
+    ServerConnBroadcaster *threadBroadcaster;
+    ServerConnListener *threadListener;
+
+    QMap<int, QTcpSocket*> clients;
+    QMap<QTcpSocket*, int> ids;
+    QMap<int, Conn> conns;
+    QSet<QTcpSocket*> removing;
 };
 
 // Sub-class definition
 class ServerConnListener : public QThread {
     Q_OBJECT
 public:
+    ServerConnListener() = delete;
     explicit ServerConnListener(QObject *parent = 0, ServerConn *conn = 0);
 private:
     ServerConn *conn;
@@ -48,6 +77,7 @@ protected:
 class ServerConnBroadcaster : public QThread {
     Q_OBJECT
 public:
+    ServerConnBroadcaster() = delete;
     explicit ServerConnBroadcaster(QObject *parent = 0, ServerConn *conn = 0);
 private :
     ServerConn *conn;
