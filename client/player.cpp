@@ -48,7 +48,7 @@ void Player::initialClient(QString str){
 }
 
 void Player::constructCharacter(QString role){
-    emit sendMessageToServer("assignRoles","role");
+    emit sendMessageToServer("assignRoles",role);
     if(character!=NULL)
         delete character;
     if(role=="werewolf")

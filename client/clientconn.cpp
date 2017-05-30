@@ -99,7 +99,7 @@ void ClientConn::sendData(byteseq data, int length) {
     if (status != clientStatus::Connected) return;
 
     auto buf = QByteArray(data, length);
-    buf.append(length);
+    buf.append(PkgSeperator);
     sock->write(buf);
 }
 
