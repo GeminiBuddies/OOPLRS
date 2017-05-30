@@ -104,6 +104,7 @@ void ServerConn::socketDisconnected() {
 
 void ServerConn::sendDataBySocket(QTcpSocket *sock, byteseq data, int length) {
     sock->write(data, length);
+    sock->flush();
 }
 
 void ServerConn::emitOnClientData(Conn remote, byteseq data, int length) { emit onClientData(remote, data, length); }

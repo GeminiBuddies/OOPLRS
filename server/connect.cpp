@@ -60,7 +60,7 @@ void Connect::showConnect(bool* player,int a)
 
     for(int i=0;i<a;i++)
     {
-        if(player[i]==0)
+        if(!player[i])
         {
             ui->textBrowser->append("player");
             ui->textBrowser->moveCursor(QTextCursor::End);
@@ -76,7 +76,6 @@ void Connect::showConnect(bool* player,int a)
             ui->textBrowser->moveCursor(QTextCursor::End);
             ui->textBrowser->insertPlainText(" has connected");
         }
-        player++;
     }
 
 

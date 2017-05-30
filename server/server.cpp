@@ -71,12 +71,12 @@ namespace server {
 		user[tmp].conn = &remote;
 		string str("position/");
 		str = str + transNumToString(tmp);
-		serverConn -> sendData(str.c_str(), strlen(str.c_str()));
+		serverConn -> sendData(remote, str.c_str(), (int)strlen(str.c_str()));
 		string info("join/");
 		for(int i = 0; i < playerNum; i++)
 			if(hasConn[i])
-				serverConn -> sendData((info + transNumToString(i) + '/'  + transNumToString(i)).c_str(), strlen((info + transNumToString(i) + '/'  + transNumToString(i)).c_str()));
-		serverConn -> broadcast((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str(),strlen((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str()));
+				serverConn -> sendData(remote, (info + transNumToString(i) + '/'  + transNumToString(i)).c_str(), (int)strlen((info + transNumToString(i) + '/'  + transNumToString(i)).c_str()));
+		serverConn -> broadcast((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str(), (int)strlen((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str()));
 		hasConn[tmp] = true;				
         emit onClientChanged();
 	}
