@@ -67,42 +67,22 @@ void MainWindow::on_pushButton_clicked()
 
 
 
-
-
-
     if(x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11==x12)
     {
        temp.setConfig(x12,chara,1-ui->sheriffselection->currentIndex(),ui->model->currentIndex(),ui->servername->text());
 
        close();
-       Connect *conn = new Connect;
-       conn->show();
-
 
        temp.config.serverConn->beginAcceptConnection();
-       while(temp.config.connNum<temp.config.playerNum)
-         conn->showConnect(&temp.config.hasConn,x12);
 
-       temp.config.endAcceptConnection();
-
-
-
-
-
-
-
-
-
+       Connect *conn = new Connect;
+       connect(&temp.config, SIGNAL(onClientChanged()), conn, SLOT(onClientChanged()));
+       conn->show();
     }
 
     else
     {
         QMessageBox::warning(this,tr("Error"),tr("Please check all config"),QMessageBox::Yes);
     }
-
-
-
-
-
 
 }

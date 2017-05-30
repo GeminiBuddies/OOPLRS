@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QMap>
 #include <QThread>
+#include <QMessageBox>
 
 class ServerConn : public QObject {
     Q_OBJECT
@@ -18,7 +19,7 @@ public:
 
     void start(QString name);
     void beginAcceptConnection();
-    void endAccecptConnection();
+    void endAcceptConnection();
     void close();
 
     void sendData(Conn dest, byteseq data, int length);

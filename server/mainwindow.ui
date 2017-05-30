@@ -358,11 +358,6 @@
       <string>屠城</string>
      </property>
     </item>
-    <item>
-     <property name="text">
-      <string/>
-     </property>
-    </item>
    </widget>
    <widget class="QComboBox" name="sheriffselection">
     <property name="geometry">
@@ -381,16 +376,6 @@
     <item>
      <property name="text">
       <string>否</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string/>
      </property>
     </item>
    </widget>
@@ -450,7 +435,7 @@
      <x>0</x>
      <y>0</y>
      <width>830</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

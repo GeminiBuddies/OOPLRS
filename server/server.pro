@@ -37,6 +37,7 @@ SOURCES += main.cpp \
 HEADERS  += mainwindow.h \
     serverconn.h \
     ../cih/globalConf.h \
+    werewolf.h \
     connect.h \
     record.h \
     over.h \

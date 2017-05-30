@@ -1,5 +1,7 @@
 #include "serverconn.h"
 
+#include <QMessageBox>
+
 ServerConn::ServerConn() {
     broadcastAddress = getBroadcastAddr();
     status = serverStatus::Closed;
@@ -29,7 +31,7 @@ void ServerConn::beginAcceptConnection() {
     status = serverStatus::Listening;
 }
 
-void ServerConn::endAccecptConnection() {
+void ServerConn::endAcceptConnection() {
     if (status != serverStatus::Listening) return;
     status = serverStatus::Started;
 
@@ -41,7 +43,7 @@ void ServerConn::endAccecptConnection() {
 
 void ServerConn::close() {
     if (status == serverStatus::Closed) return;
-    if (status == serverStatus::Listening) endAccecptConnection();
+    if (status == serverStatus::Listening) endAcceptConnection();
 
     status = serverStatus::Closed;
 
@@ -111,6 +113,15 @@ void ServerConn::emitOnClientDisconnected(Conn remote) { emit onClientDisconnect
 ServerConnListener::ServerConnListener(QObject *parent, ServerConn *conn) : QThread(parent), conn(conn) { ; }
 
 void ServerConnListener::run() {
+    qRegisterMetaType<byteseq>("byteseq");
+    qRegisterMetaType<Conn>("Conn");
+#ifdef _DEBUG
+    auto dsock = new QUdpSocket();
+    dsock->bind(6644);
+
+    dsock->writeDatagram(QByteArray("started"), conn->broadcastAddress, 6655); qDebug() << "started";
+#endif
+
     int counter = 8;
 
     auto v = new QTcpServer();
@@ -130,7 +141,7 @@ void ServerConnListener::run() {
                 }
 
                 // wait for the first package
-                if (!sock->waitForReadyRead(ConnectPackageTimeOut)) {
+                if (sock->waitForReadyRead(ConnectPackageTimeOut)) {
                     auto data = sock->readAll();
                     auto fr = LRSBasicLayerFrame::FromQByteArray(data);
                     if (fr.type != LRSBasicLayerFrame::frameType::Connect) {
@@ -158,14 +169,12 @@ void ServerConnListener::run() {
             }
         }
     }
-
-    v->listen(QHostAddress::AnyIPv4, ServerClientPort);
 }
 
 ServerConnBroadcaster::ServerConnBroadcaster(QObject *parent, ServerConn *conn) : QThread(parent), conn(conn) { ; }
 
 void ServerConnBroadcaster::run() {
-    auto sock = new QUdpSocket(this);
+    auto sock = new QUdpSocket();
     sock->bind(ServerBroadcastSendPort);
     QByteArray temp; temp.append(conn->name);
     auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Broadcast, temp);
@@ -175,9 +184,11 @@ void ServerConnBroadcaster::run() {
 
     while (conn->status == ServerConn::serverStatus::Listening) {
         sock->writeDatagram(data, conn->broadcastAddress, ServerBroadcastRecvPort);
+        sock->waitForBytesWritten();
 
         sleep(ServerBroadcastInterval);
     }
 
+    sock->writeDatagram(QByteArray(1, (char)(int)conn->status), conn->broadcastAddress, ServerBroadcastRecvPort);
     delete sock;
 }

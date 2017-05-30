@@ -2,8 +2,8 @@
 
 #ifndef SERVER_H
 #define SERVER_H
-#include "globalConf.h"
-#include "severConn.h"
+#include "..\cih\globalConf.h"
+#include "serverconn.h"
 #include <vector>
 #include <string>
 #include <ctime>
@@ -75,7 +75,7 @@ namespace server {
 	};
     class GameConfig : public QObject
 	{
-		Q_Object
+        Q_OBJECT
 	public:
 		int playerNum;
 		vector<User> user;
@@ -99,10 +99,13 @@ namespace server {
 		int connNum;
 		//GameState() : sheriffNum(0), loseAbility(false) {};
 		void setConfig(int playernum, vector<int> character, QString name);//统计各角色数量及编号
-	public slot:
-		void cilentConnected(Conn remote);
-		void cilentDisconnected(Conn remote);
-		void cilentData(Conn remote, byteseq data, int length);
+    public slots:
+        void clientConnected(Conn remote);
+        void clientDisconnected(Conn remote);
+        void clientData(Conn remote, byteseq data, int length);
+
+    signals:
+        void onClientChanged();
 	};
     
 	class GameEvent
@@ -118,12 +121,12 @@ namespace server {
 		~GameEvent();
 		void transferInfoToClient(int userName, const char *info)
 		{
-			if(!user[userName].death)
-				config -> serverConn -> sendData(*(config -> user[userName].conn), info, strlen(info));
+            if(!config->user[userName].death)
+                config -> serverConn -> sendData(*(config -> user[userName].conn), info, (int)strlen(info));
 		}
 		void broadcastInfo(const char *info)
 		{
-			config -> serverConn -> broadcast(info, strlen(info));
+            config -> serverConn -> broadcast(info, (int)strlen(info));
 		}
 		string respond(int userName,int timeInterval, bool isRoleAct = true)
 		{
@@ -133,13 +136,13 @@ namespace server {
 				broadcastInfo((info + transNumToString(timeInterval / 1000)).c_str());
 			}
 			clock_t cl = clock();
-			while(clock - cl < timeInterval) ;
+            while(clock() - cl < timeInterval) ;
 			if(isRoleAct)
 				transferInfoToClient(userName, "roleActEnd");
 			else
 				transferInfoToClient(userName, "getMessege");
 			cl = clock();
-			while(clock - cl < WAIT) ;
+            while(clock() - cl < WAIT) ;
 			if(config -> user[userName].messeges.empty())
 			{
 				string res("!");
@@ -160,13 +163,13 @@ namespace server {
 				broadcastInfo((info + transNumToString(timeInterval / 1000)).c_str());
 			}
 			clock_t cl = clock();
-			while(clock - cl < timeInterval) ;
+            while(clock() - cl < timeInterval) ;
 			if(isRoleAct)
 				transferInfoToClient(userName, "roleActEnd");
 			else
 				transferInfoToClient(userName, "getMessege");
 			cl = clock();
-			while(clock - cl < WAIT) ;
+            while(clock() - cl < WAIT) ;
 			vector<string> res = config -> user[userName].messeges;
 			config -> user[userName].messeges.clear();
 			return res;
@@ -200,7 +203,7 @@ namespace server {
 		using Vote :: Vote;
 		bool canVote(int num);
 		int ifDraw();
-		void show(){};
+        inline void show() {}
 	};
 	class StartGame : public GameEvent
 	{
@@ -232,16 +235,16 @@ namespace server {
 	public:
 		using GameEvent :: GameEvent;
 		int num;
-		virtual void nightTransferInfo1() {};
-		virtual void nightTransferInfo2() {};
-		virtual void processInfo() {};
-		virtual void nightOperation() {};
-		virtual void firstNightOperation() {};
-		virtual void dayOperation() {};
-		virtual void killed();
-		virtual void killedByWerewolf() {config -> deads.push_back(num);};
-		virtual void killedByVoting(){killed();};
-		virtual void init(){};
+        virtual void nightTransferInfo1() {}
+        virtual void nightTransferInfo2() {}
+        virtual void processInfo() {}
+        virtual void nightOperation() {}
+        virtual void firstNightOperation() {}
+        virtual void dayOperation() {}
+        virtual void killed();
+        virtual void killedByWerewolf() {config -> deads.push_back(num);}
+        virtual void killedByVoting(){killed();}
+        virtual void init(){}
 	};
 	class Werewolf : public Character
 	{
@@ -359,7 +362,7 @@ namespace server {
 	{
 	public:
 		using SheriffSelection :: SheriffSelection;
-		int selection() {};
+        int selection() {return 0;}
 	};
 	class HasSheriffSelection : public SheriffSelection
 	{
@@ -373,14 +376,13 @@ namespace server {
 		vector <Character*> character;
 		SheriffSelection *sheriffSelection;
 		VictoryJudge *victoryJudge;
-		GameServer() : roundNum(1) {};
+        GameServer() {};
 		StartGame *startGame;
 		Broadcast *broadcast;
 		GotMessege *gotMessege;
 		Character* transNumToCharacter(int num);
 		int transNumToCharacterType(int num);
-		void setConfig(int playernum, vector<int> character, int sheriffselection, int victoryjudge, QString name);
-		void clientRegister();
+        void setConfig(int playernum, vector<int> character, int sheriffselection, int victoryjudge, QString name);
 		void reshuffle();
 		int day(bool isFirstDay);
 		void night();

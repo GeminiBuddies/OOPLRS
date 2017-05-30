@@ -9,7 +9,6 @@
 #define GOD 2
 #define PIEDPIPER 3
 
-#include "globalConf.h"
 #include "server.h"
 #include <vector>
 #include <ctime>
@@ -17,6 +16,8 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+
+#include <QMessageBox>
 
 namespace OOPLRS {
 namespace server {
@@ -59,8 +60,8 @@ namespace server {
 		serverConn = new ServerConn;
 		serverConn -> start(name);
 	}
-	void GameConfig :: cilentConnected(Conn remote)
-	{
+    void GameConfig :: clientConnected(Conn remote)
+    {
 		connNum ++;
 		int tmp = rand() % playerNum;
 		while(hasConn[tmp])
@@ -68,18 +69,22 @@ namespace server {
 		hasConn[tmp] = true;
 		connMap[remote] = tmp;
 		user[tmp].conn = &remote;
+
+        emit onClientChanged();
 	}
-	void GameConfig :: cilentDisconnected(Conn remote)
+    void GameConfig :: clientDisconnected(Conn remote)
 	{
 		connNum --;
 		int tmp = connMap[remote];
 		hasConn[tmp] = false;
 		user[tmp].conn = NULL;
+
+        emit onClientChanged();
 	}
-	void GameConfig :: cilentData(Conn remote, byteseq data, int length)
+    void GameConfig :: clientData(Conn remote, byteseq data, int length)
 	{
-		string str(data);
-		user[map[Conn]].messeges.push_back(str);
+        string str(data, length);
+        user[connMap[remote]].messeges.push_back(str);
 	}
 	void GameServer :: setConfig(int playernum, vector<int> character, int sheriffselection, int victoryjudge, QString name)
 	{
@@ -93,9 +98,9 @@ namespace server {
 			victoryJudge = new KillGods(&config);
 		config.setConfig(playernum, character, name);
 		startGame = new StartGame(&config);
-		connect(config.serverConn, SIGNAL(onClientConnected(Conn remote)), config, cilentConnected(Conn remote));
-		connect(config.serverConn, SIGNAL(onClientDisconnected(Conn remote)), config, cilentDisconnected(Conn remote));
-		connect(config.serverConn, SIGNAL(onClientData(Conn remote)), config, cilentData(Conn remote));
+        QObject::connect(config.serverConn, SIGNAL(onClientConnected(Conn)), &config, SLOT(clientConnected(Conn)));
+        QObject::connect(config.serverConn, SIGNAL(onClientDisconnected(Conn)), &config, SLOT(clientDisconnected(Conn)));
+        QObject::connect(config.serverConn, SIGNAL(onClientData(Conn, byteseq, int)), &config, SLOT(clientData(Conn, byteseq, int)));
 	}
 	Character* GameServer :: transNumToCharacter(int num)
 	{
@@ -284,13 +289,16 @@ namespace server {
 			if(canVote(i))
 			{
 				//cout<<i<<endl;
+
+                string resp;
 				if(!flag)
 				{
-					string resp = respond(i, voteInterval());
+                    resp = respond(i, voteInterval());
 					flag = 1;
 				}
 				else
-					string resp = respond(i, 0);
+                    resp = respond(i, 0);
+
 				if(resp[0] != '!')
 				{
 					tmp[transCharToNum(resp[5])]++;
@@ -372,9 +380,9 @@ namespace server {
 				config -> canAssign = true;
 				return scapegoatNum;
 			}
-		}
-		else
-			return -1;
+        }
+
+        return -1;
 	}
 	void WerewolfOperation :: operation()//0
 	{
@@ -443,7 +451,7 @@ namespace server {
 			transferInfoToClient(num, "canShoot");
 			broadcastInfo("waitingHunter");
 			string resp = respond(num, 20000);
-			if(respond[0] == '!')
+            if(resp[0] == '!')
 			{
 				canShoot = false;
 				return;
@@ -583,7 +591,7 @@ namespace server {
 			config -> hasCupid = true;
 		config -> characterNumber[config -> user[num].characterNum].push_back(num);
 	}
-	int HasSheriffSelection :: selection() {};
+    int HasSheriffSelection :: selection() { return 0; }
 	void StartGame :: startGame()
 	{
 		string s1("start");
@@ -615,13 +623,8 @@ namespace server {
 		info2 = info2 + transNumToString(num) + '/';
 		info2 = info2 + messege;
 		broadcastInfo(info2.c_str());
-	}
-	void GameServer :: clientRegister()
-	{
-		config.beginAcceptConnection();
-		while(config.connNum < config.playerNum) ;
-		config.endAccecptConnection();
-	}
+    }
+
 	int GameServer :: day(bool isFirstDay)
 	{
 		//cout<<config.deads.size()<<"size"<<endl;
@@ -659,6 +662,8 @@ namespace server {
 				config.user[i].canVote = true;
 		character[deadPlayer] -> killedByVoting();
 		gotMessege -> gotMessege(deadPlayer, true);
+
+        return 0;
 	}
 	void GameServer :: night()
 	{

@@ -26,6 +26,8 @@ Connect::~Connect()
 
 void Connect::on_start_clicked()
 {
+    temp.config.serverConn->endAcceptConnection();
+
     close();
     QTextBrowser *rec = new Record;
     rec->show();
@@ -37,22 +39,28 @@ void Connect::on_start_clicked()
     rec->close();
     Over* ov = new Over;
     ov->show();
-
-
 }
 
-void Connect::showConnect(int* player,int a)
+void Connect::onClientChanged() {
+    showConnect(temp.config.hasConn, temp.config.playerNum);
+
+    if (temp.config.playerNum > temp.config.connNum) {
+        ui->start->setEnabled(false);
+    } else {
+        ui->start->setEnabled(true);
+    }
+}
+
+void Connect::showConnect(bool* player,int a)
 {
     ui->textBrowser->setPlainText("");
 
     ui->textBrowser->append(tr("Connecting..."));
 
 
-
-
     for(int i=0;i<a;i++)
     {
-        if(*player==0)
+        if(player[i]==0)
         {
             ui->textBrowser->append("player");
             ui->textBrowser->moveCursor(QTextCursor::End);
@@ -60,7 +68,7 @@ void Connect::showConnect(int* player,int a)
             ui->textBrowser->moveCursor(QTextCursor::End);
             ui->textBrowser->insertPlainText(" hasn't connected");
         }
-        else if(*player==1)
+        else
         {
             ui->textBrowser->append("player");
             ui->textBrowser->moveCursor(QTextCursor::End);
@@ -76,6 +84,8 @@ void Connect::showConnect(int* player,int a)
 
 void Connect::on_cancel_clicked()
 {
+    temp.config.serverConn->endAcceptConnection();
+
     close();
     MainWindow *m = new MainWindow;
     m->show();
