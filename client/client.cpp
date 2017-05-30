@@ -33,9 +33,11 @@ void Client::onClientData(byteseq data, int length)
 	pos[0] = 0;
 	pos[1] = 0;
 	int n = -1;
-	QString str1 = "", str2 = "", str3 = "";
+    QString str1 = "";
+    QString str3 = "";
+    QString str2 = "";
 	for (int i = 0; i < length; ++i)
-	{
+    {
 		if(data[i] == '/')
 		{
 			n++;
@@ -44,43 +46,43 @@ void Client::onClientData(byteseq data, int length)
 	}
 	if (n == -1)
 	{
-		str1 = QString(data);
+        for(int i=0;i<length;i++){
+            str1+=data[i];
+        }
 	}
 	else if (n == 0)
 	{
-        char* char1=new char[pos[0]];
-        char* char2=new char[length-1-pos[0]];
+        /*char* char1=new char[pos[0]];
+        char* char2=new char[length-1-pos[0]];*/
 		for (int i = 0; i < pos[0]; ++i)
 		{
-			char1[i] = data[i];
+            str1+=data[i];
 		}
 		for (int i = pos[0]+1; i < length; ++i)
 		{
-			char2[i] = data[i];
-		}
-		str1 = QString(char1);
-		str2 = QString(char2);
+            str2+=data[i];
+        }
+        /*str1 = QString(char1);
+        str2 = QString(char2);*/
+
 	}
-	else if (n == 1)
+    else if (n == 1)
 	{
-        char *char1=new char[pos[0]];
+        /*char *char1=new char[pos[0]];
         char *char2=new char[pos[1]-1-pos[0]];
-        char *char3=new char[length-1-pos[1]];
+        char *char3=new char[length-1-pos[1]];*/
 		for (int i = 0; i < pos[0]; ++i)
 		{
-			char1[i] = data[i];
+            str1+=data[i];
 		}
 		for (int i = pos[0]+1; i < pos[1]; ++i)
 		{
-			char2[i] = data[i];
+            str2+=data[i];
 		}
 		for (int i = pos[1]+1; i < length; ++i)
 		{
-			char3[i] = data[i];
-		}
-		str1 = QString(char1);
-		str2 = QString(char2);
-		str3 = QString(char3);
+            str3+=data[i];
+        }
 	}
 	if (str1 == "roleActEnd")
 	{
@@ -192,7 +194,7 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
         _vote[str2[0].toLatin1()]=0;
 		if (_time == 1 && _role == "werewolf")
 		{
-			QString vote = "cancelVote/" + str2;
+            QString vote = "cancelVote/" + str2;
 			QByteArray data0 = vote.toLatin1();
 			char* data = data0.data();
             int length = int(strlen(data));
@@ -201,15 +203,15 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
 	}
 	else if (str1 == "voteByWitch")
 	{
-		_witch = str2;
+        _witch = str2;
 	}
 	else if (str1 == "sendChatMessage")
 	{
-		_message = _message + str2;
+        _message = _message + str2;
 	}
 	else if (str1 == "assignRoles")
 	{
-		_role = str2;
+        _role = str2;
 	}
 	else if (str1 == "day")
 	{
@@ -221,7 +223,7 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
 	}
 	else if (str1 == "changeName")
 	{
-		_name = str2;
+        _name = str2;
 	}
 
 }

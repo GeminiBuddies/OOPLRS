@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>2</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -180,7 +180,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
@@ -336,7 +336,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>4</string>
     </property>
    </widget>
    <widget class="QComboBox" name="model">
@@ -367,6 +367,9 @@
       <width>120</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
     </property>
     <item>
      <property name="text">
@@ -427,6 +430,9 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="text">
+     <string>123</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -435,7 +441,7 @@
      <x>0</x>
      <y>0</y>
      <width>830</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
