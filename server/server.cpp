@@ -66,10 +66,18 @@ namespace server {
 		int tmp = rand() % playerNum;
 		while(hasConn[tmp])
 			tmp = rand() % playerNum;
-		hasConn[tmp] = true;
+
 		connMap[remote] = tmp;
 		user[tmp].conn = &remote;
-
+		string str("position/");
+		str = str + transNumToString(tmp);
+		serverConn -> sendData(str.c_str(), strlen(str.c_str()));
+		string info("join/");
+		for(int i = 0; i < playerNum; i++)
+			if(hasConn[i])
+				serverConn -> sendData((info + transNumToString(i) + '/'  + transNumToString(i)).c_str(), strlen((info + transNumToString(i) + '/'  + transNumToString(i)).c_str()));
+		serverConn -> broadcast((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str(),strlen((info + transNumToString(tmp) + '/'  + transNumToString(tmp)).c_str()));
+		hasConn[tmp] = true;				
         emit onClientChanged();
 	}
     void GameConfig :: clientDisconnected(Conn remote)
