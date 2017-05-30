@@ -21,7 +21,7 @@ void ClientConn::start(QString name) {
 }
 
 bool ClientConn::connect(Conn server) {
-    if (status != clientStatus::Started) return;
+    if (status != clientStatus::Started) return false;
 
     sock = new QTcpSocket();
     sock->connectToHost(server->addr, ServerClientPort);
