@@ -25,6 +25,9 @@ public:
     typedef const QSet<Conn>* ServerList;
     ServerList getServers();
 
+private slots:
+    void onReadyRead();
+
 signals:
     void onServerData(byteseq data, int length);
     void onServerDisconnect();

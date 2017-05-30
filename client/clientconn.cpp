@@ -37,6 +37,8 @@ bool ClientConn::connect(Conn server) {
         delete threadListener;
         threadListener = nullptr;
 
+        QObject::connect(sock, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+
         return true;
     } else {
         delete sock;
@@ -59,6 +61,11 @@ void ClientConn::disconnect() {
     threadListener->start();
 
     status = clientStatus::Started;
+}
+
+void ClientConn::onReadyRead() {
+    auto data = sock->readAll();
+    emit onServerData(data.data(), data.length());
 }
 
 void ClientConn::close() {
