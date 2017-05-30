@@ -86,3 +86,37 @@ void MainWindow::on_pushButton_clicked()
     }
 
 }
+
+void MainWindow::on_fillin_clicked()
+{
+    if(ui->commonConfig->currentIndex()==1)
+    {
+        ui->townsfolk->setText(QString::number(3,10));
+        ui->wolf->setText(QString::number(3,10));
+        ui->witch->setText(QString::number(1,10));
+        ui->hunter->setText(QString::number(1,10));
+        ui->serr->setText(QString::number(1,10));
+        ui->playernum->setText(QString::number(9,10));
+    }
+    if(ui->commonConfig->currentIndex()==2)
+    {
+        ui->townsfolk->setText(QString::number(4,10));
+        ui->wolf->setText(QString::number(4,10));
+        ui->witch->setText(QString::number(1,10));
+        ui->hunter->setText(QString::number(1,10));
+        ui->serr->setText(QString::number(1,10));
+        ui->savior->setText(QString::number(1,10));
+        ui->playernum->setText(QString::number(12,10));
+    }
+    if(ui->commonConfig->currentIndex()==3)
+    {
+        ui->townsfolk->setText(QString::number(5,10));
+        ui->wolf->setText(QString::number(5,10));
+        ui->witch->setText(QString::number(1,10));
+        ui->hunter->setText(QString::number(1,10));
+        ui->serr->setText(QString::number(1,10));
+        ui->savior->setText(QString::number(1,10));
+        ui->idiot->setText(QString::number(1,10));
+        ui->playernum->setText(QString::number(15,10));
+    }
+}

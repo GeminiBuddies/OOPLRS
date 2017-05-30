@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>460</y>
+      <x>690</x>
+      <y>470</y>
       <width>93</width>
       <height>28</height>
      </rect>
@@ -342,8 +342,8 @@
    <widget class="QComboBox" name="model">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>440</y>
+      <x>230</x>
+      <y>410</y>
       <width>135</width>
       <height>21</height>
      </rect>
@@ -363,7 +363,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>440</y>
+      <y>410</y>
       <width>120</width>
       <height>21</height>
      </rect>
@@ -386,7 +386,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>410</y>
+      <y>390</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -398,8 +398,8 @@
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>410</y>
+      <x>230</x>
+      <y>390</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -412,7 +412,7 @@
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>410</y>
+      <y>390</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -425,13 +425,69 @@
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>440</y>
+      <y>410</y>
       <width>151</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>123</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>470</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>选择常用配置</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="commonConfig">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>470</y>
+      <width>331</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>请选择常用配置</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>9人局:3狼3民1女巫1猎人1预言家</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>12人局:4狼4民1女巫1猎人1预言家1守卫</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>15人局:5狼5民1女巫1猎人1预言家1守卫1白痴</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="fillin">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>470</y>
+      <width>81</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>填入</string>
     </property>
    </widget>
   </widget>
