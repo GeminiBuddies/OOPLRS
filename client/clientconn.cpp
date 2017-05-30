@@ -84,11 +84,8 @@ ClientConn::ServerList ClientConn::getServers() {
 ClientConnListener::ClientConnListener(QObject *parent, ClientConn *conn) : QThread(parent), conn(conn) { ; }
 
 void ClientConnListener::run() {
-    qRegisterMetaType<byteseq>("byteseq");
-    qRegisterMetaType<Conn>("Conn");
-    
     int counter = 8;
-    QUdpSocket* recv = new QUdpSocket(this);
+    QUdpSocket* recv = new QUdpSocket();
 
     while (conn->status != ClientConn::clientStatus::Started) ;
 

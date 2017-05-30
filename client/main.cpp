@@ -21,6 +21,9 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    qRegisterMetaType<byteseq>("byteseq");
+    qRegisterMetaType<Conn>("Conn");
+    
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
