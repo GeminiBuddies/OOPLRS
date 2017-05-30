@@ -65,6 +65,7 @@ void ClientConn::disconnect() {
 
 void ClientConn::onReadyRead() {
     cache.append(sock->readAll());
+    PkgHandler();
 }
 
 void ClientConn::PkgHandler() {
@@ -97,7 +98,9 @@ void ClientConn::close() {
 void ClientConn::sendData(byteseq data, int length) {
     if (status != clientStatus::Connected) return;
 
-    sock->write(data, length);
+    auto buf = QByteArray(data, length);
+    buf.append(length);
+    sock->write(buf);
 }
 
 ClientConn::ServerList ClientConn::getServers() {
