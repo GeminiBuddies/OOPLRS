@@ -35,6 +35,8 @@ public slots:
     void socketReady();
     void socketDisconnected();
 
+    void newConn(QTcpSocket *sock, QHostAddress addr, int id, QString name);
+
 private:
     QString name;
 
@@ -72,11 +74,13 @@ class ServerConnListener : public QThread {
     Q_OBJECT
 public:
     ServerConnListener() = delete;
-    explicit ServerConnListener(QObject *parent = 0, ServerConn *conn = 0);
-private:
-    ServerConn *conn;
+    explicit ServerConnListener(QObject *parent = 0);
+
+    ServerConn::serverStatus status;
 protected:
     void run();
+signals:
+    void onNewConn(QTcpSocket *sock, QHostAddress addr, int id, QString name);
 };
 
 class ServerConnBroadcaster : public QThread {

@@ -16,10 +16,12 @@ void ServerConn::start(QString name) {
 
     this->name = name;
 
-    threadListener = new ServerConnListener(this, this);
+    threadListener = new ServerConnListener(this);
     threadListener->start();
 
-    status = serverStatus::Started;
+    connect(threadListener, SIGNAL(onNewConn(QTcpSocket*, QHostAddress, int, QString)), this, SLOT(newConn(QTcpSocket*, QHostAddress, int, QString)));
+
+    status = threadListener->status = serverStatus::Started;
 }
 
 void ServerConn::beginAcceptConnection() {
@@ -28,12 +30,12 @@ void ServerConn::beginAcceptConnection() {
     threadBroadcaster = new ServerConnBroadcaster(this, this);
     threadBroadcaster->start();
 
-    status = serverStatus::Listening;
+    status = threadListener->status = serverStatus::Listening;
 }
 
 void ServerConn::endAcceptConnection() {
     if (status != serverStatus::Listening) return;
-    status = serverStatus::Started;
+    status = threadListener->status = serverStatus::Started;
 
     while (threadBroadcaster->isRunning()) ;
 
@@ -45,9 +47,12 @@ void ServerConn::close() {
     if (status == serverStatus::Closed) return;
     if (status == serverStatus::Listening) endAcceptConnection();
 
-    status = serverStatus::Closed;
+    status = threadListener->status = serverStatus::Closed;
 
     while (threadListener->isRunning()) ;
+
+    threadListener->disconnect();
+
     delete threadListener;
     threadListener = nullptr;
 }
@@ -123,6 +128,22 @@ void ServerConn::socketDisconnected() {
     ids.remove(sock);
 }
 
+void ServerConn::newConn(QTcpSocket *sock, QHostAddress addr, int id, QString name) {
+    auto cnn = new _Conn();
+    cnn->name = name;
+    cnn->addr = sock->peerAddress();
+    cnn->id = id;
+
+    clients.insert(id, sock);
+    ids.insert(sock, id);
+    conns.insert(id, cnn);
+
+    emitOnClientConnected(cnn);
+
+    connect(sock, SIGNAL(readyRead()), this, SLOT(socketReady()));
+    connect(sock, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+}
+
 void ServerConn::sendDataBySocket(QTcpSocket *sock, byteseq data, int length) {
     QByteArray buff = QByteArray(data, length);
     buff.append(PkgSeperator);
@@ -134,32 +155,26 @@ void ServerConn::emitOnClientData(Conn remote, byteseq data, int length) { emit 
 void ServerConn::emitOnClientConnected(Conn remote) { emit onClientConnected(remote); }
 void ServerConn::emitOnClientDisconnected(Conn remote) { emit onClientDisconnected(remote); }
 
-ServerConnListener::ServerConnListener(QObject *parent, ServerConn *conn) : QThread(parent), conn(conn) { ; }
+ServerConnListener::ServerConnListener(QObject *parent) : QThread(parent) { ; }
 
 void ServerConnListener::run() {
     qRegisterMetaType<byteseq>("byteseq");
     qRegisterMetaType<Conn>("Conn");
-#ifdef _DEBUG
-    auto dsock = new QUdpSocket();
-    dsock->bind(6644);
-
-    dsock->writeDatagram(QByteArray("started"), conn->broadcastAddress, 6655); qDebug() << "started";
-#endif
 
     int counter = 8;
 
     auto v = new QTcpServer();
     v->setMaxPendingConnections(MaxPlayer);
 
-    while (conn->status == ServerConn::serverStatus::Closed) ;
+    while (status == ServerConn::serverStatus::Closed) ;
 
     v->listen(QHostAddress::AnyIPv4, ServerClientPort);
-    while (conn->status != ServerConn::serverStatus::Closed) {
+    while (status != ServerConn::serverStatus::Closed) {
         if (v->waitForNewConnection(NetInterval)) {
             if (v->hasPendingConnections()) {
                 auto sock = v->nextPendingConnection();
 
-                if (conn->status != ServerConn::serverStatus::Listening) {
+                if (status != ServerConn::serverStatus::Listening) {
                     sock->disconnect(); sock->close();
                     continue;
                 }
@@ -173,19 +188,7 @@ void ServerConnListener::run() {
                         sock->close();
                     }
 
-                    auto cnn = new _Conn();
-                    cnn->name = QString(fr.data);
-                    cnn->addr = sock->peerAddress();
-                    cnn->id = counter++;
-
-                    conn->clients.insert(cnn->id, sock);
-                    conn->ids.insert(sock, cnn->id);
-                    conn->conns.insert(cnn->id, cnn);
-
-                    conn->emitOnClientConnected(cnn);
-
-                    connect(sock, SIGNAL(readyRead()), conn, SLOT(socketReady()));
-                    connect(sock, SIGNAL(disconnected()), conn, SLOT(socketDisconnected()));
+                    emit onNewConn(sock, sock->peerAddress(), counter++, QString(fr.data));
                 } else {
                     sock->disconnect();
                     sock->close();
@@ -213,6 +216,5 @@ void ServerConnBroadcaster::run() {
         sleep(ServerBroadcastInterval);
     }
 
-    sock->writeDatagram(QByteArray(1, (char)(int)conn->status), conn->broadcastAddress, ServerBroadcastRecvPort);
     delete sock;
 }
