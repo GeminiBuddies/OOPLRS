@@ -12,7 +12,7 @@ ClientConn::ClientConn(QObject *parent) : QObject(parent) {
 void ClientConn::start(QString name) {
     if (status != clientStatus::Closed) return;
 
-    threadListener = new ClientConnListener();
+    threadListener = new ClientConnListener(this, this);
     threadListener->start();
 
     status = clientStatus::Started;
@@ -21,14 +21,15 @@ void ClientConn::start(QString name) {
 }
 
 bool ClientConn::connect(Conn server) {
-    if (status != clientStatus::Started) return;
+    if (status != clientStatus::Started) return false;
 
     sock = new QTcpSocket();
     sock->connectToHost(server->addr, ServerClientPort);
 
     if (sock->waitForConnected(ConnectPackageTimeOut)) {
-        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Data, QByteArray(name));
-        sock->write(fr);
+        QByteArray temp; temp.append(name);
+        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Data, temp);
+        sock->write(fr.ToQByteArray().data());
 
         status = clientStatus::Connected;
         while (threadListener->isRunning()) ;
@@ -53,7 +54,7 @@ void ClientConn::disconnect() {
     delete sock;
     sock = nullptr;
 
-    threadListener = new ClientConnListener();
+    threadListener = new ClientConnListener(this, this);
     threadListener->start();
 
     status = clientStatus::Started;
