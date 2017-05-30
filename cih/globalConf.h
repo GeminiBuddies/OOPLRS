@@ -15,6 +15,8 @@ const int MaxPlayer = 32;
 const int NetInterval = 200; // 200 ms
 const int ConnectPackageTimeOut = 3000; // 3000 ms
 
+const char PkgSeperator = '$';
+
 #define CONTAIN(v, flg) (((v) & (flg)) == (flg))
 
 typedef const char *byteseq;

@@ -70,23 +70,44 @@ void ServerConn::socketReady() {
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
 
     auto data = sock->readAll();
-    auto fr = LRSBasicLayerFrame::FromQByteArray(data);
 
-    if (fr.type == LRSBasicLayerFrame::frameType::Data) {
-        emitOnClientData(conns[ids[sock]], data.constData(), data.size());
-    } else if (fr.type == LRSBasicLayerFrame::frameType::Disconnect) {
-        removing += sock;
+    if (!cache.contains(sock)) cache.insert(sock, QByteArray());
+    cache[sock].append(data);
 
-        sock->disconnectFromHost();
-        sock->close();
+    PkgHandler(sock);
+}
 
-        emitOnClientDisconnected(conns[ids[sock]]);
+void ServerConn::PkgHandler(QTcpSocket* sock) {
+    int lastEnd = -1;
 
-        delete conns[ids[sock]];
-        conns.remove(ids[sock]);
-        clients.remove(ids[sock]);
-        ids.remove(sock);
+    for (;;) {
+        int idx = cache[sock].indexOf(PkgSeperator);
+        if (-1 == idx) break;
+
+        auto data = cache[sock].mid(lastEnd + 1, idx - lastEnd - 1);
+        lastEnd = idx;
+        cache[sock][idx] = '%';
+
+        auto fr = LRSBasicLayerFrame::FromQByteArray(data);
+
+        if (fr.type == LRSBasicLayerFrame::frameType::Data) {
+            emitOnClientData(conns[ids[sock]], data.constData(), data.size());
+        } else if (fr.type == LRSBasicLayerFrame::frameType::Disconnect) {
+            removing += sock;
+
+            sock->disconnectFromHost();
+            sock->close();
+
+            emitOnClientDisconnected(conns[ids[sock]]);
+
+            delete conns[ids[sock]];
+            conns.remove(ids[sock]);
+            clients.remove(ids[sock]);
+            ids.remove(sock);
+        }
     }
+
+    if (lastEnd != -1) cache[sock] = cache[sock].right(cache.size() - lastEnd - 1);
 }
 
 void ServerConn::socketDisconnected() {
@@ -103,7 +124,9 @@ void ServerConn::socketDisconnected() {
 }
 
 void ServerConn::sendDataBySocket(QTcpSocket *sock, byteseq data, int length) {
-    sock->write(data, length);
+    QByteArray buff = QByteArray(data, length);
+    buff.append(PkgSeperator);
+    sock->write(buff);
     sock->flush();
 }
 

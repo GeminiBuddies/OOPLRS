@@ -61,6 +61,10 @@ private:
     QMap<QTcpSocket*, int> ids;
     QMap<int, Conn> conns;
     QSet<QTcpSocket*> removing;
+
+    QMap<QTcpSocket*, QByteArray> cache;
+
+    void PkgHandler(QTcpSocket* sock);
 };
 
 // Sub-class definition
