@@ -26,10 +26,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     mainwindow.cpp \
     serverconn.cpp \
-    ../cih/globalConf.cpp
+    ../cih/globalConf.cpp \
+    werewolf.cpp \
+    connect.cpp \
+    record.cpp \
+    over.cpp \
+    commvar.cpp \
+    server.cpp
 
 HEADERS  += mainwindow.h \
     serverconn.h \
-    ../cih/globalConf.h
+    ../cih/globalConf.h \
+    connect.h \
+    record.h \
+    over.h \
+    commvar.h \
+    server.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    werewolf.ui \
+    connect.ui \
+    over.ui
