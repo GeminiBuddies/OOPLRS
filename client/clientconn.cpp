@@ -12,7 +12,7 @@ ClientConn::ClientConn(QObject *parent) : QObject(parent) {
 void ClientConn::start(QString name) {
     if (status != clientStatus::Closed) return;
 
-    threadListener = new ClientConnListener();
+    threadListener = new ClientConnListener(this, this);
     threadListener->start();
 
     status = clientStatus::Started;
@@ -53,7 +53,7 @@ void ClientConn::disconnect() {
     delete sock;
     sock = nullptr;
 
-    threadListener = new ClientConnListener();
+    threadListener = new ClientConnListener(this, this);
     threadListener->start();
 
     status = clientStatus::Started;
