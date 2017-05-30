@@ -27,8 +27,9 @@ bool ClientConn::connect(Conn server) {
     sock->connectToHost(server->addr, ServerClientPort);
 
     if (sock->waitForConnected(ConnectPackageTimeOut)) {
-        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Data, QByteArray(name));
-        sock->write(fr);
+        QByteArray temp; temp.append(name);
+        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Data, temp);
+        sock->write(fr.ToQByteArray().data());
 
         status = clientStatus::Connected;
         while (threadListener->isRunning()) ;
