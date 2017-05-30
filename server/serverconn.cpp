@@ -107,7 +107,7 @@ void ServerConn::PkgHandler(QTcpSocket* sock) {
         }
     }
 
-    if (lastEnd != -1) cache[sock] = cache[sock].right(cache.size() - lastEnd - 1);
+    if (lastEnd != -1) cache[sock] = cache[sock].right(cache[sock].size() - lastEnd - 1);
 }
 
 void ServerConn::socketDisconnected() {

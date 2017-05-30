@@ -64,8 +64,24 @@ void ClientConn::disconnect() {
 }
 
 void ClientConn::onReadyRead() {
-    auto data = sock->readAll();
-    emit onServerData(data.data(), data.length());
+    cache.append(sock->readAll());
+}
+
+void ClientConn::PkgHandler() {
+    int lastEnd = -1;
+
+    for (;;) {
+        int idx = cache.indexOf(PkgSeperator);
+        if (-1 == idx) break;
+
+        auto data = cache.mid(lastEnd + 1, idx - lastEnd - 1);
+        lastEnd = idx;
+        cache[idx] = '%';
+
+        emit onServerData(data.data(), data.length());
+    }
+
+    if (lastEnd != -1) cache = cache.right(cache.size() - lastEnd - 1);
 }
 
 void ClientConn::close() {

@@ -48,6 +48,9 @@ private:
     ClientConnListener *threadListener;
 
     QString name;
+
+    QByteArray cache;
+    void PkgHandler();
 };
 
 class ClientConnListener : public QThread {
