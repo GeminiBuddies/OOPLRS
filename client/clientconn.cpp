@@ -1,4 +1,4 @@
-#include "clientconn.h"
+﻿#include "clientconn.h"
 
 ClientConn::ClientConn() {
     status = clientStatus::Closed;
@@ -28,8 +28,9 @@ bool ClientConn::connect(Conn server) {
 
     if (sock->waitForConnected(ConnectPackageTimeOut)) {
         QByteArray temp; temp.append(name);
-        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Data, temp);
+        auto fr = LRSBasicLayerFrame(LRSBasicLayerFrame::frameType::Connect, temp);
         sock->write(fr.ToQByteArray().data());
+        sock->flush();
 
         status = clientStatus::Connected;
         while (threadListener->isRunning()) ;
@@ -101,6 +102,8 @@ void ClientConnListener::run() {
                 auto fr = LRSBasicLayerFrame::FromQByteArray(data);
                 if (fr.type != LRSBasicLayerFrame::frameType::Broadcast) continue;
 
+                if (conn->host.contains(serverAddr)) break;
+
                 int id = counter++;
                 QString name = QString(fr.data);
 
@@ -108,6 +111,7 @@ void ClientConnListener::run() {
                 cnn->id = id; cnn->name = name; cnn->addr = serverAddr;
 
                 conn->servers.insert(cnn);
+                conn->host.insert(serverAddr);
             }
         }
     }

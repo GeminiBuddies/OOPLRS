@@ -1,0 +1,8 @@
+join aaa 1
+join bbb 2
+join ccc 3
+join ddd 4
+join eee 5
+join fff 6
+position 2
+assignRoles werewolf
