@@ -39,7 +39,8 @@ SOURCES += main.cpp \
     witchchooseformproxy.cpp \
     piedpiper.cpp \
     client.cpp \
-    clientconn.cpp
+    clientconn.cpp \
+    ..\cih\globalConf.cpp
 
 RESOURCES += qml.qrc
 
@@ -85,4 +86,5 @@ HEADERS += \
     witchchooseformproxy.h \
     piedpiper.h \
     client.h \
-    clientconn.h
+    clientconn.h \
+    ..\cih\globalConf.h

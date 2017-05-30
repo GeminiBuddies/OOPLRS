@@ -94,7 +94,7 @@ void Client::onClientData(byteseq data, int length)
 					QString vote = "vote/0";
 					QByteArray data0 = vote.toLatin1();
 					char* data = data0.data();
-					int length = strlen(data);
+                    int length = int(strlen(data));
                     _ClientConn->sendData(data, length);
 				}
 				else if (_vote[i] == 1)
@@ -104,7 +104,7 @@ void Client::onClientData(byteseq data, int length)
 					QString vote = "vote/" + _witch +"/"+ strnum;
 					QByteArray data0 = vote.toLatin1();
 					char* data = data0.data();
-					int length = strlen(data);
+                    int length = int(strlen(data));
                     _ClientConn->sendData(data, length);
 				}
 			}
@@ -128,7 +128,7 @@ void Client::onClientData(byteseq data, int length)
 	{
 		QByteArray data0 = _message.toLatin1();
 		char* data = data0.data();
-		int length = strlen(data);
+        int length = int(strlen(data));
         _ClientConn->sendData(data, length);
 		_message = "";
 	}
@@ -152,7 +152,7 @@ void Client::sendVote()
 			QString vote = "vote/" + strnum;
 			QByteArray data0 = vote.toLatin1();
 			char* data = data0.data();
-			int length = strlen(data);
+            int length = int(strlen(data));
             _ClientConn->sendData(data, length);
 		}
 	}
@@ -195,7 +195,7 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
 			QString vote = "cancelVote/" + str2;
 			QByteArray data0 = vote.toLatin1();
 			char* data = data0.data();
-			int length = strlen(data);
+            int length = int(strlen(data));
             _ClientConn->sendData(data, length);
 		}
 	}
