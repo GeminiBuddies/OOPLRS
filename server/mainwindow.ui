@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>2</string>
+     <string>1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -180,7 +180,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
@@ -336,7 +336,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>4</string>
+     <string>2</string>
     </property>
    </widget>
    <widget class="QComboBox" name="model">
