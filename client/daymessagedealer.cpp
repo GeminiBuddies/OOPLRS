@@ -13,7 +13,7 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1== "showLastWords")showLastWords(str2,str3);
     else if(str1== "startChat")startChat(str2);
     else if(str1== "showChatMessage")showChatMessage(str2,str3);
-    else if(str1== "startVote")startVote();
+    else if(str1== "vote")startVote();
     else if(str1== "showVote")showVote(str3,str2);//交换了一下顺序
     else if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了一下顺序
     else if(str1== "win")win();

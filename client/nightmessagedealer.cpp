@@ -10,7 +10,7 @@ void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3
     if(str1== "shotByCupid")shotByCupid(str2);
     if(str1== "roleActLoseAbility")roleActLoseAbility();
     if(str1== "startVote")startVote();
-    if(str1== "showVote")showVote(str3,str2);//交换了顺序
+    if(str1== "vote")showVote(str3,str2);//交换了顺序
     if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了顺序
     if(str1== "roleAct")roleAct();
     if(str1== "clicked")clicked(str2,str3);
