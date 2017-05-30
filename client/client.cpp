@@ -84,7 +84,7 @@ void Client::onClientData(byteseq data, int length)
 	}
 	if (str1 == "roleActEnd")
 	{
-		emit sendMessage("server",str1,str2,str3);
+        emit sendMessage(str1,str2,str3);
         if (_role == "witch" && _time == 1)
 		{
 			for (int i = 0; i < 200; ++i)
@@ -133,7 +133,7 @@ void Client::onClientData(byteseq data, int length)
 		_message = "";
 	}
     else
-		emit sendMessage("server",str1,str2,str3);
+        emit sendMessage(str1,str2,str3);
 }
 /*
 void Client::onClientDisconnect()

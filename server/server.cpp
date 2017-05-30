@@ -62,6 +62,7 @@ namespace server {
 	}
     void GameConfig :: clientConnected(Conn remote)
     {
+		srand(time(nullptr));
 		connNum ++;
 		int tmp = rand() % playerNum;
 		while(hasConn[tmp])
