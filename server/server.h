@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef SERVER_H
 #define SERVER_H
@@ -69,7 +69,7 @@ namespace server {
 		bool isPuzzled;
 		bool cannotVoteForever;
 		int characterType;
-		Conn* conn;
+        Conn conn;
 		vector<string> messeges;
 		User(int n, int characternum, int pos);
 	};
@@ -122,7 +122,7 @@ namespace server {
 		void transferInfoToClient(int userName, const char *info)
 		{
             if(!config->user[userName].death)
-                config -> serverConn -> sendData(*(config -> user[userName].conn), info, (int)strlen(info));
+                config -> serverConn -> sendData(config -> user[userName].conn, info, (int)strlen(info));
 		}
 		void broadcastInfo(const char *info)
 		{
@@ -203,7 +203,7 @@ namespace server {
 		using Vote :: Vote;
 		bool canVote(int num);
 		int ifDraw();
-        inline void show() {}
+        void show();
 	};
 	class StartGame : public GameEvent
 	{

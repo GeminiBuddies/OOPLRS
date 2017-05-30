@@ -1,4 +1,4 @@
-#define DRAW 0
+﻿#define DRAW 0
 #define WEREWOLF_VICTORY 1
 #define VILLIAGER_VICTORY 2
 #define LOVERS_VICTORY 3 
@@ -69,7 +69,7 @@ namespace server {
 			tmp = rand() % playerNum;
 
 		connMap[remote] = tmp;
-		user[tmp].conn = &remote;
+        user[tmp].conn = remote;
 		string str("position/");
 		str = str + transNumToString(tmp);
 		serverConn -> sendData(remote, str.c_str(), (int)strlen(str.c_str()));
@@ -290,8 +290,7 @@ namespace server {
 		{
 			tmp.push_back(0);
 			voting.push_back(-1);
-		}
-		broadcastInfo("startVote");
+        }
 		//cout<<"askd\n";
 		int flag = 0;
 		for(int i = 0; i < playerNum; i++)
@@ -358,6 +357,9 @@ namespace server {
 					transferInfoToClient(i, (info + transNumToString(j)).c_str());
 				}
 		broadcastInfo("setTime/25");
+        for(int i = 0; i < config -> playerNum; i++)
+            if(canVote(i))
+                transferInfoToClient(i, "startVote");
 		clock_t cl = clock();
 		while(cl - clock() < 25000)
 		{
@@ -379,6 +381,12 @@ namespace server {
 		transferInfoToClient(num, "cannotVote");
 		return false;
 	}
+    void dayVote :: show()
+    {
+        for(int i = 0; i < config -> playerNum; i++)
+            if(canVote(i))
+                transferInfoToClient(i, "startVote");
+    }
 	int dayVote :: ifDraw()
 	{
 		if(!config -> characterNumber[7].empty() && !config -> loseAbility)
@@ -429,6 +437,7 @@ namespace server {
 	{
 		//cout<<"Cupid\n";
 		string info1("roleAct");
+        transferInfoToClient(num, "startVote");
 		transferInfoToClient(num, info1.c_str());
 		string resp = respond(num, 20000);
 		if(resp[0] == '!')
@@ -501,6 +510,7 @@ namespace server {
 		}
 		string info("roleAct/");
 		transferInfoToClient(num, (info + transNumToString(lastSavee)).c_str());
+        transferInfoToClient(num, "startVote");
 		lastSavee = -1;
 	}
 	void Savior :: processInfo()
@@ -527,6 +537,7 @@ namespace server {
 			return;
 		}
 		transferInfoToClient(num ,"roleAct");
+        transferInfoToClient(num, "startVote");
 		string resp = respond(num, 20000);
 		if(resp[0] == '!')
 			return;
@@ -550,7 +561,8 @@ namespace server {
 		}
 		string info("roleAct/");
 		transferInfoToClient(num, (info + transNumToString(config -> killedPlayer) + '/' + (char)(hasPoison + '0') + (char)(hasMedicine + '0')).c_str());
-	}
+        transferInfoToClient(num, "startVote");
+    }
 	void Witch :: processInfo()
 	{
 		if(config -> loseAbility)

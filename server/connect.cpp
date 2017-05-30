@@ -1,4 +1,4 @@
-#include "connect.h"
+﻿#include "connect.h"
 #include "ui_connect.h"
 #include"record.h"
 #include<vector>
@@ -33,6 +33,7 @@ void Connect::on_start_clicked()
     rec->show();
 
     temp.reshuffle();
+    if (temp.config.user[0].conn)
     temp.startGame->startGame();
     temp.endGame(temp.mainProcess());
 

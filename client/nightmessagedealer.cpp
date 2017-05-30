@@ -77,11 +77,13 @@ void NightMessageDealer::clicked(QString str1, QString str2){
         emit changeVoteStates("night",1);
         emit sendMessage("toServer","vote",temp);
         emit sendMessage("dealer",str1,"finishClicked");
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("你选择了")+temp+QStringLiteral("号"));
     }
     else if(str2=="0"&&canCancelVote==true){
         emit changeVoteStates("night",-1);
         emit sendMessage("toServer","cancelvote",temp);
         emit sendMessage("dealer",str1,"finishClicked");
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消了选择"));
     }
 }
 
