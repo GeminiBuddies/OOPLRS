@@ -12,7 +12,6 @@ class ServerConn : public QObject {
     Q_OBJECT
 
     friend class ServerConnBroadcaster;
-    friend class ServerConnListener;
 public:
     ServerConn();
     explicit ServerConn(QObject *parent);
@@ -35,7 +34,7 @@ public slots:
     void socketReady();
     void socketDisconnected();
 
-    void newConn(QTcpSocket *sock, QHostAddress addr, int id, QString name);
+    void newConn();
 
 private:
     QString name;
@@ -57,7 +56,8 @@ private:
     QHostAddress broadcastAddress;
 
     ServerConnBroadcaster *threadBroadcaster;
-    ServerConnListener *threadListener;
+    QTcpServer serv;
+    int counter;
 
     QMap<int, QTcpSocket*> clients;
     QMap<QTcpSocket*, int> ids;
@@ -70,18 +70,6 @@ private:
 };
 
 // Sub-class definition
-class ServerConnListener : public QThread {
-    Q_OBJECT
-public:
-    ServerConnListener() = delete;
-    explicit ServerConnListener(QObject *parent = 0);
-
-    ServerConn::serverStatus status;
-protected:
-    void run();
-signals:
-    void onNewConn(QTcpSocket *sock, QHostAddress addr, int id, QString name);
-};
 
 class ServerConnBroadcaster : public QThread {
     Q_OBJECT
