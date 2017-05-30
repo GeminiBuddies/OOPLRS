@@ -56,7 +56,7 @@ namespace server {
 		int first;
 		int second;
 		int cupidNum;
-		Lovers(int cupidnum, int f, int s, bool iswvlove) : cupidNum(cupidnum), first(f), second(s), isWVLove(iswvlove) {};
+        Lovers(int cupidnum, int f, int s, bool iswvlove) : cupidNum(cupidnum), first(f), second(s), isWVLove(iswvlove) {}
 	};
 	class User
 	{

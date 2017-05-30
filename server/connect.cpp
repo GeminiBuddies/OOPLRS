@@ -1,11 +1,12 @@
 ﻿#include "connect.h"
 #include "ui_connect.h"
-#include"record.h"
-#include<vector>
-#include<iostream>
-#include"mainwindow.h"
-#include"commvar.h"
-#include"over.h"
+#include "record.h"
+#include <vector>
+#include <iostream>
+#include "mainwindow.h"
+#include "commvar.h"
+#include "over.h"
+#include "inprocess.h"
 
 
 using namespace std;
@@ -29,17 +30,9 @@ void Connect::on_start_clicked()
     temp.config.serverConn->endAcceptConnection();
 
     close();
-    QTextBrowser *rec = new Record;
-    rec->show();
-
-    temp.reshuffle();
-    if (temp.config.user[0].conn)
-    temp.startGame->startGame();
-    temp.endGame(temp.mainProcess());
-
-    rec->close();
-    Over* ov = new Over;
-    ov->show();
+    InProcess *v = new InProcess;
+    v->startGame();
+    v->show();
 }
 
 void Connect::onClientChanged() {

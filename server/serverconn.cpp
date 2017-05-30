@@ -7,6 +7,9 @@ ServerConn::ServerConn() {
     status = serverStatus::Closed;
 
     this->name = QString("anonymous server");
+
+    connect(this, SIGNAL(_onReqBroadcast(byteseq, int)), this, SLOT(_broadcast(byteseq, int)));
+    connect(this, SIGNAL(_onReqSendData(Conn, byteseq, int)), this, SLOT(_sendData(Conn, byteseq, int)));
 }
 
 ServerConn::ServerConn(QObject *parent) : QObject(parent) { new (this)ServerConn(); }
@@ -18,10 +21,11 @@ void ServerConn::start(QString name) {
 
     counter = 8;
 
-    connect(&serv, SIGNAL(newConnection()), this, SLOT(newConn()));
+    serv = new QTcpServer(this);
+    connect(serv, SIGNAL(newConnection()), this, SLOT(newConn()));
 
-    serv.setMaxPendingConnections(MaxPlayer);
-    serv.listen(QHostAddress::AnyIPv4, ServerClientPort);
+    serv->setMaxPendingConnections(MaxPlayer);
+    serv->listen(QHostAddress::AnyIPv4, ServerClientPort);
 
     status = serverStatus::Started;
 }
@@ -51,20 +55,24 @@ void ServerConn::close() {
 
     status = serverStatus::Closed;
 
-    serv.disconnect();
-    serv.close();
+    serv->disconnect();
+    serv->close();
+    delete serv;
+
     for (auto i : clients.values()) {
         i->disconnect();
     }
 }
 
-void ServerConn::sendData(Conn dest, byteseq data, int length) {
+void ServerConn::sendData(Conn dest, byteseq data, int length) { emit _onReqSendData(dest, data, length); }
+void ServerConn::_sendData(Conn dest, byteseq data, int length) {
     if (status == serverStatus::Closed) return;
 
     sendDataBySocket(clients[dest->id], data, length);
 }
 
-void ServerConn::broadcast(byteseq data, int length) {
+void ServerConn::broadcast(byteseq data, int length) { emit _onReqBroadcast(data, length); }
+void ServerConn::_broadcast(byteseq data, int length) {
     if (status == serverStatus::Closed) return;
 
     for (auto i : clients.values()) {
@@ -73,14 +81,17 @@ void ServerConn::broadcast(byteseq data, int length) {
 }
 
 void ServerConn::socketReady() {
+    qDebug() << "recv";
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
 
     auto data = sock->readAll();
+    qDebug() << data;
 
     if (!cache.contains(sock)) cache.insert(sock, QByteArray());
     cache[sock].append(data);
 
     PkgHandler(sock);
+    qDebug() << sock->isOpen() << sock->isValid();
 }
 
 void ServerConn::PkgHandler(QTcpSocket* sock) {
@@ -130,14 +141,15 @@ void ServerConn::socketDisconnected() {
 }
 
 void ServerConn::newConn() {
-    auto sock = serv.nextPendingConnection();
+    auto sock = serv->nextPendingConnection();
 
     if (status != ServerConn::serverStatus::Listening) {
-        sock->disconnect(); sock->close();
+        sock->disconnectFromHost(); sock->close();
         return;
     }
 
     // wait for the first package
+
     if (sock->waitForReadyRead(ConnectPackageTimeOut)) {
         auto data = sock->readAll();
         auto fr = LRSBasicLayerFrame::FromQByteArray(data);
@@ -150,6 +162,7 @@ void ServerConn::newConn() {
 
         auto cnn = new _Conn();
         cnn->name = QString(fr.data);
+        //cnn->name = QString("123");
         cnn->addr = sock->peerAddress();
         cnn->id = id;
 
@@ -161,6 +174,7 @@ void ServerConn::newConn() {
 
         connect(sock, SIGNAL(readyRead()), this, SLOT(socketReady()));
         connect(sock, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+
     } else {
         sock->disconnect();
         sock->close();

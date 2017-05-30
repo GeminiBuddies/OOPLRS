@@ -30,6 +30,14 @@ signals:
     void onClientDisconnected(Conn remote);
     void onClientData(Conn remote, byteseq data, int length);
 
+    void _onReqSendData(Conn dest, byteseq data, int length);
+    void _onReqBroadcast(byteseq data, int length);
+
+private slots:
+    void _sendData(Conn dest, byteseq data, int length);
+
+    void _broadcast(byteseq data, int length);
+
 public slots:
     void socketReady();
     void socketDisconnected();
@@ -56,7 +64,7 @@ private:
     QHostAddress broadcastAddress;
 
     ServerConnBroadcaster *threadBroadcaster;
-    QTcpServer serv;
+    QTcpServer *serv;
     int counter;
 
     QMap<int, QTcpSocket*> clients;

@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     record.cpp \
     over.cpp \
     commvar.cpp \
-    server.cpp
+    server.cpp \
+    inprocess.cpp
 
 HEADERS  += mainwindow.h \
     serverconn.h \
@@ -42,9 +43,11 @@ HEADERS  += mainwindow.h \
     record.h \
     over.h \
     commvar.h \
-    server.h
+    server.h \
+    inprocess.h
 
 FORMS    += mainwindow.ui \
     werewolf.ui \
     connect.ui \
-    over.ui
+    over.ui \
+    inprocess.ui
