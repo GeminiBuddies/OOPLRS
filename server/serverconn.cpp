@@ -1,4 +1,4 @@
-#include "serverconn.h"
+﻿#include "serverconn.h"
 
 #include <QMessageBox>
 
@@ -81,17 +81,14 @@ void ServerConn::_broadcast(byteseq data, int length) {
 }
 
 void ServerConn::socketReady() {
-    qDebug() << "recv";
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
 
     auto data = sock->readAll();
-    qDebug() << data;
 
     if (!cache.contains(sock)) cache.insert(sock, QByteArray());
     cache[sock].append(data);
 
     PkgHandler(sock);
-    qDebug() << sock->isOpen() << sock->isValid();
 }
 
 void ServerConn::PkgHandler(QTcpSocket* sock) {
@@ -105,23 +102,7 @@ void ServerConn::PkgHandler(QTcpSocket* sock) {
         lastEnd = idx;
         cache[sock][idx] = '%';
 
-        auto fr = LRSBasicLayerFrame::FromQByteArray(data);
-
-        if (fr.type == LRSBasicLayerFrame::frameType::Data) {
-            emitOnClientData(conns[ids[sock]], data.constData(), data.size());
-        } else if (fr.type == LRSBasicLayerFrame::frameType::Disconnect) {
-            removing += sock;
-
-            sock->disconnectFromHost();
-            sock->close();
-
-            emitOnClientDisconnected(conns[ids[sock]]);
-
-            delete conns[ids[sock]];
-            conns.remove(ids[sock]);
-            clients.remove(ids[sock]);
-            ids.remove(sock);
-        }
+        emitOnClientData(conns[ids[sock]], data.constData(), data.size());
     }
 
     if (lastEnd != -1) cache[sock] = cache[sock].right(cache[sock].size() - lastEnd - 1);
@@ -182,6 +163,8 @@ void ServerConn::newConn() {
 }
 
 void ServerConn::sendDataBySocket(QTcpSocket *sock, byteseq data, int length) {
+    qDebug() << "To " << sock->peerAddress() << ":" << QByteArray(data, length);
+
     QByteArray buff = QByteArray(data, length);
     buff.append(PkgSeperator);
     sock->write(buff);

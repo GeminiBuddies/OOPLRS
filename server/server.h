@@ -121,8 +121,9 @@ namespace server {
 		~GameEvent();
 		void transferInfoToClient(int userName, const char *info)
 		{
-            if(!config->user[userName].death)
+            if(!config->user[userName].death) {
                 config -> serverConn -> sendData(config -> user[userName].conn, info, (int)strlen(info));
+            }
 		}
 		void broadcastInfo(const char *info)
 		{

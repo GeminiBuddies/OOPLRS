@@ -353,8 +353,9 @@ namespace server {
 			for(int j = 0; j < config -> playerNum; j++)
 				if(canVote(i) && canVote(j))
 				{
-					string info("roleAct/");
-					transferInfoToClient(i, (info + transNumToString(j)).c_str());
+                    QByteArray info = QByteArray("roleAct/");
+                    info.append(transNumToString(j).c_str());
+                    transferInfoToClient(i, info.data());
 				}
 		broadcastInfo("setTime/25");
         for(int i = 0; i < config -> playerNum; i++)
