@@ -1,6 +1,46 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
+        <file>MainForm.qml</file>
+        <file>ServerList.qml</file>
+        <file>CharacterImage.qml</file>
+        <file>FunctionSpace.qml</file>
+        <file>GameRecorder.qml</file>
+        <file>UniverseDialog.qml</file>
+        <file>MyTimer.qml</file>
+        <file>Option.qml</file>
+        <file>WelcomeForm.qml</file>
+        <file>ThiefChooseForm.qml</file>
+        <file>WitchChooseForm.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/ancient.jpg</file>
+        <file>images/ancient.png</file>
+        <file>images/cupid.jpg</file>
+        <file>images/cupid.png</file>
+        <file>images/hunter.jpg</file>
+        <file>images/idiot.jpg</file>
+        <file>images/idiot.png</file>
+        <file>images/man.png</file>
+        <file>images/man1.png</file>
+        <file>images/man2.png</file>
+        <file>images/man3.png</file>
+        <file>images/piedPiper.jpg</file>
+        <file>images/piedPiper.png</file>
+        <file>images/savior.jpg</file>
+        <file>images/savior.png</file>
+        <file>images/scapegoat.jpg</file>
+        <file>images/scapegoat.png</file>
+        <file>images/seer.jpg</file>
+        <file>images/sheriff.jpg</file>
+        <file>images/thief.jpg</file>
+        <file>images/townsfolk.jpg</file>
+        <file>images/village.jpg</file>
+        <file>images/werewolf.jpg</file>
+        <file>images/witch.jpg</file>
+        <file>images/woman.png</file>
+        <file>images/woman2.png</file>
+        <file>images/vote.png</file>
+        <file>images/died.png</file>
     </qresource>
 </RCC>

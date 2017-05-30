@@ -1,4 +1,4 @@
-#ifndef CLIENTCONN_H
+﻿#ifndef CLIENTCONN_H
 #define CLIENTCONN_H
 
 #include "../cih/globalConf.h"
@@ -38,6 +38,7 @@ private:
 
     clientStatus status;
 
+    QSet<QHostAddress> host;
     QSet<Conn> servers;
     QTcpSocket *sock;
 
