@@ -10,7 +10,8 @@ void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3
     if(str1== "shotByCupid")shotByCupid(str2);
     if(str1== "roleActLoseAbility")roleActLoseAbility();
     if(str1== "startVote")startVote();
-    if(str1== "showVote")showVote(str3,str2);//交换了顺序
+    if(str1== "vote")showVote(str3,str2);//交换了顺序
+    if(str1== "cancelVote") cancelVote(str3);
     if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了顺序
     if(str1== "roleAct")roleAct();
     if(str1== "clicked")clicked(str2,str3);
@@ -58,6 +59,11 @@ void NightMessageDealer::showVote(QString str1, QString str2){
     emit sendMessage("dealer", temp, "showVote", str2);
 }
 
+void NightMessageDealer::cancelVote(QString str1){
+    QString temp="characterImage"+str1;
+    emit sendMessage("dealer", temp, "hideVote");
+}
+
 void NightMessageDealer::showVoteResult(QString str1, QString str2){
     emit sendMessage(GAMEMESSAGE, str1+QStringLiteral("号玩家投给了")+str2+QStringLiteral("号玩家"));
     QString temp="characterImage"+str1;
@@ -84,7 +90,7 @@ void NightMessageDealer::clicked(QString str1, QString str2){
     }
     else if(str2=="0"&&canCancelVote==true){
         emit changeVoteStates("night",-1);
-        emit sendMessage("toServer","cancelvote",temp);
+        emit sendMessage("toServer","cancelVote",temp);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消了选择"));
     }

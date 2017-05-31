@@ -26,6 +26,7 @@ private:
     void roleAct();
     void startVote();
     void showVote(QString str1,QString str2);
+    void cancelVote(QString str1);
     void showVoteResult(QString str1,QString str2);
     void puzzledConfirm(QString str);
     void cannotVote();
