@@ -30,13 +30,10 @@ signals:
     void onClientDisconnected(Conn remote);
     void onClientData(Conn remote, byteseq data, int length);
 
-    void _onReqSendData(Conn dest, byteseq data, int length);
-    void _onReqBroadcast(byteseq data, int length);
+    void _onReqSend();
 
 private slots:
-    void _sendData(Conn dest, byteseq data, int length);
-
-    void _broadcast(byteseq data, int length);
+    void _send();
 
 public slots:
     void socketReady();
@@ -55,7 +52,7 @@ private:
 
     serverStatus status;
 
-    void sendDataBySocket(QTcpSocket *sock, byteseq data, int length);
+    void sendDataBySocket(QTcpSocket *sock, QByteArray data);
 
     void emitOnClientConnected(Conn remote);
     void emitOnClientDisconnected(Conn remote);
@@ -73,6 +70,16 @@ private:
     QSet<QTcpSocket*> removing;
 
     QMap<QTcpSocket*, QByteArray> cache;
+
+    struct sendCacheFr {
+        QTcpSocket *remote;
+        QByteArray data;
+
+        sendCacheFr(QTcpSocket *r, QByteArray d);
+    };
+
+    QQueue<sendCacheFr> sendCache;
+    QMutex sendCacheLock;
 
     void PkgHandler(QTcpSocket* sock);
 };
