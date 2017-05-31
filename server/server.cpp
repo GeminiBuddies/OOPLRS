@@ -190,7 +190,7 @@ namespace server {
 	}
 	string transNumToString(int num)
 	{
-		num ++;
+        num ++;
 		char cc[3];
 		if(num < 10)
 		{
@@ -294,6 +294,7 @@ namespace server {
 		//cout<<"askd\n";
 		int flag = 0;
 		for(int i = 0; i < playerNum; i++)
+        {
 			if(canVote(i))
 			{
 				//cout<<i<<endl;
@@ -309,11 +310,16 @@ namespace server {
 
 				if(resp[0] != '!')
 				{
+                    qDebug() << i;
 					tmp[transCharToNum(resp[5])]++;
+                    qDebug() << "sfaaf" << transCharToNum(resp[5]);
 					voting[i] = transCharToNum(resp[5]);
+                    qDebug() << i;
 				}
 				//cout<<transCharToNum(resp[5])<<endl;
 			}
+            qDebug() << "finish" << i;
+        }
 		string info("showVoteResult/");
 		for(int i = 0; i < playerNum; i++)
 			if(voting[i] != -1)
@@ -362,8 +368,8 @@ namespace server {
             if(canVote(i))
                 transferInfoToClient(i, "startVote");
 		clock_t cl = clock();
-		while(cl - clock() < 25000)
-		{
+        while(clock() - cl < 5000)
+        {
 			for(int i = 0; i < config -> playerNum; i++)
 				if(canVote(i) && !config -> user[i].messeges.empty())
 				{
@@ -539,7 +545,7 @@ namespace server {
 		}
 		transferInfoToClient(num ,"roleAct");
         transferInfoToClient(num, "startVote");
-		string resp = respond(num, 20000);
+        string resp = respond(num, 5000);
 		if(resp[0] == '!')
 			return;
 		int tmp = 1;
@@ -630,20 +636,24 @@ namespace server {
 		string info1("start"), info2("show");
 		if(islastword)
 		{
-			info1 = info1 + "LastWord/";
-			info2 = info2 + "LastWord/";
+            info1 = info1 + "LastWords/";
+            info2 = info2 + "LastWords/";
 		}
 		else
 		{
 			info1 = info1 + "Chat/";
 			info2 = info2 + "ChatMessege/";
 		}
-		broadcastInfo((info1 + transNumToString(num)).c_str());
-		string resp = respond(num, 30000, false);
+        broadcastInfo((info1 + transNumToString(num)).c_str());
+        info2 = info2 + transNumToString(num) + '/';
+        string resp = respond(num, 5000, false);
+        qDebug() << QByteArray(resp.c_str());
 		char messege[3001];
-		strcpy(messege, resp.c_str() + 16);
-		info2 = info2 + transNumToString(num) + '/';
-		info2 = info2 + messege;
+        if(resp[0] != '!')
+        {
+            strcpy(messege, resp.c_str());
+            info2 = info2 + messege;
+        }
 		broadcastInfo(info2.c_str());
     }
 
@@ -652,9 +662,10 @@ namespace server {
 		//cout<<config.deads.size()<<"size"<<endl;
 		for(int i = 0 ; i < config.deads.size(); i++)
 		{
-			character[config.deads[i]] -> killed();
-			if(isFirstDay)
+            character[config.deads[i]] -> killed();
+            if(isFirstDay)
 				gotMessege -> gotMessege(config.deads[i], true);
+
 			//character[config.deads[i]] -> dayOperation();
 		}
 		if(victoryJudge -> judge())
@@ -682,8 +693,8 @@ namespace server {
 		for(int i = 0; i < config.playerNum; i++)
 			if(!config.user[i].cannotVoteForever)
 				config.user[i].canVote = true;
-		character[deadPlayer] -> killedByVoting();
-		gotMessege -> gotMessege(deadPlayer, true);
+        character[deadPlayer] -> killedByVoting();
+        gotMessege -> gotMessege(deadPlayer, true);
 
         return 0;
 	}
@@ -763,9 +774,14 @@ namespace server {
 	{
 		string info1("showWin/"),info2("win/");
 		broadcast -> broadcast((info1 + transNumToString(winCode)).c_str());
-		for(int i = 0; i <= config .playerNum; i++)
-			if((winCode == WEREWOLF_VICTORY && config.user[i].characterType == WEREWOLF) || (winCode == VILLIAGER_VICTORY && (config.user[i].characterType == GOD || config.user[i].characterType == TOWNSFOLK) && !(config.hasCupid && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || ((winCode == LOVERS_VICTORY && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || (winCode = PIEDPIPER_VICTORY && config.user[i].characterType == PIEDPIPER))
+        for(int i = 0; i < config .playerNum; i++)
+        {
+            qDebug() << i;
+            if((winCode == WEREWOLF_VICTORY && config.user[i].characterType == WEREWOLF) || (winCode == VILLIAGER_VICTORY && (config.user[i].characterType == GOD || config.user[i].characterType == TOWNSFOLK) && !(config.hasCupid && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || ((winCode == LOVERS_VICTORY && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || (winCode = PIEDPIPER_VICTORY && config.user[i].characterType == PIEDPIPER))
 				broadcast -> broadcast((info2 + transNumToString(i)).c_str());
+            qDebug() << i;
+        }
+        qDebug() << "ok";
 		broadcast -> broadcast("endGame");
 		config.serverConn -> close();
 	}

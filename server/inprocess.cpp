@@ -6,6 +6,7 @@
 #include <QThread>
 
 void GameThr::run() {
+    qDebug() << "Game thread is :" << QThread::currentThread();
     temp.endGame(temp.mainProcess());
 
     emit onGameEnd();
