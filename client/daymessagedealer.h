@@ -14,7 +14,7 @@ public:
 
 signals:
     void changeVoteStates(QString time,int delta);
-    void judge(QString str);
+    void judge(QString str1,QString str2);
 
 public slots:
     void receiveMessage(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
@@ -36,6 +36,7 @@ private:
     void showVoteResult(QString str1,QString str2);
     void showCharacter(QString str1,QString str2);
     void draw();
+    void startLastWords(QString str);
     MessageDealer* character;
 };
 

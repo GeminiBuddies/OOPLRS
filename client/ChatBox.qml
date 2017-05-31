@@ -67,6 +67,7 @@ Item {
     signal sendMessage(string str)
     TextInput {
         id: textInput1
+        objectName: "sendBox"
         y: 172
         width: 390
         height: 25

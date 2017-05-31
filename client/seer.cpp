@@ -13,7 +13,10 @@ void Seer::roleAct(QString str1, QString str2, QString str3, QString str4, QStri
 }
 
 void Seer::showIdentity(QString str1, QString str2, QString str3, QString str4, QString str5){
-    emit sendMessage(GAMEMESSAGE, QStringLiteral("该玩家是")+str3);
-    QString temp="characterImage"+str2;
-    emit sendMessage("dealer",temp,"changeRole", "qrc:/images/images/"+str3+".jpg");
+    if(str3=="0")
+    emit sendMessage(GAMEMESSAGE, QStringLiteral("该玩家是坏人"));
+    else
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("该玩家是好人"));
+  /*  QString temp="characterImage"+str2;
+    emit sendMessage("dealer",temp,"changeRole", "qrc:/images/images/"+str3+".jpg");*/
 }

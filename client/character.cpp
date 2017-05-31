@@ -1,14 +1,15 @@
 ﻿#include "character.h"
 
-Character::Character(Messager *player):MessageDealer(player){
+Character::Character(Messager *player, QString number):MessageDealer(player){
     DMDealer=new DayMessageDealer(player,this);
     NMDealer=new NightMessageDealer(player,this);
     QObject::connect(this,SIGNAL(sendMessageToDMDealer(QString,QString,QString,QString,QString)),DMDealer,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(this,SIGNAL(sendMessageToNMDealer(QString,QString,QString,QString,QString)),NMDealer,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(DMDealer,SIGNAL(changeVoteStates(QString,int)),this,SLOT(changeVoteStates(QString,int)));
     QObject::connect(NMDealer,SIGNAL(changeVoteStates(QString,int)),this,SLOT(changeVoteStates(QString,int)));
-    QObject::connect(DMDealer,SIGNAL(judge(QString)),this,SLOT(die(QString)));
+    QObject::connect(DMDealer,SIGNAL(judge(QString,QString)),this,SLOT(die(QString,QString)));
     time="day";
+    this->number=number;
 }
 
 
@@ -66,9 +67,18 @@ void Character::changeVoteStates(QString time, int delta){
     }
 }
 
-void Character::die(QString str){
-    if(str==number)
-        emit sendMessage(GAMEMESSAGE,QStringLiteral("你死了"));
+void Character::die(QString str1, QString str2){
+    if(str1==number)
+        if(str2=="1"){
+            emit sendMessage(GAMEMESSAGE,QStringLiteral("你死了"));
+            emit sendMessage(GAMEMESSAGE, QStringLiteral("请发表遗言"));
+            emit sendMessage("dealer", "showBigText", QStringLiteral("请发表遗言"));
+            emit sendMessage("dealer", "canChat");
+        }else if(str2=="0"){
+            emit sendMessage("dealer", "canChat");
+            emit sendMessage(GAMEMESSAGE, QStringLiteral("请发言"));
+            emit sendMessage("dealer", "showBigText", QStringLiteral("请发言"));
+        }
 }
 
 

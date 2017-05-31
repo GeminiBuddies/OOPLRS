@@ -12,7 +12,7 @@ void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3
     if(str1== "startVote")startVote();
     if(str1== "vote")showVote(str3,str2);//交换了顺序
     if(str1== "cancelVote") cancelVote(str3);
-    if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了顺序
+    if(str1== "showVoteResult")showVoteResult(str2,str3);
     if(str1== "roleAct")roleAct();
     if(str1== "clicked")clicked(str2,str3);
     if(str1=="puzzledConfirm") puzzledConfirm(str2);
@@ -76,21 +76,31 @@ void NightMessageDealer::showVoteResult(QString str1, QString str2){
 
 void NightMessageDealer::clicked(QString str1, QString str2){
     QString temp="";
-    if(str1.length()==15)
+    int x;
+    char t;
+    if(str1.length()==15){
         temp+=str1[14];
+        x=QVariant(temp).toInt();
+        t='a'+x;
+    }
+
     else if(str1.length()==16){
         temp+=str1[14];
         temp+=str1[15];
+        x=QVariant(temp).toInt();
+        t='a'+x;
     }
+    QString temp2="";
+    temp2+=t;
     if(str2=="1"&&canVote==true){
         emit changeVoteStates("night",1);
-        emit sendMessage("toServer","vote",temp);
+        emit sendMessage("toServer","vote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你选择了")+temp+QStringLiteral("号"));
     }
     else if(str2=="0"&&canCancelVote==true){
         emit changeVoteStates("night",-1);
-        emit sendMessage("toServer","cancelVote",temp);
+        emit sendMessage("toServer","cancelVote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消了选择"));
     }

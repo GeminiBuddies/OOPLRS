@@ -118,7 +118,7 @@ void Client::onClientData(byteseq data, int length)
 			_vote[i] = 0;
 		}
 	}
-	else if (str1 == "roleAct")
+    else if (str1 == "roleAct" && _time == 0)
 	{
 		
 	}

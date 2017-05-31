@@ -9,7 +9,7 @@ class Character : public MessageDealer
 {
     Q_OBJECT
 public:
-    Character(Messager* player);
+    Character(Messager* player, QString number);
 
 signals:
     void sendMessageToDMDealer(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
@@ -20,7 +20,7 @@ signals:
 public slots:
     void receiveMessage(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
     virtual void changeVoteStates(QString time, int delta);
-    virtual void die(QString str);
+    virtual void die(QString str1,QString str2);
 
 protected:
     QString time;

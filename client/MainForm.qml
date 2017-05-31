@@ -426,14 +426,15 @@ Rectangle {
         x: 251
         y: 124
         objectName: "bigText"
-        color: "#b0c1ef"
+        color: "#1e54e1"
         text: qsTr("角色行动开始")
+        font.bold: true
         anchors.verticalCenter: parent.verticalCenter
         visible: false
         anchors.horizontalCenter: parent.horizontalCenter
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 100
+        font.pixelSize: 150
     }
 
 

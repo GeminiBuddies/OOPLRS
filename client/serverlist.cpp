@@ -15,6 +15,8 @@ void ServerListProxy::connectSignal(){
     QObject::connect(confirmButton,SIGNAL(connectServer(int)),this,SLOT(connectServer(int)));
     refreshButton=this->item->findChild<QObject*>("refresh");
     QObject::connect(refreshButton,SIGNAL(getServer()),this,SLOT(getServer()));
+    //TEMP
+    //connectServerSucceed();
 }
 
 void ServerListProxy::connectServerSucceed(){
