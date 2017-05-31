@@ -6,7 +6,7 @@
         <file>CharacterImage.qml</file>
         <file>FunctionSpace.qml</file>
         <file>GameRecorder.qml</file>
-        <file>UniverseDialog.qml</file>
+        <file>ChatBox.qml</file>
         <file>MyTimer.qml</file>
         <file>Option.qml</file>
         <file>WelcomeForm.qml</file>

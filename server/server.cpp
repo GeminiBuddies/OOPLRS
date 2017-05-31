@@ -362,7 +362,7 @@ namespace server {
             if(canVote(i))
                 transferInfoToClient(i, "startVote");
 		clock_t cl = clock();
-		while(cl - clock() < 25000)
+        /*while(cl - clock() < 25000)
 		{
 			for(int i = 0; i < config -> playerNum; i++)
 				if(canVote(i) && !config -> user[i].messeges.empty())
@@ -373,7 +373,7 @@ namespace server {
 								transferInfoToClient(k,( config -> user[i].messeges[j] + '/' + transNumToString(i)).c_str());
 					config -> user[i].messeges.clear();
 				}
-		}
+        }*/
 	}
 	bool dayVote :: canVote(int num)
 	{
@@ -591,7 +591,7 @@ namespace server {
 		}
 	}
 	void PiedPiper :: nightTransferInfo1() {}
-	void PiedPiper :: processInfo() {};//10
+    void PiedPiper :: processInfo() {}//10
 	void Thief :: firstNightOperation()//11
 	{
 		string a("roleAct/");

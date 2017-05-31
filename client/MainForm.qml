@@ -103,16 +103,16 @@ Rectangle {
     }
 
     CharacterImage {
-           id: characterImage8
-           x: 732
-           y: 95
-           width: 80
-           height: 120
-           anchors.top: characterImage7.top
-           anchors.topMargin: 10
-           anchors.left: characterImage7.right
-           anchors.leftMargin: 10
-           objectName: "characterImage8"
+        id: characterImage8
+        x: 732
+        y: 95
+        width: 80
+        height: 120
+        anchors.top: characterImage7.top
+        anchors.topMargin: 10
+        anchors.left: characterImage7.right
+        anchors.leftMargin: 10
+        objectName: "characterImage8"
     }
 
     CharacterImage {
@@ -323,8 +323,8 @@ Rectangle {
         objectName: "gameRecorder1"
     }
 
-    UniverseDialog {
-        id: universeDialog1
+    ChatBox {
+        id: chatBox1
         x: 0
         y: 400
         width: 400
@@ -340,6 +340,10 @@ Rectangle {
     Rectangle {
         id: weather
         color: "#000000"
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
         anchors.fill: parent
         visible: true
         z: 6
@@ -415,6 +419,21 @@ Rectangle {
         visible: false
         z: 10
         objectName: "witchChooseForm"
+    }
+
+    Text {
+        id: text1
+        x: 251
+        y: 124
+        objectName: "bigText"
+        color: "#b0c1ef"
+        text: qsTr("角色行动开始")
+        anchors.verticalCenter: parent.verticalCenter
+        visible: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        font.pixelSize: 100
     }
 
 

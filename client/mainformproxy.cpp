@@ -3,6 +3,7 @@
 void MainFormProxy::connectSignal(){
     QObject::connect(this,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),player,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(player,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),this,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
+    bigText=this->item->findChild<QObject*>("bigText");
 }
 
 void MainFormProxy::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
@@ -14,6 +15,10 @@ void MainFormProxy::receiveMessage(QString str1, QString str2, QString str3, QSt
         roleActionStartAnimation();
     else if(str1==QString("roleActionEnd"))
         roleActionEndAnimation();
+    else if(str1==QString("showBigText"))
+        showBigText(str2);
+    else if(str1==QString("hideBigText"))
+        hideBigText();
 
 }
 
@@ -48,4 +53,14 @@ void MainFormProxy::roleActionEndAnimation(){
     if(roleActionEnd==NULL)
         roleActionEnd=weather->findChild<QObject*>("roleActionEnd");
     roleActionEnd->setProperty("running",QVariant(true));
+}
+
+void MainFormProxy::showBigText(QString str, QString str2){
+    bigText->setProperty("text",QVariant(str));
+    bigText->setProperty("visible", QVariant(true));
+
+}
+
+void MainFormProxy::hideBigText(){
+    bigText->setProperty("visible",QVariant(false));
 }

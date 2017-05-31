@@ -17,6 +17,9 @@ public slots:
 
 private:
     QObject* sendBox;
+    void canChat();
+    void cancelChat();
+    bool chat=1;
 
 };
 

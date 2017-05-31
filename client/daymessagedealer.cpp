@@ -28,6 +28,7 @@ void DayMessageDealer::night(){
     emit sendMessage("dealer", "night");
     emit sendMessage("changeTime","night");
     emit sendMessage("toServer","night");
+    emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
 }
 
 void DayMessageDealer::chooseSheriff(){
