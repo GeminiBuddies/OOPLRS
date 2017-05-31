@@ -8,8 +8,7 @@ ServerConn::ServerConn() {
 
     this->name = QString("anonymous server");
 
-    connect(this, SIGNAL(_onReqBroadcast(byteseq, int)), this, SLOT(_broadcast(byteseq, int)));
-    connect(this, SIGNAL(_onReqSendData(Conn, byteseq, int)), this, SLOT(_sendData(Conn, byteseq, int)));
+    connect(this, SIGNAL(_onReqSend()), this, SLOT(_send()));
 }
 
 ServerConn::ServerConn(QObject *parent) : QObject(parent) { new (this)ServerConn(); }
@@ -64,20 +63,41 @@ void ServerConn::close() {
     }
 }
 
-void ServerConn::sendData(Conn dest, byteseq data, int length) { emit _onReqSendData(dest, data, length); }
-void ServerConn::_sendData(Conn dest, byteseq data, int length) {
+ServerConn::sendCacheFr::sendCacheFr(QTcpSocket *r, QByteArray d) : remote(r), data(d) { ; }
+
+void ServerConn::sendData(Conn dest, byteseq data, int length) {
     if (status == serverStatus::Closed) return;
 
-    sendDataBySocket(clients[dest->id], data, length);
+    sendCacheLock.lock();
+    sendCache.enqueue(sendCacheFr(clients[dest->id], QByteArray(data, length)));
+    sendCacheLock.unlock();
+
+    emit _onReqSend();
 }
 
-void ServerConn::broadcast(byteseq data, int length) { emit _onReqBroadcast(data, length); }
-void ServerConn::_broadcast(byteseq data, int length) {
+void ServerConn::_send() {
+    sendCacheLock.lock();
+
+    while (!sendCache.empty()) {
+        auto v = sendCache.dequeue();
+        sendDataBySocket(v.remote, v.data);
+    }
+
+    sendCacheLock.unlock();
+}
+
+void ServerConn::broadcast(byteseq data, int length) {
     if (status == serverStatus::Closed) return;
 
+    auto v = QByteArray(data, length);
+
+    sendCacheLock.lock();
     for (auto i : clients.values()) {
-        sendDataBySocket(i, data, length);
+        sendCache.enqueue(sendCacheFr(i, v));
     }
+    sendCacheLock.unlock();
+
+    emit _onReqSend();
 }
 
 void ServerConn::socketReady() {
@@ -162,12 +182,11 @@ void ServerConn::newConn() {
     }
 }
 
-void ServerConn::sendDataBySocket(QTcpSocket *sock, byteseq data, int length) {
-    qDebug() << "To " << sock->peerAddress() << ":" << QByteArray(data, length);
+void ServerConn::sendDataBySocket(QTcpSocket *sock, QByteArray data) {
+    qDebug() << "To " << sock->peerAddress() << ":" << data;
 
-    QByteArray buff = QByteArray(data, length);
-    buff.append(PkgSeperator);
-    sock->write(buff);
+    data.append(PkgSeperator);
+    sock->write(data);
     sock->flush();
 }
 
