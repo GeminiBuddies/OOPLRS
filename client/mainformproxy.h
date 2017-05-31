@@ -26,6 +26,9 @@ private:
     QObject* night=0;
     QObject* roleActionStart=0;
     QObject* roleActionEnd=0;
+    QObject* bigText=0;
+    void showBigText(QString str, QString str2="10000");
+    void hideBigText();
 };
 
 #endif // MAINFORMPROXY_H

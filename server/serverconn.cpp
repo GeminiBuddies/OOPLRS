@@ -64,11 +64,14 @@ void ServerConn::close() {
     }
 }
 
-void ServerConn::sendData(Conn dest, byteseq data, int length) { emit _onReqSendData(dest, data, length); }
+void ServerConn::sendData(Conn dest, byteseq data, int length) {
+    qDebug() << "Before Before To " << ":" << QByteArray(data, length);
+    emit _onReqSendData(dest, data, length); }
 void ServerConn::_sendData(Conn dest, byteseq data, int length) {
+    qDebug() << "Before To " << ":" << QByteArray(data, length);
     if (status == serverStatus::Closed) return;
-
-    sendDataBySocket(clients[dest->id], data, length);
+    qDebug() << "clients[dest->id] "<< clients[dest->id];
+    sendDataBySocket(clients[dest->id], data, length);//TEMP
 }
 
 void ServerConn::broadcast(byteseq data, int length) { emit _onReqBroadcast(data, length); }

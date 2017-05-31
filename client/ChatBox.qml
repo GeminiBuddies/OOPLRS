@@ -75,9 +75,15 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 5
         font.pixelSize: 20 
+        property bool canChat
+        Component.onCompleted: {
+            canChat=true
+        }
         onAccepted:{
-            sendMessage(text)
-            text=""
+            if(canChat==true){
+                sendMessage(text)
+                text=""
+            }
         }
     }
 
