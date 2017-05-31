@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<byteseq>("byteseq");
     qRegisterMetaType<Conn>("Conn");
 
+    qDebug() << "Main thread is :" << QThread::currentThread();
+
     QApplication a(argc, argv);
     MainWindow w;
     Werewolf asd;

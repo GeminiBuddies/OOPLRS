@@ -121,27 +121,27 @@ namespace server {
 		~GameEvent();
 		void transferInfoToClient(int userName, const char *info)
 		{
-            if(!config->user[userName].death) {
+                qDebug() << "send to" << userName << "info" << info;
                 config -> serverConn -> sendData(config -> user[userName].conn, info, (int)strlen(info));
-            }
 		}
 		void broadcastInfo(const char *info)
 		{
             config -> serverConn -> broadcast(info, (int)strlen(info));
 		}
-		string respond(int userName,int timeInterval, bool isRoleAct = true)
+        string respond(int userName,int timeInterval, bool isRoleAct = true)
 		{
 			if(timeInterval != 0)
 			{
 				string info("setTime/");
-				broadcastInfo((info + transNumToString(timeInterval / 1000)).c_str());
+                broadcastInfo((info + transNumToString(timeInterval / 1000 - 1)).c_str());
 			}
 			clock_t cl = clock();
             while(clock() - cl < timeInterval) ;
 			if(isRoleAct)
 				transferInfoToClient(userName, "roleActEnd");
-			else
-				transferInfoToClient(userName, "getMessege");
+            else{
+                transferInfoToClient(userName, "getMessege");
+                        qDebug() << "getMessege";}
 			cl = clock();
             while(clock() - cl < WAIT) ;
 			if(config -> user[userName].messeges.empty())
@@ -150,8 +150,9 @@ namespace server {
 				return res;
 			}
 			else
-			{
-				string res = config -> user[userName].messeges[config -> user[userName].messeges.size() - 1];
+            {
+                qDebug() << userName << "to" << QByteArray(config -> user[userName].messeges[config -> user[userName].messeges.size() - 1].c_str());
+                string res = config -> user[userName].messeges[config -> user[userName].messeges.size() - 1];
 				config -> user[userName].messeges.clear();
 				return res;
 			}
@@ -161,7 +162,7 @@ namespace server {
 			if(timeInterval != 0)
 			{
 				string info("setTime/");
-				broadcastInfo((info + transNumToString(timeInterval / 1000)).c_str());
+                broadcastInfo((info + transNumToString(timeInterval / 1000 - 1)).c_str());
 			}
 			clock_t cl = clock();
             while(clock() - cl < timeInterval) ;
