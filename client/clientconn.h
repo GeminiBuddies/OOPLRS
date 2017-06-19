@@ -7,6 +7,8 @@
 #include <QSet>
 #include <QThread>
 
+class ClientConnListener;
+
 class ClientConn : public QObject
 {
     Q_OBJECT

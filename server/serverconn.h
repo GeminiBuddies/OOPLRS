@@ -8,6 +8,8 @@
 #include <QThread>
 #include <QMessageBox>
 
+class ServerConnBroadcaster;
+
 class ServerConn : public QObject {
     Q_OBJECT
 
