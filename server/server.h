@@ -140,8 +140,8 @@ namespace server {
 			if(isRoleAct)
 				transferInfoToClient(userName, "roleActEnd");
             else{
-                transferInfoToClient(userName, "getMessege");
-                        qDebug() << "getMessege";}
+                transferInfoToClient(userName, "getMessage");
+                        qDebug() << "getMessage";}
 			cl = clock();
             while(clock() - cl < WAIT) ;
 			if(config -> user[userName].messeges.empty())
