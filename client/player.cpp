@@ -10,7 +10,7 @@ Player::Player(){
 }
 
 void Player::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
-    qDebug("%s%s%s", qPrintable( str1 ),qPrintable(str2), qPrintable(str3));
+    qDebug("%s %s %s %s", qPrintable("receive"), qPrintable( str1 ),qPrintable(str2), qPrintable(str3));
     if(str1=="dealer") emit sendMessage(str2,str3,str4,str5);
     else if(str1=="time") time=str2;
     else if(str1=="clicked")  sendMessageToCharacter(str1,str2,str3,str4,str5);
@@ -25,6 +25,7 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
 }
 
 void Player::serverToUi(QString str1, QString str2, QString str3){
+    qDebug("%s %s %s %s",qPrintable("send"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
     if(time=="notInGame"){
         if(str1=="join"||str1=="setImage"){emit sendMessageToBSMDealer(str1,str2,str3);}
         else if(str1=="position") {this->number=str2;}
