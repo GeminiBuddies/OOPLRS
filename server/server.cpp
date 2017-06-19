@@ -696,9 +696,11 @@ namespace server {
 		for(int i = 0; i < config.playerNum; i++)
 			if(!config.user[i].cannotVoteForever)
 				config.user[i].canVote = true;
-        character[deadPlayer] -> killedByVoting();
-        gotMessege -> gotMessege(deadPlayer, true);
-
+		if(deadPlayer != -1)
+		{
+        	character[deadPlayer] -> killedByVoting();
+        	gotMessege -> gotMessege(deadPlayer, true);
+		}
         return 0;
 	}
 	void GameServer :: night()
