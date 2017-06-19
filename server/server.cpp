@@ -664,19 +664,16 @@ namespace server {
 	{
 		//cout<<config.deads.size()<<"size"<<endl;
 		for(int i = 0 ; i < config.deads.size(); i++)
-		{
             character[config.deads[i]] -> killed();
+		for(int i = 0 ; i < config.deads.size(); i++)
             if(isFirstDay)
 				gotMessege -> gotMessege(config.deads[i], true);
-
-			//character[config.deads[i]] -> dayOperation();
-		}
 		if(victoryJudge -> judge())
 				return victoryJudge -> judge();
 		config.deads.clear();
 		//cout<<"w\n";
 		for(int i = 0 ; i < config.playerNum; i++)
-			character[i] -> dayOperation();
+				character[i] -> dayOperation();
 		//cout<<"w\n";
 		
 		if(!config.deads.empty())
@@ -707,18 +704,26 @@ namespace server {
 	{
 		config.savedPlayer = config.poisonedPlayer = config.killedPlayer = config.lastSavee = -1;
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
-			(*it) -> nightTransferInfo1();
+				(*it) -> nightTransferInfo1();
 		//cout<<"1"<<endl;
 		WerewolfOperation w(&config);
 		//cout<<"1"<<endl;
 		w.operation();
 		//cout<<config.killedPlayer <<"kp\n";
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
-			(*it) -> nightTransferInfo2();
+				(*it) -> nightTransferInfo2();
+		clock_t cl = clock();
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
-			(*it) -> nightOperation();
+				(*it) -> nightOperation();
+		bool flag  = false;
+		while(clock() - cl < 15000) 
+			if(!flag)
+			{
+				flag = true;
+				broadcast -> broadcastInfo("setTime/15");
+			}
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
-			(*it) -> processInfo();
+				(*it) -> processInfo();
 		if(((config.savedPlayer == config.lastSavee && config.savedPlayer != -1) || (config.lastSavee != config.killedPlayer && config.savedPlayer != config.killedPlayer) )&& config.killedPlayer != -1)
 			character[config.killedPlayer] -> killedByWerewolf();
 		//cout<<config.poisonedPlayer<<endl;
