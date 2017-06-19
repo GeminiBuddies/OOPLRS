@@ -13,10 +13,10 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
     qDebug("%s %s %s %s", qPrintable("receive"), qPrintable( str1 ),qPrintable(str2), qPrintable(str3));
     if(str1=="dealer") emit sendMessage(str2,str3,str4,str5);
     else if(str1=="time") time=str2;
-    else if(str1=="clicked")  sendMessageToCharacter(str1,str2,str3,str4,str5);
+    else if(str1=="clicked") emit sendMessageToCharacter(str1,str2,str3,str4,str5);
     else if(str1=="toServer")
-        sendMessageToServer(str2,str3,str4,str5);
-    else if(str1=="ui") sendMessageToUiDealer(str2,str3,str4,str5);
+        emit sendMessageToServer(str2,str3,str4,str5);
+    else if(str1=="ui") emit sendMessageToUiDealer(str2,str3,str4,str5);
     else if(str1=="setPlayer") initialClient(str2);
     else if(str1=="setTime") emit sendMessage("timer",str2);
     else if(str1=="server") serverToUi(str2,str3,str4);

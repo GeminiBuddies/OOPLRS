@@ -15,17 +15,17 @@ Character::Character(Messager *player, QString number):MessageDealer(player){
 
 void Character::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
     if(str1=="dealer"){
-        sendMessage(str1,str2,str3,str4,str5);
+        emit sendMessage(str1,str2,str3,str4,str5);
     }else if(str1=="changeTime"){
         changeTime(str2);
     }else if(str1=="ui"){
-        sendMessageToPlayer(str1,str2,str3,str4,str5);
+        emit sendMessageToPlayer(str1,str2,str3,str4,str5);
     }else if(time=="day"){
         qDebug("%s %s %s %s",qPrintable("dayMessage"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
-        sendMessageToDMDealer(str1,str2,str3,str4,str5);
+        emit sendMessageToDMDealer(str1,str2,str3,str4,str5);
         flag=0;
     }else if(time=="night"){
-        sendMessageToNMDealer(str1,str2,str3,str4,str5);
+        emit sendMessageToNMDealer(str1,str2,str3,str4,str5);
     }
 }
 

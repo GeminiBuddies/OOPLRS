@@ -144,6 +144,8 @@ void DayMessageDealer::showVoteResult(QString str1,QString str2){
         QString temp="characterImage"+QVariant(i).toString();
         emit sendMessage("dealer",temp,"mouseAreaDisabled");
     }
+    canVote=1;
+    canCancelVote=0;
 }
 
 void DayMessageDealer::showCharacter(QString str1, QString str2){
