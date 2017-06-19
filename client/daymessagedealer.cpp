@@ -15,6 +15,7 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1== "startChat")startChat(str2);
     else if(str1== "showChatMessage")showChatMessage(str2,str3);
     else if(str1== "startVote")startVote();
+    else if(str1=="startDayVote") startDayVote();
     else if(str1== "showVote")showVote(str3,str2);//交换了一下顺序
     else if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了一下顺序
     else if(str1== "win")win();
@@ -32,6 +33,10 @@ void DayMessageDealer::night(){
     emit sendMessage("toServer","night");
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
     emit sendMessage("dealer", "cancelChat");
+}
+
+void DayMessageDealer::startDayVote(){
+    emit sendMessage(GAMEMESSAGE, QStringLiteral("开始公投"));
 }
 
 void DayMessageDealer::chooseSheriff(){
