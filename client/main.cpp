@@ -16,6 +16,7 @@
 #include "welcomeformproxy.h"
 #include "thiefchooseformproxy.h"
 #include "witchchooseformproxy.h"
+#include "temp.h"
 
 int main(int argc, char *argv[])
 {
@@ -50,6 +51,11 @@ int main(int argc, char *argv[])
     UiProxy* mainFormProxy=player->ui->addChild<MainFormProxy>("mainFormProxy",player);
     mainFormProxy->setItem("mainForm");
     mainFormProxy->connectSignal();
+
+    //TEMP
+    UiProxy* tempProxy=mainFormProxy->addChild<Temp>("tempProxy",player);
+    tempProxy->setItem("tempBox");
+    tempProxy->connectSignal();
 
     UiProxy* thiefChooseFormProxy=mainFormProxy->addChild<ThiefChooseFormProxy>("thiefChooseFormProxy",player);
     thiefChooseFormProxy->setItem("thiefChooseForm");

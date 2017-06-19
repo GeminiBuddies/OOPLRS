@@ -5,6 +5,7 @@ DayMessageDealer::DayMessageDealer(Messager *player, MessageDealer *character):M
 }
 
 void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
+    qDebug("%s %s %s %s",qPrintable("realDayMessage"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
     if(str1== "night")night();
     else if(str1== "chooseSheriff")chooseSheriff();
     else if(str1== "showSheriffCandidate")showSheriffCandidate(str2);
@@ -13,7 +14,7 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1== "showLastWords")showLastWords(str2,str3);
     else if(str1== "startChat")startChat(str2);
     else if(str1== "showChatMessage")showChatMessage(str2,str3);
-    else if(str1== "vote")startVote();
+    else if(str1== "startVote")startVote();
     else if(str1== "showVote")showVote(str3,str2);//交换了一下顺序
     else if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了一下顺序
     else if(str1== "win")win();
@@ -64,11 +65,12 @@ void DayMessageDealer::showLastWords(QString str1, QString str2){
 
 void DayMessageDealer::startChat(QString str1){
     emit sendMessage(GAMEMESSAGE, str1+QStringLiteral("号玩家开始发言"));
-    emit sendMessage("dealer", "canChat");
-    judge(str1,"0");
+    //emit sendMessage("dealer", "canChat");
+    emit judge(str1,"0");
 }
 
 void DayMessageDealer::showChatMessage(QString str1, QString str2){
+    qDebug("%s", qPrintable("reallyShowChatMessage"));
     QString temp=str1+QStringLiteral("号：")+str2;
     emit sendMessage("dealer","showChatMessage", temp);
     emit sendMessage("dealer", "cancelChat");
@@ -151,5 +153,5 @@ void DayMessageDealer::draw(){
 
 void DayMessageDealer::startLastWords(QString str){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("请")+str+QStringLiteral("号玩家发表遗言"));
-    judge(str,"1");
+    emit judge(str,"1");
 }

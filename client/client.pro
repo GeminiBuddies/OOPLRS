@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     piedpiper.cpp \
     client.cpp \
     clientconn.cpp \
-    ..\cih\globalConf.cpp
+    ..\cih\globalConf.cpp \
+    temp.cpp
 
 RESOURCES += qml.qrc
 
@@ -87,4 +88,5 @@ HEADERS += \
     piedpiper.h \
     client.h \
     clientconn.h \
-    ..\cih\globalConf.h
+    ..\cih\globalConf.h \
+    temp.h

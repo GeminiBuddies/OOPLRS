@@ -21,6 +21,7 @@ void Character::receiveMessage(QString str1, QString str2, QString str3, QString
     }else if(str1=="ui"){
         sendMessageToPlayer(str1,str2,str3,str4,str5);
     }else if(time=="day"){
+        qDebug("%s %s %s %s",qPrintable("dayMessage"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
         sendMessageToDMDealer(str1,str2,str3,str4,str5);
         flag=0;
     }else if(time=="night"){
