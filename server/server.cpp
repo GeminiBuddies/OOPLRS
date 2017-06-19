@@ -363,12 +363,12 @@ namespace server {
                     info.append(transNumToString(j).c_str());
                     transferInfoToClient(i, info.data());
 				}
-		broadcastInfo("setTime/25");
+		broadcastInfo("setTime/15");
         for(int i = 0; i < config -> playerNum; i++)
             if(canVote(i))
                 transferInfoToClient(i, "startVote");
 		clock_t cl = clock();
-        while(clock() - cl < 5000)
+        while(clock() - cl < 15000)
         {
 			for(int i = 0; i < config -> playerNum; i++)
 				if(canVote(i) && !config -> user[i].messeges.empty())
@@ -390,7 +390,8 @@ namespace server {
 	}
     void dayVote :: show()
     {
-        for(int i = 0; i < config -> playerNum; i++)
+        broadcastInfo("startDayVote");
+		for(int i = 0; i < config -> playerNum; i++)
             if(canVote(i))
                 transferInfoToClient(i, "startVote");
     }
@@ -545,7 +546,7 @@ namespace server {
 		}
 		transferInfoToClient(num ,"roleAct");
         transferInfoToClient(num, "startVote");
-        string resp = respond(num, 5000);
+        string resp = respond(num, 15000);
 		if(resp[0] == '!')
 			return;
 		int tmp = 1;
@@ -642,11 +643,11 @@ namespace server {
 		else
 		{
 			info1 = info1 + "Chat/";
-			info2 = info2 + "ChatMessege/";
+			info2 = info2 + "ChatMessage/";
 		}
         broadcastInfo((info1 + transNumToString(num)).c_str());
         info2 = info2 + transNumToString(num) + '/';
-        string resp = respond(num, 5000, false);
+        string resp = respond(num, 20000, false);
         qDebug() << QByteArray(resp.c_str());
 		char messege[3001];
         if(resp[0] != '!')
@@ -655,6 +656,8 @@ namespace server {
             info2 = info2 + messege;
         }
 		broadcastInfo(info2.c_str());
+		clock_t cl = clock();
+		while(clock() - cl < 1000) ;
     }
 
 	int GameServer :: day(bool isFirstDay)
@@ -723,6 +726,9 @@ namespace server {
 	int GameServer :: firstDay()
 	{
 		broadcast -> broadcast("day");
+		for(int i = 0; i < config.playerNum; i++)
+			if(!config.user[i].cannotVoteForever)
+				config.user[i].canVote = true;
 		return day(true);
 	}
 	void GameServer :: firstNight()

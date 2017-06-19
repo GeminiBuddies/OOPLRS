@@ -169,7 +169,7 @@ namespace server {
 			if(isRoleAct)
 				transferInfoToClient(userName, "roleActEnd");
 			else
-				transferInfoToClient(userName, "getMessege");
+				transferInfoToClient(userName, "getMessage");
 			cl = clock();
             while(clock() - cl < WAIT) ;
 			vector<string> res = config -> user[userName].messeges;
