@@ -1,4 +1,6 @@
-﻿#ifndef THIEF_H
+﻿
+
+#ifndef THIEF_H
 #define THIEF_H
 
 #include "character.h"

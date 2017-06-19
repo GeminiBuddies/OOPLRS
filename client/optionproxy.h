@@ -1,4 +1,12 @@
-﻿#ifndef OPTIONPROXY_H
+﻿/*************************************************
+ * 名称： option.h
+ * 作者： 赵欣昊
+ * 时间： 20170616
+ * 内容描述： Option类（UiProxy的派生类），负责接收由Player类传来的消息，控制UI中Option（设置界面）对象；接收UI中Option传来的消息，传给Player类
+ * 版权： 这是我们自行完成的程序，没有使用其他来源代码
+ ************************************************/
+
+#ifndef OPTIONPROXY_H
 #define OPTIONPROXY_H
 
 #include "uiproxy.h"

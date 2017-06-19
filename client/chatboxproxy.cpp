@@ -1,6 +1,6 @@
 ﻿#include "chatboxproxy.h"
 void ChatBoxProxy::sendChatMessage(QString str){
-    /*QChar* Iterator=str.data();
+    QChar* Iterator=str.data();
         QString strr[3];
         for(int i=0;i<3;i++){
             while(*Iterator!=' '&&!Iterator->isNull()){
@@ -9,8 +9,8 @@ void ChatBoxProxy::sendChatMessage(QString str){
             }
             Iterator++;
         }
-        emit sendMessage(strr[0],strr[1],strr[2]);*/
-    emit sendMessage("toServer", "sendChatMessage", str);
+        emit sendMessage(strr[0],strr[1],strr[2]);
+    //emit sendMessage("toServer", "sendChatMessage", str);
 }
 
 void ChatBoxProxy::connectSignal(){

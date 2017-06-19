@@ -1,4 +1,12 @@
-﻿#ifndef DAYMESSAGEDEALER_H
+﻿/*************************************************
+ * 名称： daymessagedealer.h
+ * 作者： 赵欣昊
+ * 时间： 20170616
+ * 内容描述： DayMessageDealer类，负责处理游戏中白天的消息，并将消息传回Character类
+ * 版权： 这是我们自行完成的程序，没有使用其他来源代码
+ ************************************************/
+
+#ifndef DAYMESSAGEDEALER_H
 #define DAYMESSAGEDEALER_H
 
 #include "messagedealer.h"

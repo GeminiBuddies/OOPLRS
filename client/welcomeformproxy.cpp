@@ -4,7 +4,7 @@ void WelcomeFormProxy::connectSignal(){
     QObject::connect(this,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),player,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(player,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),this,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(this->item,SIGNAL(setPlayer(QString, bool)),this,SLOT(getPlayerSetting(QString,bool)));
-    //getPlayerSetting("xz",1);
+    getPlayerSetting("xz",1);
 }
 
 void WelcomeFormProxy::getPlayerSetting(QString name, bool sex){

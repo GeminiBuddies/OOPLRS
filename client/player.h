@@ -1,4 +1,15 @@
-﻿#ifndef PLAYER_H
+﻿/*************************************************
+ * 名称： player.h
+ * 作者： 赵欣昊
+ * 时间： 20170616
+ * 内容描述： Player类（Messager类的派生类），在客户端窗口开启时即创建，负责以下功能：
+ *  1. 实例化一个Client类对象，负责与服务器连接
+ *  2. 接收服务器发来的消息，将消息分类传给BeforeMessageDealer，Character，UiMessageDealer类处理
+ *  3. 接收上述三个类处理后返回的消息，将消息传给UiProxy的各个派生类
+ * 版权： 这是我们自行完成的程序，没有使用其他来源代码
+ ************************************************/
+
+#ifndef PLAYER_H
 #define PLAYER_H
 
 #include "messager.h"
