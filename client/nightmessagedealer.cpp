@@ -31,6 +31,8 @@ void NightMessageDealer::roleActEnd(){
     emit sendMessage("dealer", "roleActionEnd");
     emit sendMessage(GAMEMESSAGE, QStringLiteral("角色行动结束"));
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
+    canVote=1;
+    canCancelVote=0;
 }
 
 void NightMessageDealer::shotByCupid(QString str){

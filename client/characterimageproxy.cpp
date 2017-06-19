@@ -39,7 +39,7 @@ void CharacterImageProxy::showVote(QString str){
     if(voteText==NULL)
         voteText=voteImage->findChild<QObject*>("voteText");
     voteImage->setProperty("visible",QVariant(true));
-    voteText->setProperty("text",QVariant(str));
+    voteText->setProperty("text",QVariant(str[0].toLatin1()-48));
 }
 
 void CharacterImageProxy::hideVote(){

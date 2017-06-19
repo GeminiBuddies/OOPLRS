@@ -89,28 +89,33 @@ void Client::onClientData(byteseq data, int length)
         emit sendMessage(str1,str2,str3);
         if (_role == "witch" && _time == 1)
 		{
-			for (int i = 0; i < 200; ++i)
-			{
-				if (_witch == "0")
-				{
-					QString vote = "vote/0";
-					QByteArray data0 = vote.toLatin1();
-					char* data = data0.data();
-                    int length = int(strlen(data));
-                    _ClientConn->sendData(data, length);
-				}
-				else if (_vote[i] == 1)
-				{
+            if (_witch == "0")
+            {
+                QString vote = "vote/0";
+                QByteArray data0 = vote.toLatin1();
+                char* data = data0.data();
+                int length = int(strlen(data));
+                _ClientConn->sendData(data, length);
+            }
+            else
+            {
+                for (int i = 0; i < 200; ++i)
+                {
+
+                    if (_vote[i] == 1)
+                    {
 					char num = char(i);
 					QString strnum = QString(num);
-					QString vote = "vote/" + _witch +"/"+ strnum;
+                    QString vote = "voteByWitch/" + _witch +"/"+ strnum;
 					QByteArray data0 = vote.toLatin1();
 					char* data = data0.data();
                     int length = int(strlen(data));
                     _ClientConn->sendData(data, length);
-				}
-			}
-		}
+                    break;
+                    }
+                }
+            }
+        }
 		else
 			sendVote();
 		for (int i = 0; i < 200; ++i)
