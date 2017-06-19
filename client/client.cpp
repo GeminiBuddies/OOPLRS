@@ -126,7 +126,7 @@ void Client::onClientData(byteseq data, int length)
 	{
 		
 	}
-	else if (str1 == "getMessege")
+    else if (str1 == "getMessage")
 	{
 		QByteArray data0 = _message.toLatin1();
 		char* data = data0.data();

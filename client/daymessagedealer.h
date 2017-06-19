@@ -45,6 +45,7 @@ private:
     void showCharacter(QString str1,QString str2);
     void draw();
     void startLastWords(QString str);
+    void startDayVote();
     MessageDealer* character;
 };
 
