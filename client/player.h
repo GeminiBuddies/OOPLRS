@@ -57,6 +57,7 @@ private:
     Character* character;
     UiMessageDealer* uiMessageDealer;
     Client* client;
+    int playerNum=0;
 
     void constructCharacter(QString role);
     void initialClient(QString str);

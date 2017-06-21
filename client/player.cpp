@@ -27,11 +27,16 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
 void Player::serverToUi(QString str1, QString str2, QString str3){
     qDebug("%s %s %s %s",qPrintable("send"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
     if(time=="notInGame"){
-        if(str1=="join"||str1=="setImage"){emit sendMessageToBSMDealer(str1,str2,str3);}
+        if(str1=="join") {
+            playerNum++;
+            emit sendMessageToBSMDealer(str1,str2,str3);
+        }
+        else if(str1=="setImage"){emit sendMessageToBSMDealer(str1,str2,str3);}
         else if(str1=="position") {this->number=str2;}
         else if(str1=="assignRoles") {
             emit sendMessageToBSMDealer(str1,str2,this->number);
             constructCharacter(str2);
+            emit sendMessageToCharacter("playerNum", QVariant(playerNum).toString());
         }else if(str1=="serverList"){
             emit sendMessage(str1,str2);
         }else if(str1=="connectSucceed"){

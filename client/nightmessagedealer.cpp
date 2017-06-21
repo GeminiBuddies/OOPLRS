@@ -2,10 +2,15 @@
 
 NightMessageDealer::NightMessageDealer(Messager *player, MessageDealer *character):MessageDealer(player){
     this->character=character;
+    for(int i=1;i<=20;i++){
+        alive[i]=0;
+    }
 }
 
 void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
     if(str1== "day")day();
+    else if(str1=="alive") alive[QVariant(str2).toInt()]=1;
+    else if(str1=="notAlive") alive[QVariant(str2).toInt()]=0;
     if(str1== "roleActEnd")roleActEnd();
     if(str1== "shotByCupid")shotByCupid(str2);
     if(str1== "roleActLoseAbility")roleActLoseAbility();
@@ -17,6 +22,11 @@ void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3
     if(str1== "clicked")clicked(str2,str3);
     if(str1=="puzzledConfirm") puzzledConfirm(str2);
     if(str1=="cannotVote") cannotVote();
+    else if(str1=="playerNum"){
+        for(int i=1;i<=QVariant(str2).toInt();i++){
+            alive[i]=1;
+        }
+    }
 }
 
 void NightMessageDealer::day(){
@@ -33,6 +43,7 @@ void NightMessageDealer::roleActEnd(){
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
     canVote=1;
     canCancelVote=0;
+    emit changeVoteStates("day",0);
 }
 
 void NightMessageDealer::shotByCupid(QString str){
@@ -51,8 +62,10 @@ void NightMessageDealer::roleAct(){
 
 void NightMessageDealer::startVote(){
     for(int i=0;i<20;i++){
-        QString temp="characterImage"+QVariant(i).toString();
-        emit sendMessage("dealer", temp, "mouseAreaEnabled");
+        if(alive[i]){
+            QString temp="characterImage"+QVariant(i).toString();
+            emit sendMessage("dealer", temp, "mouseAreaEnabled");
+        }
     }
 }
 
@@ -104,7 +117,7 @@ void NightMessageDealer::clicked(QString str1, QString str2){
         emit changeVoteStates("night",-1);
         emit sendMessage("toServer","cancelVote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
-        emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消了选择"));
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消选择了")+temp+QStringLiteral("号"));
     }
 }
 

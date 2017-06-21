@@ -39,7 +39,7 @@ private:
     void puzzledConfirm(QString str);
     void cannotVote();
     MessageDealer* character;
-
+    bool alive[21];
 };
 
 #endif // NIGHTMESSAGEDEALER_H

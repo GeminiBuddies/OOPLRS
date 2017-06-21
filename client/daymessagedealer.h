@@ -23,6 +23,7 @@ public:
 signals:
     void changeVoteStates(QString time,int delta);
     void judge(QString str1,QString str2);
+    void noLastWords();
 
 public slots:
     void receiveMessage(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
@@ -47,6 +48,8 @@ private:
     void startLastWords(QString str);
     void startDayVote();
     MessageDealer* character;
+    bool alive[21];
+    bool lastWords = 1;//被狼人杀死是否还有遗言
 };
 
 #endif // DAYMESSAGEDEALER_H

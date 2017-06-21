@@ -16,9 +16,14 @@ class Scapegoat : public Character
     Q_OBJECT
 public:
     using Character::Character;
+    void canDetermine();
 
 public slots:
     void receiveMessage(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
+    void changeVoteStates(QString time, int delta);
+
+private:
+    bool determine = 0;
 
 };
 

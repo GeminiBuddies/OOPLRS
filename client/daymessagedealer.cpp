@@ -2,11 +2,16 @@
 
 DayMessageDealer::DayMessageDealer(Messager *player, MessageDealer *character):MessageDealer(player){
     this->character=character;
+    for(int i=1;i<=20;i++){
+        alive[i]=0;
+    }
 }
 
 void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
     qDebug("%s %s %s %s",qPrintable("realDayMessage"),qPrintable(str1),qPrintable(str2),qPrintable(str3));
     if(str1== "night")night();
+    else if(str1== "alive") alive[QVariant(str2).toInt()]=1;
+    else if(str1== "notAlive") alive[QVariant(str2).toInt()]=0;
     else if(str1== "chooseSheriff")chooseSheriff();
     else if(str1== "showSheriffCandidate")showSheriffCandidate(str2);
     else if(str1== "determineSheriff")determineSheriff(str2);
@@ -24,9 +29,18 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1=="showCharacter") showCharacter(str2,str3);
     else if(str1=="draw") draw();
     else if(str1=="startLastWords") startLastWords(str2);
+    else if(str1=="canDetermine") emit sendMessage(GAMEMESSAGE, QStringLiteral("等待替罪羊选择下回合可以投票的人"));
+    else if(str1=="playerNum"){
+        for(int i=1;i<=QVariant(str2).toInt();i++){
+            alive[i]=1;
+        }
+    }
 }
 
 void DayMessageDealer::night(){
+    static bool isFirstNight=1;
+    if(isFirstNight==0) emit noLastWords();
+    else isFirstNight=0;
     emit sendMessage(GAMEMESSAGE, QStringLiteral("天黑了，大家睡觉吧~"));
     emit sendMessage("dealer", "night");
     emit sendMessage("changeTime","night");
@@ -34,6 +48,7 @@ void DayMessageDealer::night(){
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
     emit sendMessage("dealer", "cancelChat");
 }
+
 
 void DayMessageDealer::startDayVote(){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("开始公投"));
@@ -58,7 +73,7 @@ void DayMessageDealer::showDied(QString str){
     QString temp="characterImage"+str;
     emit sendMessage("dealer", temp, "changeImage","qrc:/images/images/died.png");
     emit sendMessage("dealer", temp, "cannotBeVoted");
-    emit judge(str, "0");
+    emit judge(str, "1");
 }
 
 void DayMessageDealer::showLastWords(QString str1, QString str2){
@@ -66,6 +81,7 @@ void DayMessageDealer::showLastWords(QString str1, QString str2){
     emit sendMessage("dealer","showChatMessage",temp);
     emit sendMessage("dealer", "cancelChat");
     emit sendMessage("dealer", "hideBigText");
+
 }
 
 void DayMessageDealer::startChat(QString str1){
@@ -111,23 +127,25 @@ void DayMessageDealer::clicked(QString str1, QString str2){
     QString temp2="";
     temp2+=t;
     if(str2=="1"&&canVote==true){
-        changeVoteStates("day",1);
+        emit changeVoteStates("day",1);
         emit sendMessage("toServer","vote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你选择了")+temp+QStringLiteral("号"));
     }
     else if(str2=="0"&&canCancelVote==true){
-        changeVoteStates("day",-1);
+        emit changeVoteStates("day",-1);
         emit sendMessage("toServer","cancelvote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
-        emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消了选择"));
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消选择了")+temp+QStringLiteral("号"));
     }
 }
 
 void DayMessageDealer::startVote(){
     for(int i=0;i<20;i++){
-        QString temp="characterImage"+QVariant(i).toString();
-        emit sendMessage("dealer", temp, "mouseAreaEnabled");
+        if(alive[i]){
+            QString temp="characterImage"+QVariant(i).toString();
+            emit sendMessage("dealer", temp, "mouseAreaEnabled");
+        }
     }
 }
 
@@ -146,6 +164,7 @@ void DayMessageDealer::showVoteResult(QString str1,QString str2){
     }
     canVote=1;
     canCancelVote=0;
+    emit changeVoteStates("day",0);
 }
 
 void DayMessageDealer::showCharacter(QString str1, QString str2){
