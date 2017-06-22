@@ -9,10 +9,15 @@ Client::Client(Messager* player, QString name)
 {
 	_player = player;
     QObject::connect(_ClientConn, SIGNAL(onServerData(byteseq,int)), this, SLOT(onClientData(byteseq,int)));
-    //QObject::connect(_ClientConn, SIGNAL(onServerDisconnect), this, SLOT(onClientDisconnect));
+    QObject::connect(_ClientConn, SIGNAL(onServerDisconnect()), this, SLOT(onClientDisconnect()));
 	_name = name;
 	_ClientConn -> start(_name);
 	getServers();
+}
+void Client::onClientDisconnect()
+{
+	emit sendMessage("server", "disconn");
+    _ClientConn->close();
 }
 void Client::getServers()
 {
@@ -131,14 +136,6 @@ void Client::onClientData(byteseq data, int length)
 	{
 		
 	}
-    else if (str1 == "getMessage")
-	{
-		QByteArray data0 = _message.toLatin1();
-		char* data = data0.data();
-        int length = int(strlen(data));
-        _ClientConn->sendData(data, length);
-		_message = "";
-	}
     else
         emit sendMessage(str1,str2,str3);
 }
@@ -232,3 +229,4 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
 	}
 
 }
+

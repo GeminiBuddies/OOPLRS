@@ -30,7 +30,7 @@ public:
 	void sendVote();
 public slots:
 	void onClientData(byteseq data, int length);
-    //void onClientDisconnect();
+    void onClientDisconnect();
     void receiveMessage(QString str1, QString str2="", QString str3="", QString str4="", QString str5="");
 };
 
