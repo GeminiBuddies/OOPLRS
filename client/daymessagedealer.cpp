@@ -47,6 +47,7 @@ void DayMessageDealer::night(){
     emit sendMessage("toServer","night");
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
     emit sendMessage("dealer", "cancelChat");
+    emit sendMessage("dealer", "clearClicked");
 }
 
 
@@ -66,14 +67,14 @@ void DayMessageDealer::showSheriffCandidate(QString str){
 
 void DayMessageDealer::determineSheriff(QString str){
     emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家当选警长"));
+    emit sendMessage("dealer", "clearClicked");
 }
 
 void DayMessageDealer::showDied(QString str){
-    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家于夜里死亡"));
+    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家死亡"));
     QString temp="characterImage"+str;
     emit sendMessage("dealer", temp, "changeImage","qrc:/images/images/died.png");
     emit sendMessage("dealer", temp, "cannotBeVoted");
-    emit judge(str, "1");
 }
 
 void DayMessageDealer::showLastWords(QString str1, QString str2){
@@ -165,6 +166,7 @@ void DayMessageDealer::showVoteResult(QString str1,QString str2){
     canVote=1;
     canCancelVote=0;
     emit changeVoteStates("day",0);
+    emit sendMessage("clearClicked");
 }
 
 void DayMessageDealer::showCharacter(QString str1, QString str2){

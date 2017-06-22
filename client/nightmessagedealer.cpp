@@ -35,6 +35,7 @@ void NightMessageDealer::day(){
     emit sendMessage("changeTime","day");
     emit sendMessage("toServer","day");
     emit sendMessage("dealer", "hideBigText");
+    emit sendMessage("dealer", "clearClicked");
 }
 
 void NightMessageDealer::roleActEnd(){
@@ -87,6 +88,7 @@ void NightMessageDealer::showVoteResult(QString str1, QString str2){
         QString temp="characterImage"+QVariant(i).toString();
         emit sendMessage("dealer",temp,"mouseAreaDisabled");
     }
+    emit sendMessage("clearClicked");
 }
 
 void NightMessageDealer::clicked(QString str1, QString str2){

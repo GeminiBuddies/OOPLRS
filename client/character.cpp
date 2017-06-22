@@ -92,6 +92,7 @@ void Character::judge(QString str1, QString str2){
             emit sendMessage(GAMEMESSAGE, QStringLiteral("请发表遗言"));
             emit sendMessage("dealer", "showBigText", QStringLiteral("请发表遗言"));
             emit sendMessage("dealer", "canChat");
+            isDied=1;
         }else if(str2=="0"){
             emit sendMessage("dealer", "canChat");
             emit sendMessage(GAMEMESSAGE, QStringLiteral("请发言"));

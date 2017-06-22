@@ -8,6 +8,7 @@ void Witch::receiveMessage(QString str1, QString str2 , QString str3, QString st
 }
 
 void Witch::roleAct(QString str1, QString str2){
+    if(isDied) return;
     QChar a=*(str2.data());
     QChar b=*(str2.data()+1);
     emit sendMessage(GAMEMESSAGE, QStringLiteral("本回合被杀的是")+str1+QStringLiteral("号玩家。")

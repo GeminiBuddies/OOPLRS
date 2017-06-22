@@ -35,7 +35,7 @@ public slots:
 
 protected:
     QString time;
-    bool isDied;
+    bool isDied=0;
     QString number;
     bool flag=0;
     bool alive[21];//当前活着的人

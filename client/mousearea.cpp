@@ -39,4 +39,7 @@ void MouseArea::receiveMessage(QString str1, QString str2, QString str3, QString
             }
         }
     }
+    else if(str1=="clearClicked"){
+        isClicked=0;
+    }
 }
