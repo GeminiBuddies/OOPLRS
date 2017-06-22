@@ -26,7 +26,7 @@ Rectangle{
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: 20
-        objectName: "roleLayout"
+        objectName: "rowLayout"
 
         Image {
             id: image

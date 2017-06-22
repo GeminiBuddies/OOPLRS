@@ -50,6 +50,7 @@ private:
     MessageDealer* character;
     bool alive[21];
     bool lastWords = 1;//被狼人杀死是否还有遗言
+    bool voting=0;//是否正在进行白天的公投
 };
 
 #endif // DAYMESSAGEDEALER_H

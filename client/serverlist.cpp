@@ -16,7 +16,7 @@ void ServerListProxy::connectSignal(){
     refreshButton=this->item->findChild<QObject*>("refresh");
     QObject::connect(refreshButton,SIGNAL(getServer()),this,SLOT(getServer()));
     //TEMP
-    //connectServerSucceed();
+    connectServerSucceed();
 }
 
 void ServerListProxy::connectServerSucceed(){
@@ -37,6 +37,7 @@ void ServerListProxy::getServer(){
 
 void ServerListProxy::setServerList(QString str){
     QMetaObject::invokeMethod(this->item,"clear");
+    serverList.clear();
     QString temp = "";
     if(str!=""){
         for(int i=0;i<str.length();i++){
@@ -51,7 +52,7 @@ void ServerListProxy::setServerList(QString str){
         confirmButton->setProperty("visible",true);//把按钮显示
         QMetaObject::invokeMethod(this->item,"clear");
         for(int i=0;i<serverList.length();i++){
-            QMetaObject::invokeMethod(this->item,"addElement",Q_ARG(QVariant,QVariant(i)),Q_ARG(QVariant, QVariant(serverList[i])));
+            QMetaObject::invokeMethod(this->item,"addElement",Q_ARG(QVariant,QVariant(i+1)),Q_ARG(QVariant, QVariant(serverList[i])));
         }
     }
     else

@@ -26,7 +26,7 @@ Rectangle {
                 x:0
                 y:0
                 Text{
-                    text: "服务器"
+                    text: "服务器编号"
                     width:300
                     font.bold: true
                     font.pixelSize: 40
@@ -61,7 +61,6 @@ Rectangle {
                     listView1.focus=true
                 }
             }
-
             Row {
                 id: row1
                 x: 0

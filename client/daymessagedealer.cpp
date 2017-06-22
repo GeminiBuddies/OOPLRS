@@ -38,9 +38,6 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
 }
 
 void DayMessageDealer::night(){
-    static bool isFirstNight=1;
-    if(isFirstNight==0) emit noLastWords();
-    else isFirstNight=0;
     emit sendMessage(GAMEMESSAGE, QStringLiteral("天黑了，大家睡觉吧~"));
     emit sendMessage("dealer", "night");
     emit sendMessage("changeTime","night");
@@ -48,11 +45,13 @@ void DayMessageDealer::night(){
     emit sendMessage("dealer", "showBigText", QStringLiteral("等待中"));
     emit sendMessage("dealer", "cancelChat");
     emit sendMessage("dealer", "clearClicked");
+    voting = 0;
 }
 
 
 void DayMessageDealer::startDayVote(){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("开始公投"));
+    voting = 1;
 }
 
 void DayMessageDealer::chooseSheriff(){
@@ -71,10 +70,14 @@ void DayMessageDealer::determineSheriff(QString str){
 }
 
 void DayMessageDealer::showDied(QString str){
-    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家死亡"));
+    if(voting == 0)
+        emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家于夜里死亡"));
+    else
+        emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家被公投死亡"));
     QString temp="characterImage"+str;
     emit sendMessage("dealer", temp, "changeImage","qrc:/images/images/died.png");
     emit sendMessage("dealer", temp, "cannotBeVoted");
+    emit judge(str,"1");
 }
 
 void DayMessageDealer::showLastWords(QString str1, QString str2){
@@ -181,5 +184,5 @@ void DayMessageDealer::draw(){
 
 void DayMessageDealer::startLastWords(QString str){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("请")+str+QStringLiteral("号玩家发表遗言"));
-    emit judge(str,"1");
+    emit judge(str,"2");
 }

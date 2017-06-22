@@ -27,6 +27,8 @@
 #include "seer.h"
 #include "townsfolk.h"
 #include "witch.h"
+#include "thief.h"
+#include "dead.h"
 #include "uimessagedealer.h"
 #include "client.h"
 
@@ -61,6 +63,7 @@ private:
 
     void constructCharacter(QString role);
     void initialClient(QString str);
+    void changeRole(QString str);
 };
 
 

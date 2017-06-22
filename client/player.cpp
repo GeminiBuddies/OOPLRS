@@ -43,9 +43,19 @@ void Player::serverToUi(QString str1, QString str2, QString str3){
             emit sendMessage("connectServerSucceed");
 
         }
-    }else
+    }
+    else if(str1=="changeRole") changeRole(str2);
+    else
         emit sendMessageToCharacter(str1,str2,str3);
 
+}
+
+void Player::changeRole(QString str2){
+    QString temp="characterImage"+this->number;
+    emit sendMessage(temp, "changeRole", "qrc:/images/images/"+str2+".jpg");
+    constructCharacter(str2);
+    emit sendMessageToCharacter("playerNum",QVariant(playerNum).toString());
+    emit sendMessageToCharacter("changeTime",time);
 }
 
 void Player::initialClient(QString str){
@@ -78,6 +88,10 @@ void Player::constructCharacter(QString role){
         character=new Townsfolk(this,number);
     else if (role == "witch")
         character=new Witch(this,number);
+    else if(role == "thief")
+        character=new Thief(this,number);
+    else if(role == "dead")
+        character = new Dead(this,number);
     QObject::connect(this,SIGNAL(sendMessageToCharacter(QString,QString,QString,QString,QString)),character,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(character,SIGNAL(sendMessageToPlayer(QString,QString,QString,QString,QString)),this,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
 }

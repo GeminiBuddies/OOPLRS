@@ -81,22 +81,30 @@ void Character::changeVoteStates(QString time, int delta){
 
 void Character::judge(QString str1, QString str2){
     //str2为0代表发言，str2为1代表死人了
-    if(str2=="1"){
+    if(str2=="1"){//如果死人了
         alive[QVariant(str1).toInt()]=0;
         emit sendMessageToDMDealer("notAlive", str1);
         emit sendMessageToNMDealer("notAlive", str1);
     }
-    if(str1==number)
-        if(str2=="1"){
+    if(str1==number)//如果是自己
+        if(str2=="1"){//如果是自己死了
             emit sendMessage(GAMEMESSAGE,QStringLiteral("你死了"));
-            emit sendMessage(GAMEMESSAGE, QStringLiteral("请发表遗言"));
-            emit sendMessage("dealer", "showBigText", QStringLiteral("请发表遗言"));
-            emit sendMessage("dealer", "canChat");
             isDied=1;
+            for(int i=1;i<=20;i++){
+                alive[i]=0;
+                QString temp=QVariant(i).toString();
+                emit sendMessageToDMDealer("notAlive", temp);
+                emit sendMessageToNMDealer("notAlive", temp);
+            }
+            //emit sendMessageToPlayer("changeRole","dead");
         }else if(str2=="0"){
             emit sendMessage("dealer", "canChat");
             emit sendMessage(GAMEMESSAGE, QStringLiteral("请发言"));
             emit sendMessage("dealer", "showBigText", QStringLiteral("请发言"));
+        }else if(str2=="2"){
+            emit sendMessage(GAMEMESSAGE, QStringLiteral("请发表遗言"));
+            emit sendMessage("dealer", "showBigText", QStringLiteral("请发表遗言"));
+            emit sendMessage("dealer", "canChat");
         }
 }
 

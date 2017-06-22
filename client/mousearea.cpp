@@ -5,12 +5,14 @@ void MouseArea::mouseAreaEnabled(bool enabled){
 }
 
 void MouseArea::onClicked(){
-    QString temp;
-    if(!isClicked==1)
-        temp="1";
-    else
-        temp="0";
-    sendMessage("clicked",parent->name, temp);
+    if(canBeVoted){
+        QString temp;
+        if(!isClicked==1)
+            temp="1";
+        else
+            temp="0";
+        sendMessage("clicked",parent->name, temp);
+    }
 }
 
 void MouseArea::connectSignal(){
