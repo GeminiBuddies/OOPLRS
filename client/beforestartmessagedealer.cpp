@@ -5,7 +5,7 @@ void BeforeStartMessageDealer::receiveMessage(QString str1, QString str2, QStrin
         QString temp="characterImage"+str3;
         emit sendMessage("dealer", temp,"changeName", str2);
         emit sendMessage("dealer", temp, "changeImage", "qrc:/images/images/man1.png");
-        emit sendMessage("dealer", temp, "changeRole", "qrc:/images/images/townsfolk.jpg");
+        emit sendMessage("dealer", temp, "changeRole", "qrc:/images/images/questionMark.jpg");
         emit sendMessage(GAMEMESSAGE,str2+QStringLiteral("进入了游戏"));
         emit sendMessage("dealer", temp, "canBeVoted");
         emit sendMessage("dealer", temp, "setNumber", str3);

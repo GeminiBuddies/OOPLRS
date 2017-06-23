@@ -48,5 +48,6 @@
         <file>images/died.png</file>
         <file>images/puzzled.jpg</file>
         <file>images/arrow.png</file>
+        <file>images/questionMark.jpg</file>
     </qresource>
 </RCC>
