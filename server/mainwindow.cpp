@@ -40,7 +40,8 @@ void MainWindow::on_pushButton_clicked()
     int x9=QVariant(ui->townsfolk->text()).toInt();
     int x10=QVariant(ui->witch->text()).toInt();
     int x11=QVariant(ui->wolf->text()).toInt();
-    int x12=QVariant(ui->playernum->text()).toInt();
+    int x12=QVariant(ui->scapegoat->text()).toInt();
+    int x13=QVariant(ui->playernum->text()).toInt();
 
     vector<int> chara;
     for(int i=1;i<=x11;i++)
@@ -57,6 +58,8 @@ void MainWindow::on_pushButton_clicked()
         chara.push_back(5);
     for(int i=1;i<=x6;i++)
         chara.push_back(6);
+    for(int i=1;i<=x12;i++)
+        chara.push_back(7);
     for(int i=1;i<=x7;i++)
         chara.push_back(8);
     for(int i=1;i<=x10;i++)
@@ -68,9 +71,9 @@ void MainWindow::on_pushButton_clicked()
 
 
 
-    if(x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11==x12)
+    if(x1+x2+x3+x4+x5+x6+x7+x8+x9+x10+x11+x12==x13)
     {
-       temp.setConfig(x12,chara,1-ui->sheriffselection->currentIndex(),ui->model->currentIndex(),ui->servername->text());
+       temp.setConfig(x13,chara,1-ui->sheriffselection->currentIndex(),ui->model->currentIndex(),ui->servername->text());
 
        close();
 
