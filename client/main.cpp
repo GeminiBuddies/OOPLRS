@@ -17,6 +17,8 @@
 #include "thiefchooseformproxy.h"
 #include "sheriffchooseformproxy.h"
 #include "witchchooseformproxy.h"
+#include "sheriffchoosevoteorderform.h"
+#include "endlistproxy.h"
 #include "temp.h"
 
 int main(int argc, char *argv[])
@@ -69,6 +71,14 @@ int main(int argc, char *argv[])
     UiProxy* sheriffChooseFormProxy=mainFormProxy->addChild<SheriffChooseFormProxy>("sheriffChooseFormProxy", player);
     sheriffChooseFormProxy->setItem("sheriffChooseForm");
     sheriffChooseFormProxy->connectSignal();
+
+    UiProxy* sheriffChooseVoteOrderFormProxy=mainFormProxy->addChild<SheriffChooseVoteOrderFormProxy>("sheriffChooseVoteOrderFormProxy", player);
+    sheriffChooseVoteOrderFormProxy->setItem("sheriffChooseVoteOrderForm");
+    sheriffChooseVoteOrderFormProxy->connectSignal();
+
+    UiProxy* endListProxy=mainFormProxy->addChild<EndListProxy>("endListProxy", player);
+    endListProxy->setItem("endList");
+    endListProxy->connectSignal();
 
     UiProxy* welcomeFormProxy=player->ui->addChild<WelcomeFormProxy>("welcomeFormProxy",player);
     welcomeFormProxy->setItem("welcomeForm");

@@ -125,13 +125,16 @@ void NightMessageDealer::clicked(QString str1, QString str2){
         emit sendMessage("toServer","cancelVote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消选择了")+temp+QStringLiteral("号"));
-        emit sendMessage("dealer", number, "hideVote");
+        QString myCharacter="characterImage"+number;
+        emit sendMessage("dealer", myCharacter, "hideVote");
     }
 }
 
 void NightMessageDealer::puzzledConfirm(QString str){
     emit sendMessage("dealer","roleActionStart");
     emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号被吹笛者迷惑了"));
+    QString temp="characterImage"+str;
+    emit sendMessage("dealer", temp, "puzzled");
 }
 
 void NightMessageDealer::cannotVote(){
@@ -144,4 +147,6 @@ void NightMessageDealer::cannotVote(){
 
 void NightMessageDealer::showPuzzled(QString str){
     emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家已被迷惑"));
+    QString temp="characterImage"+str;
+    emit sendMessage("dealer", temp, "puzzled");
 }

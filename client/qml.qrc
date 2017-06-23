@@ -14,6 +14,8 @@
         <file>WitchChooseForm.qml</file>
         <file>Temp.qml</file>
         <file>SheriffChooseForm.qml</file>
+        <file>EndList.qml</file>
+        <file>SheriffChooseVoteOrderForm.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/ancient.jpg</file>
@@ -44,5 +46,7 @@
         <file>images/woman2.png</file>
         <file>images/vote.png</file>
         <file>images/died.png</file>
+        <file>images/puzzled.jpg</file>
+        <file>images/arrow.png</file>
     </qresource>
 </RCC>

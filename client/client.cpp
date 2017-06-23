@@ -273,7 +273,7 @@ void Client::receiveMessage(QString str1, QString str2, QString str3, QString st
         char* data = data0.data();
         int length = int(strlen(data));
         _ClientConn->sendData(data, length);
-    }else if(str1 == "yes" ||str1 == "no")
+    }else
     {
         QString info = str1;
         QByteArray data0 = info.toLatin1();																//把QString转换为char*

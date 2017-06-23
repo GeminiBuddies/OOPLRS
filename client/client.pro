@@ -42,7 +42,9 @@ SOURCES += main.cpp \
     clientconn.cpp \
     ..\cih\globalConf.cpp \
     temp.cpp \
-    sheriffchooseformproxy.cpp
+    sheriffchooseformproxy.cpp \
+    endlistproxy.cpp \
+    sheriffchoosevoteorderform.cpp
 
 RESOURCES += qml.qrc
 
@@ -91,4 +93,8 @@ HEADERS += \
     clientconn.h \
     ..\cih\globalConf.h \
     temp.h \
-    sheriffchooseformproxy.h
+    sheriffchooseformproxy.h \
+    endlistproxy.h \
+    sheriffchoosevoteorderform.h
+
+DISTFILES +=

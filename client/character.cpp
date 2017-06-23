@@ -16,6 +16,7 @@ Character::Character(Messager *player, QString number):MessageDealer(player){
     for(int i=0;i<20;i++){
         alive[i]=0;
     }
+    emit sendMessage("dealer", "characterImage"+number, "thisIsYou");
 }
 
 
@@ -95,14 +96,18 @@ void Character::judge(QString str1, QString str2){
             for(int i=1;i<=20;i++){
                 alive[i]=0;
                 QString temp=QVariant(i).toString();
-                emit sendMessageToDMDealer("notAlive", temp);
                 emit sendMessageToNMDealer("notAlive", temp);
+            }
+            for(int i=0;i<20;i++){
+                QString temp="characterImage"+QVariant(i).toString();
+                emit sendMessage("dealer",temp,"mouseAreaDisabled");
             }
             //emit sendMessageToPlayer("changeRole","dead");
         }else if(str2=="0"){
             emit sendMessage("dealer", "canChat");
             emit sendMessage(GAMEMESSAGE, QStringLiteral("请发言"));
             emit sendMessage("dealer", "showBigText", QStringLiteral("请发言"));
+            emit sendMessage("dealer","hideSheriffExitButton");
         }else if(str2=="2"){
             emit sendMessage(GAMEMESSAGE, QStringLiteral("请发表遗言"));
             emit sendMessage("dealer", "showBigText", QStringLiteral("请发表遗言"));

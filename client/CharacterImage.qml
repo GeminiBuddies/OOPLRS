@@ -26,15 +26,20 @@ Rectangle {
 
         Text {
             id: text3
-            x: 55
-            y: 99
+            x: 57
+            y: 97
             width: 21
             height: 23
             color: "#0c16c6"
             text:""
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
             font.bold: true
             font.pixelSize: 20
             horizontalAlignment: Text.AlignRight
+            objectName: "number"
         }
     }
 
@@ -47,7 +52,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.top: parent.top
-        anchors.topMargin: 73
+        anchors.topMargin: 93
         objectName: "role"
     }
 
@@ -60,14 +65,14 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: 40
         source: ""
         objectName: "characterImage"
     }
 
     Text {
         id: text1
-        y: 128
+        y: 160
         width: 80
         height: 20
         horizontalAlignment: Text.AlignHCenter
@@ -84,10 +89,10 @@ Rectangle {
         x: 35
         width: 68
         height: 100
+        visible: false
         anchors.top: parent.top
         anchors.topMargin: 10
         source: "qrc:/images/images/vote.png"
-        visible: false
         objectName: "voteImage"
 
         Text {
@@ -104,5 +109,41 @@ Rectangle {
             font.pixelSize: 17
             objectName: "voteText"
         }
+    }
+
+    Image {
+        id: image3
+        x: 25
+        y: 17
+        width: 30
+        height: 29
+        visible: false
+        source: "qrc:/images/images/sheriff.jpg"
+        objectName:"sheriffImage"
+    }
+
+    Image {
+        id: image4
+        x: 25
+        y: 17
+        width: 30
+        height: 29
+        opacity: 0.5
+        objectName: "piedPiperImage"
+        visible: false
+        source: "qrc:/images/images/puzzled.jpg"
+    }
+
+    Image {
+        id: image5
+        x: 21
+        y: 17
+        width: 40
+        height: 40
+        z: 1
+        opacity: 0.5
+        visible: false
+        objectName: "arrowImage"
+        source: "qrc:/images/images/arrow.png"
     }
 }

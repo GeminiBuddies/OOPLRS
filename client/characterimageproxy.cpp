@@ -12,6 +12,10 @@ void CharacterImageProxy::receiveMessage(QString str1, QString str2, QString str
         else if(str2=="changeName") changeName(str3);
         else if(str2=="showVote") showVote(str3);
         else if(str2=="hideVote") hideVote();
+        else if(str2=="setNumber") showNumber(str3);
+        else if(str2=="setSheriff") setSheriff(str3);
+        else if(str2=="puzzled") puzzled();
+        else if(str2=="thisIsYou") thisIsYou();
     }
 }
 
@@ -46,4 +50,28 @@ void CharacterImageProxy::hideVote(){
     if(voteImage==NULL)
         voteImage=this->item->findChild<QObject*>("voteImage");
     voteImage->setProperty("visible", QVariant(false));
+}
+
+void CharacterImageProxy::showNumber(QString str){
+    QObject* mouseArea=this->item->findChild<QObject*>("mouseArea1");
+    QObject* text=mouseArea->findChild<QObject*>("number");
+    text->setProperty("text", QVariant(str));
+}
+
+void CharacterImageProxy::setSheriff(QString str){
+    QObject* sheriffImage=item->findChild<QObject*>("sheriffImage");
+    if(str=="1")
+        sheriffImage->setProperty("visible",QVariant(true));
+    else if(str=="0")
+        sheriffImage->setProperty("visible",QVariant(false));
+}
+
+void CharacterImageProxy::puzzled(){
+    QObject* puzzledImage=item->findChild<QObject*>("piedPiperImage");
+    puzzledImage->setProperty("visible",QVariant(true));
+}
+
+void CharacterImageProxy::thisIsYou(){
+    QObject* arrowImage=item->findChild<QObject*>("arrowImage");
+    arrowImage->setProperty("visible",QVariant(true));
 }

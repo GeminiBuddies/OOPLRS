@@ -17,7 +17,7 @@ Rectangle {
         x: 102
         y: 100
         width: 80
-        height: 120
+        height: 180
         anchors.left: parent.left
         anchors.leftMargin: 241
         anchors.top: parent.top
@@ -30,7 +30,7 @@ Rectangle {
         x: 192
         y: 90
         width: 80
-        height: 120
+        height: 180
         anchors.bottom: characterImage1.bottom
         anchors.bottomMargin: 10
         anchors.left: characterImage1.right
@@ -43,7 +43,7 @@ Rectangle {
         x: 282
         y: 70
         width: 80
-        height: 120
+        height: 180
         anchors.bottom: characterImage2.bottom
         anchors.bottomMargin: 20
         anchors.left: characterImage2.right
@@ -56,7 +56,7 @@ Rectangle {
         x: 372
         y: 60
         width: 80
-        height: 120
+        height: 180
         anchors.bottom: characterImage3.bottom
         anchors.bottomMargin: 10
         anchors.left: characterImage3.right
@@ -69,7 +69,7 @@ Rectangle {
         x: 462
         y: 55
         width: 80
-        height: 120
+        height: 180
         anchors.left: characterImage4.right
         anchors.leftMargin: 10
         anchors.top: characterImage4.top
@@ -82,7 +82,7 @@ Rectangle {
         x: 552
         y: 65
         width: 80
-        height: 120
+        height: 180
         anchors.left: characterImage5.right
         anchors.leftMargin: 10
         anchors.top: characterImage5.top
@@ -95,7 +95,7 @@ Rectangle {
         x: 642
         y: 85
         width: 80
-        height: 120
+        height: 180
         anchors.left: characterImage6.right
         anchors.leftMargin: 10
         anchors.top: characterImage6.top
@@ -108,7 +108,7 @@ Rectangle {
         x: 732
         y: 95
         width: 80
-        height: 120
+        height: 180
         anchors.top: characterImage7.top
         anchors.topMargin: 10
         anchors.left: characterImage7.right
@@ -121,7 +121,7 @@ Rectangle {
         x: 822
         y: 105
         width: 80
-        height: 120
+        height: 180
         anchors.top: characterImage8.top
         anchors.topMargin: 10
         anchors.left: characterImage8.right
@@ -134,7 +134,7 @@ Rectangle {
         x: 907
         y: 205
         width: 80
-        height: 120
+        height: 180
         anchors.left: characterImage9.right
         anchors.leftMargin: 5
         anchors.top: characterImage9.top
@@ -147,7 +147,7 @@ Rectangle {
         x: 817
         y: 275
         width: 80
-        height: 120
+        height: 180
         anchors.top: characterImage10.bottom
         anchors.topMargin: -50
         anchors.right: characterImage10.left
@@ -160,7 +160,7 @@ Rectangle {
         x: 727
         y: 275
         width: 80
-        height: 120
+        height: 180
         anchors.top: characterImage11.top
         anchors.topMargin: 0
         anchors.right: characterImage11.left
@@ -173,7 +173,7 @@ Rectangle {
         x: 637
         y: 275
         width: 80
-        height: 120
+        height: 180
         anchors.right: characterImage12.left
         anchors.rightMargin: 10
         anchors.top: characterImage12.top
@@ -185,7 +185,7 @@ Rectangle {
         id: characterImage14
         x: 547
         y: 265
-        height: 120
+        height: 180
         anchors.top: characterImage13.top
         anchors.topMargin: -10
         anchors.right: characterImage13.left
@@ -197,7 +197,7 @@ Rectangle {
         id: characterImage15
         x: 457
         y: 265
-        height: 120
+        height: 180
         anchors.top: characterImage14.top
         anchors.topMargin: 0
         anchors.right: characterImage14.left
@@ -209,7 +209,7 @@ Rectangle {
         id: characterImage16
         x: 367
         y: 265
-        height: 120
+        height: 180
         anchors.top: characterImage15.top
         anchors.topMargin: 0
         anchors.right: characterImage15.left
@@ -221,7 +221,7 @@ Rectangle {
         id: characterImage17
         x: 277
         y: 275
-        height: 120
+        height: 180
         anchors.right: characterImage16.left
         anchors.rightMargin: 10
         anchors.top: characterImage16.top
@@ -233,7 +233,7 @@ Rectangle {
         id: characterImage18
         x: 187
         y: 275
-        height: 120
+        height: 180
         anchors.top: characterImage17.top
         anchors.topMargin: 0
         anchors.right: characterImage17.left
@@ -245,7 +245,7 @@ Rectangle {
         id: characterImage19
         x: 97
         y: 275
-        height: 120
+        height: 180
         anchors.top: characterImage18.top
         anchors.topMargin: 0
         anchors.right: characterImage18.left
@@ -258,7 +258,7 @@ Rectangle {
         x: 12
         y: 205
         width: 80
-        height: 120
+        height: 180
         anchors.top: characterImage10.top
         anchors.topMargin: 0
         anchors.right: characterImage19.left
@@ -431,6 +431,28 @@ Rectangle {
         height: 480
         z: 11
         visible:false
+    }
+
+    SheriffChooseVoteOrderForm{
+        id:sheriffChooseVoteOrderForm
+        x: 316
+        y: 176
+        objectName: "sheriffChooseVoteOrderForm"
+        width: 640
+        height: 480
+        z: 13
+        visible:false
+    }
+
+    EndList{
+        id: endList
+        visible: false
+        x: 316
+        y: 176
+        width: 640
+        height: 480
+        z: 12
+        objectName: "endList"
     }
 
     Text {

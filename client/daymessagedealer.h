@@ -47,6 +47,12 @@ private:
     void startDayVote();
     void sheriffCandidateExit(QString str);
     void stopChat();
+    void win(QString str);
+    void showWin(QString str);
+    void endGame();
+    void setEndList(QString str1,QString str2);
+    void chooseVoteOrder(QString str);
+    void broadcastVoteOrder(QString str1,QString str2,QString str3);
     MessageDealer* character;
     bool alive[21];
     bool lastWords = 1;//被狼人杀死是否还有遗言

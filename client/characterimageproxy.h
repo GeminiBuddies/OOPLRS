@@ -30,6 +30,10 @@ private:
     void changeName(QString name);
     void showVote(QString str);
     void hideVote();
+    void showNumber(QString str);
+    void setSheriff(QString str);
+    void puzzled();
+    void thisIsYou();
     QObject* image=0;
     QObject* role=0;
     QObject* characterName=0;
