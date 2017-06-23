@@ -471,20 +471,6 @@ Rectangle {
         font.pixelSize: 150
     }
 
-    Temp {
-        id: temp
-        x: 0
-        y: 682
-        width: 459
-        height: 73
-        z: 8
-        anchors.left: parent.left
-        anchors.leftMargin: 421
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 45
-        objectName: "tempBox"
-    }
-
     signal sheriffExit()
     Rectangle {
         id: rectangle1

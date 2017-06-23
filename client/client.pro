@@ -41,7 +41,6 @@ SOURCES += main.cpp \
     client.cpp \
     clientconn.cpp \
     ..\cih\globalConf.cpp \
-    temp.cpp \
     sheriffchooseformproxy.cpp \
     endlistproxy.cpp \
     sheriffchoosevoteorderform.cpp
@@ -92,7 +91,6 @@ HEADERS += \
     client.h \
     clientconn.h \
     ..\cih\globalConf.h \
-    temp.h \
     sheriffchooseformproxy.h \
     endlistproxy.h \
     sheriffchoosevoteorderform.h

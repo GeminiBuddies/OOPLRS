@@ -12,7 +12,6 @@
         <file>WelcomeForm.qml</file>
         <file>ThiefChooseForm.qml</file>
         <file>WitchChooseForm.qml</file>
-        <file>Temp.qml</file>
         <file>SheriffChooseForm.qml</file>
         <file>EndList.qml</file>
         <file>SheriffChooseVoteOrderForm.qml</file>
