@@ -52,8 +52,8 @@ public slots:
     void receiveMessage(QString str1, QString str2 = "", QString str3 = "", QString str4 = "", QString str5 = "");
 
 private:
-    QString name;//自己的人物名字
-    QString sex;//性别
+    QString name="deafult";//自己的人物名字
+    QString sex="male";//性别
     QString number;//自己的编号
     QString time="notInGame";
     BeforeStartMessageDealer* BSMDealer;

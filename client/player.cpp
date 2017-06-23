@@ -14,8 +14,10 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
     if(str1=="dealer") emit sendMessage(str2,str3,str4,str5);
     else if(str1=="time") time=str2;
     else if(str1=="clicked") emit sendMessageToCharacter(str1,str2,str3,str4,str5);
-    else if(str1=="toServer")
+    else if(str1=="toServer"){
+        qDebug("%s %s %s %s %s", qPrintable("sendToServer"), qPrintable( str2 ),qPrintable(str3), qPrintable(str4), qPrintable(str5));
         emit sendMessageToServer(str2,str3,str4,str5);
+    }
     else if(str1=="ui") emit sendMessageToUiDealer(str2,str3,str4,str5);
     else if(str1=="setPlayer") {
         initialClient(str2);
@@ -24,7 +26,6 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
     }
     else if(str1=="setTime") emit sendMessage("timer",str2);
     else if(str1=="server") serverToUi(str2,str3,str4);
-    else if(str1=="getInfo") getInfo();
     else
         serverToUi(str1,str2,str3);
 }
@@ -39,7 +40,7 @@ void Player::serverToUi(QString str1, QString str2, QString str3){
         if(str1=="join") {
             playerNum++;
             emit sendMessageToBSMDealer(str1,str2,str3);
-        }
+        }else if(str1=="getInfo") getInfo();
         else if(str1=="setImage"||str1=="info"){emit sendMessageToBSMDealer(str1,str2,str3);}
         else if(str1=="position") {this->number=str2;}
         else if(str1=="assignRoles") {
