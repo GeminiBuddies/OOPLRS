@@ -17,6 +17,7 @@ Connect::Connect(QWidget *parent) :
     ui(new Ui::Connect)
 {
     ui->setupUi(this);
+    setWindowTitle(QString(u8"连接中"));
     void showConnect(int* player,int a);
 }
 

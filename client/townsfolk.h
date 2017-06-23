@@ -1,4 +1,12 @@
-﻿#ifndef TOWNSFOLK_H
+﻿/*************************************************
+ * 名称： townsfolk.h
+ * 作者： 赵欣昊
+ * 时间： 20170616
+ * 内容描述： Townsfolk类（Character派生类），负责处理角色“平民”的特殊消息
+ * 版权： 这是我们自行完成的程序，没有使用其他来源代码
+ ************************************************/
+
+#ifndef TOWNSFOLK_H
 #define TOWNSFOLK_H
 
 #include "character.h"

@@ -1,4 +1,4 @@
-#ifndef COMMVAR_H
+﻿#ifndef COMMVAR_H
 #define COMMVAR_H
 #include"server.h"
 

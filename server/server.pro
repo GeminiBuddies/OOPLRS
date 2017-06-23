@@ -51,3 +51,6 @@ FORMS    += mainwindow.ui \
     connect.ui \
     over.ui \
     inprocess.ui
+
+RESOURCES += \
+    picture.qrc

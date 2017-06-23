@@ -29,6 +29,7 @@
 #include "witch.h"
 #include "thief.h"
 #include "dead.h"
+#include "piedpiper.h"
 #include "uimessagedealer.h"
 #include "client.h"
 

@@ -1,4 +1,4 @@
-#ifndef OVER_H
+﻿#ifndef OVER_H
 #define OVER_H
 
 #include <QDialog>

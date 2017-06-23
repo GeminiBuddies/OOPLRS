@@ -37,8 +37,6 @@ private:
     void showLastWords(QString str1,QString str2);
     void startChat(QString str1);
     void showChatMessage(QString str1,QString str2);
-    void win();
-    void lose();
     void clicked(QString str1, QString str2);
     void startVote();
     void showVote(QString str1,QString str2);
@@ -48,6 +46,7 @@ private:
     void startLastWords(QString str);
     void startDayVote();
     void sheriffCandidateExit(QString str);
+    void stopChat();
     MessageDealer* character;
     bool alive[21];
     bool lastWords = 1;//被狼人杀死是否还有遗言

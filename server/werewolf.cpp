@@ -1,4 +1,4 @@
-#include "werewolf.h"
+﻿#include "werewolf.h"
 #include "ui_werewolf.h"
 
 Werewolf::Werewolf(QWidget *parent) :
@@ -6,9 +6,12 @@ Werewolf::Werewolf(QWidget *parent) :
     ui(new Ui::Werewolf)
 {
     ui->setupUi(this);
+    setWindowTitle(QString(u8"狼人杀"));
+
 }
 
 Werewolf::~Werewolf()
 {
     delete ui;
 }
+

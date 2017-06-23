@@ -21,6 +21,8 @@ Item {
         anchors.topMargin: 0
         TextArea.flickable: TextArea {
             id: textArea1
+            width: 387
+            height: 217
             objectName: "textArea1"
             readOnly: true
             wrapMode: TextArea.Wrap

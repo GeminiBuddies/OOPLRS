@@ -47,6 +47,8 @@ void NightMessageDealer::roleActEnd(){
     canVote=1;
     canCancelVote=0;
     emit changeVoteStates("day",0);
+    QString temp="characterImage"+number;
+    emit sendMessage("dealer", temp, "hideVote");
 }
 
 void NightMessageDealer::shotByCupid(QString str){

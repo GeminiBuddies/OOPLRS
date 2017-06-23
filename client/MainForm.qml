@@ -487,6 +487,8 @@ Rectangle {
         Text {
             id: text2
             text: "退水"
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
             z: 1
             anchors.fill: parent
             font.pixelSize: 30

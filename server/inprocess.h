@@ -1,4 +1,4 @@
-#ifndef INPROCESS_H
+﻿#ifndef INPROCESS_H
 #define INPROCESS_H
 
 #include <QDialog>

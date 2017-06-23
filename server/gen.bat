@@ -4,7 +4,7 @@ set PCACHE=%PATH%
 del /S /Q debug\
 del /S /Q release\
 
-call vcvars64.bat
+call vcvarsall.bat amd64
 qmake server.pro -spec win32-msvc2015
 jom qmake_all
 jom Debug

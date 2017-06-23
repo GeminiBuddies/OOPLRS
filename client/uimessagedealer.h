@@ -1,4 +1,12 @@
-﻿#ifndef UIMESSAGEDEALER_H
+﻿/*************************************************
+ * 名称： uimessagedealer.h
+ * 作者： 赵欣昊
+ * 时间： 20170616
+ * 内容描述： UiMessageDealer类（MessageDealer派生类）。该类负责处理游戏开始后部分与时间无关的客户端UI发来的消息
+ * 版权： 这是我们自行完成的程序，没有使用其他来源代码
+ ************************************************/
+
+#ifndef UIMESSAGEDEALER_H
 #define UIMESSAGEDEALER_H
 
 #include "messagedealer.h"

@@ -104,7 +104,7 @@ void ServerConn::socketReady() {
     QTcpSocket *sock = dynamic_cast<QTcpSocket*>(sender());
 
     auto data = sock->readAll();
-
+    qDebug() << data;
     if (!cache.contains(sock)) cache.insert(sock, QByteArray());
     cache[sock].append(data);
 

@@ -31,7 +31,7 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
 }
 
 void Player::getInfo(){
-    emit sendMessageToServer(name,sex);
+    emit sendMessageToServer("info",name,sex);
 }
 
 void Player::serverToUi(QString str1, QString str2, QString str3){
@@ -102,6 +102,8 @@ void Player::constructCharacter(QString role){
         character=new Thief(this,number);
     else if(role == "dead")
         character = new Dead(this,number);
+    else if(role == "piedPiper")
+        character = new PiedPiper(this, number);
     QObject::connect(this,SIGNAL(sendMessageToCharacter(QString,QString,QString,QString,QString)),character,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(character,SIGNAL(sendMessageToPlayer(QString,QString,QString,QString,QString)),this,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
 }

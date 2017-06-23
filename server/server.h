@@ -12,6 +12,7 @@
 #include <map>
 #include <QObject>
 #include <QThread>
+#include <QString>
 #define WAIT 100
 using namespace std;
 
@@ -48,7 +49,8 @@ namespace server {
 	};*/
 	string transNumToString(int num);
 	int transCharToNum(char cc);
-	bool twoCompare(int a, int b,int c,int d);
+    bool twoCompare(int a, int b,int c,int d);
+    int transNumToCharacterType(int num);
 	class Lovers
 	{
 	public:
@@ -70,7 +72,7 @@ namespace server {
 		bool cannotVoteForever;
 		int characterType;
         Conn conn;
-		vector<string> messeges;
+		vector<QString> messeges;
 		User(int n, int characternum, int pos);
 	};
     class GameConfig : public QObject
@@ -91,6 +93,7 @@ namespace server {
 		int killedPlayer;
 		int idiot;
 		bool canAssign;
+		bool hasStartedGame;
 		vector<int> deads;
 		Lovers *lovers;
 		ServerConn* serverConn;
@@ -119,63 +122,10 @@ namespace server {
 		GameEvent(GameConfig *conf);
 		GameEvent(const GameEvent& ge);
 		~GameEvent();
-		void transferInfoToClient(int userName, const char *info)
-		{
-                qDebug() << "send to" << userName << "info" << info;
-                config -> serverConn -> sendData(config -> user[userName].conn, info, (int)strlen(info));
-		}
-		void broadcastInfo(const char *info)
-		{
-            config -> serverConn -> broadcast(info, (int)strlen(info));
-		}
-        string respond(int userName,int timeInterval, bool isRoleAct = true)
-		{
-			if(timeInterval != 0)
-			{
-				string info("setTime/");
-                broadcastInfo((info + transNumToString(timeInterval / 1000 - 1)).c_str());
-			}
-			clock_t cl = clock();
-            while(clock() - cl < timeInterval) ;
-			if(isRoleAct)
-				transferInfoToClient(userName, "roleActEnd");
-            else{
-                transferInfoToClient(userName, "getMessage");
-                        qDebug() << "getMessage";}
-			cl = clock();
-            while(clock() - cl < WAIT) ;
-			if(config -> user[userName].messeges.empty())
-			{
-				string res("!");
-				return res;
-			}
-			else
-            {
-                qDebug() << userName << "to" << QByteArray(config -> user[userName].messeges[config -> user[userName].messeges.size() - 1].c_str());
-                string res = config -> user[userName].messeges[config -> user[userName].messeges.size() - 1];
-				config -> user[userName].messeges.clear();
-				return res;
-			}
-		}
-		vector<string> manyRespond(int userName,int timeInterval, bool isRoleAct = true)
-		{
-			if(timeInterval != 0)
-			{
-				string info("setTime/");
-                broadcastInfo((info + transNumToString(timeInterval / 1000 - 1)).c_str());
-			}
-			clock_t cl = clock();
-            while(clock() - cl < timeInterval) ;
-			if(isRoleAct)
-				transferInfoToClient(userName, "roleActEnd");
-			else
-				transferInfoToClient(userName, "getMessage");
-			cl = clock();
-            while(clock() - cl < WAIT) ;
-			vector<string> res = config -> user[userName].messeges;
-			config -> user[userName].messeges.clear();
-			return res;
-		}
+		void broadcastInfo(const char *info);
+		void transferInfoToClient(int userName, const char *info);
+        string respond(int userName,int timeInterval);
+		vector<string> manyRespond(int userName,int timeInterval, bool isRoleAct = true);
 	};
 	class Vote : public GameEvent
 	{
@@ -189,6 +139,7 @@ namespace server {
 		virtual int ifDraw() = 0;
 		virtual void show() = 0;
 		virtual int voteInterval(){return 20000;}
+		virtual bool canBeVoted(int num) {return true;}
 	};
 	class WerewolfVote : public Vote
 	{
@@ -207,6 +158,17 @@ namespace server {
 		int ifDraw();
         void show();
 	};
+	class SheriffVote : public Vote
+	{
+	public:
+		vector<int> canVoting, isCandidate;
+		bool isDraw;
+		using Vote :: Vote;
+		bool canVote(int num);
+		int ifDraw();
+        void show();
+		bool canBeVoted(int num);
+    };
 	class StartGame : public GameEvent
 	{
 	public:
@@ -219,6 +181,19 @@ namespace server {
 		using GameEvent :: GameEvent;
 		void broadcast(const char *info);
 	};
+	class Wake : public GameEvent
+	{
+	public:
+		using GameEvent :: GameEvent;
+		void wake();
+    };
+	class SheriffChooseOrder : public GameEvent
+	{
+	public:
+		vector<int> order;
+		using GameEvent :: GameEvent;
+		void sheriffChooseOrder(int onedead);
+    };
 	class WerewolfOperation : public GameEvent
 	{
 	public:
@@ -230,15 +205,14 @@ namespace server {
 	{
 	public:
 		using GameEvent :: GameEvent;
-		void gotMessege(int num, bool islastword);
+		vector<int> gotMessege(int num, bool islastword, bool isSheriffVote = false);
 	};
 	class Character : public GameEvent
 	{
 	public:
 		using GameEvent :: GameEvent;
 		int num;
-        virtual void nightTransferInfo1() {}
-        virtual void nightTransferInfo2() {}
+        virtual void nightTransferInfo() {}
         virtual void processInfo() {}
         virtual void nightOperation() {}
         virtual void firstNightOperation() {}
@@ -282,6 +256,7 @@ namespace server {
 		void killedByWerewolf();
 		void init();
 		void dayOperation();
+		void processInfo();
 	};
 	class Idiot : public Character
 	{
@@ -295,7 +270,7 @@ namespace server {
 		using Character :: Character;
 		int lastSavee;
 		void init();
-		void nightTransferInfo1();
+		void nightTransferInfo();
 		void processInfo();
 	};
 	class Scapegoat : public Character
@@ -316,7 +291,7 @@ namespace server {
 		using Character :: Character;
 		int hasPoison;
 		int hasMedicine;
-		void nightTransferInfo2();
+		void nightTransferInfo();
 		void init();
 		void processInfo();
 	};
@@ -324,7 +299,7 @@ namespace server {
 	{
 	public:
 		using Character :: Character;
-		void nightTransferInfo1();
+		void nightTransferInfo();
 		void processInfo();
 	};
 	class Thief : public Character
@@ -358,19 +333,19 @@ namespace server {
 	{
 	public:
 		using GameEvent :: GameEvent;
-		virtual int selection() = 0;
+		virtual void selection() = 0;
 	};
 	class NoSheriffSelection : public SheriffSelection
 	{
 	public:
 		using SheriffSelection :: SheriffSelection;
-        int selection() {return 0;}
+        void selection() {;}
 	};
 	class HasSheriffSelection : public SheriffSelection
 	{
 	public:
 		using SheriffSelection :: SheriffSelection;
-		int selection();
+		void selection();
 	};
     class GameServer {
 	public://得改
@@ -382,8 +357,7 @@ namespace server {
 		StartGame *startGame;
 		Broadcast *broadcast;
 		GotMessege *gotMessege;
-		Character* transNumToCharacter(int num);
-		int transNumToCharacterType(int num);
+        Character* transNumToCharacter(int num);
         void setConfig(int playernum, vector<int> character, int sheriffselection, int victoryjudge, QString name);
 		void reshuffle();
 		int day(bool isFirstDay);

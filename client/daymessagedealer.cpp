@@ -22,9 +22,7 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1== "startVote")startVote();
     else if(str1=="startDayVote") startDayVote();
     else if(str1== "showVote")showVote(str3,str2);//交换了一下顺序
-    else if(str1== "showVoteResult")showVoteResult(str3,str2);//交换了一下顺序
-    else if(str1== "win")win();
-    else if(str1== "lose")lose();
+    else if(str1== "showVoteResult")showVoteResult(str2,str3);
     else if(str1== "clicked")clicked(str2,str3);
     else if(str1=="showCharacter") showCharacter(str2,str3);
     else if(str1=="draw") draw();
@@ -34,6 +32,7 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1=="number") number=str2;
     else if(str1=="isSheriffCandidate") isSheriffCandidate=1;
     else if(str1=="changeSheriff") emit sendMessage(GAMEMESSAGE, QStringLiteral("请选择警徽给谁，如果不选则代表撕警徽"));
+    else if(str1=="stopChat") stopChat();
     else if(str1=="playerNum"){
         for(int i=1;i<=QVariant(str2).toInt();i++){
             alive[i]=1;
@@ -94,8 +93,6 @@ void DayMessageDealer::showDied(QString str){
 void DayMessageDealer::showLastWords(QString str1, QString str2){
     QString temp=str1+QStringLiteral("号遗言：")+str2;
     emit sendMessage("dealer","showChatMessage",temp);
-    emit sendMessage("dealer", "cancelChat");
-    emit sendMessage("dealer", "hideBigText");
 
 }
 
@@ -109,6 +106,9 @@ void DayMessageDealer::showChatMessage(QString str1, QString str2){
     qDebug("%s", qPrintable("reallyShowChatMessage"));
     QString temp=str1+QStringLiteral("号：")+str2;
     emit sendMessage("dealer","showChatMessage", temp);
+}
+
+void DayMessageDealer::stopChat(){
     emit sendMessage("dealer", "cancelChat");
     emit sendMessage("dealer", "hideBigText");
 }
@@ -184,6 +184,8 @@ void DayMessageDealer::showVoteResult(QString str1,QString str2){
     canCancelVote=0;
     emit changeVoteStates("day",0);
     emit sendMessage("clearClicked");
+    temp="characterImage"+number;
+    emit sendMessage("dealer", temp, "hideVote");
 }
 
 void DayMessageDealer::showCharacter(QString str1, QString str2){

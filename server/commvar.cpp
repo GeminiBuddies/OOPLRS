@@ -1,3 +1,3 @@
-#include "commvar.h"
+﻿#include "commvar.h"
 
 OOPLRS::server::GameServer temp;

@@ -1,4 +1,4 @@
-#ifndef SERVERCONN_H
+﻿#ifndef SERVERCONN_H
 #define SERVERCONN_H
 
 #include "../cih/globalConf.h"

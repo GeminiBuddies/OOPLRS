@@ -1,4 +1,4 @@
-#ifndef WEREWOLF_H
+﻿#ifndef WEREWOLF_H
 #define WEREWOLF_H
 
 #include <QDialog>
