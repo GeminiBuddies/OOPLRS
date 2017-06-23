@@ -24,7 +24,7 @@
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
+     <family>Arial</family>
      <pointsize>48</pointsize>
      <weight>75</weight>
      <bold>true</bold>

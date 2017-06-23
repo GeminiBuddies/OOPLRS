@@ -58,9 +58,7 @@ void ServerConn::close() {
     serv->close();
     delete serv;
 
-    for (auto i : clients.values()) {
-        i->disconnect();
-    }
+    return;
 }
 
 ServerConn::sendCacheFr::sendCacheFr(QTcpSocket *r, QByteArray d) : remote(r), data(d) { ; }

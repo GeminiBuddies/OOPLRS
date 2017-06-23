@@ -1,4 +1,13 @@
-﻿#define DRAW 0
+﻿/****************************
+ Name:server.cpp
+ Author:liwenhao
+ Date:2017-6-23
+ Description:the implementation of the classes in the server
+ Copyright:peterliwenhao
+ **********************/
+
+
+#define DRAW 0
 #define WEREWOLF_VICTORY 2
 #define VILLIAGER_VICTORY 1
 #define LOVERS_VICTORY 3 
@@ -126,7 +135,7 @@ namespace server {
         QObject::connect(config.serverConn, SIGNAL(onClientDisconnected(Conn)), &config, SLOT(clientDisconnected(Conn)));
         QObject::connect(config.serverConn, SIGNAL(onClientData(Conn, byteseq, int)), &config, SLOT(clientData(Conn, byteseq, int)));
 	}
-	Character* GameServer :: transNumToCharacter(int num)
+    Character* GameServer :: transNumToCharacter(int num)//将角色编号转换成character类指针
 	{
 		Character* chara;
 		switch(num)
@@ -146,7 +155,7 @@ namespace server {
 		}
 		return chara;
 	}
-    int transNumToCharacterType(int num)
+    int transNumToCharacterType(int num)//根据角色编号判断角色类型
 	{
 		int res;
 		if(num == 0)
@@ -159,7 +168,7 @@ namespace server {
 			res = GOD;
 		return res;
 	}
-	void GameServer :: reshuffle()
+    void GameServer :: reshuffle()//重洗身份
 	{
 		srand(time(0));
 		int mod1 = config.playerNum + config.hasThief, mod2 = config.playerNum;
@@ -195,7 +204,7 @@ namespace server {
 		broadcast = new Broadcast(&config);
 		gotMessege = new GotMessege(&config);
 	}
-	bool twoCompare(int a, int b,int c,int d)
+    bool twoCompare(int a, int b,int c,int d)//比较a,b与c,d是否相等
 	{
 		if(a == c && b == d)
 			return true;
@@ -203,7 +212,7 @@ namespace server {
 			return true;
 		return false;
 	}
-	string transNumToString(int num)
+    string transNumToString(int num)//将玩家编号转换成string（包含客户端与服务器端编号起始不同处理）
 	{
         num ++;
 		char cc[3];
@@ -226,15 +235,15 @@ namespace server {
 		string st(cc);
 		return st;
 	}
-	int transCharToNum(char cc)
+    int transCharToNum(char cc)//将服务器端传来的玩家字符转换成编号（包含客户端与服务器端编号起始不同处理）
 	{
 		return cc - 'a' - 1;
 	}
-	void GameEvent :: broadcastInfo(const char *info)
+    void GameEvent :: broadcastInfo(const char *info)//广播信息
 	{
 		config -> serverConn -> broadcast(info, (int)strlen(info));
 	}
-	void GameEvent :: transferInfoToClient(int userName, const char *info)
+    void GameEvent :: transferInfoToClient(int userName, const char *info)//向某个用户传信息
 	{
         qDebug() << "send to" << userName << "info" << info;
 		if(config -> hasConn[userName])
@@ -247,7 +256,7 @@ namespace server {
             config -> user[userName].death = true;
 		}
 	}
-    string GameEvent :: respond(int userName,int timeInterval)
+    string GameEvent :: respond(int userName,int timeInterval,  bool isRoleAct)//用于用户端回复一条信息时
 	{
 		if(timeInterval != 0)
 		{
@@ -256,7 +265,8 @@ namespace server {
 		}
 		clock_t cl = clock();
         while(clock() - cl < timeInterval) ;
-		transferInfoToClient(userName, "roleActEnd");
+        if(isRoleAct)
+            transferInfoToClient(userName, "roleActEnd");
 		cl = clock();
         while(clock() - cl < WAIT) ;
 		if(config -> user[userName].messeges.empty())
@@ -272,7 +282,7 @@ namespace server {
 			return res;
 		}
 	}
-    vector<string> GameEvent :: manyRespond(int userName,int timeInterval, bool isRoleAct)
+    vector<string> GameEvent :: manyRespond(int userName,int timeInterval, bool isRoleAct)//用于客户端回复多条信息时
 	{
 		if(timeInterval != 0)
 		{
@@ -293,7 +303,7 @@ namespace server {
 		config -> user[userName].messeges.clear();
 		return res;
 	}
-	int KillGods :: judgeGen()
+    int KillGods :: judgeGen()//屠边判断狼人是否胜利
 	{
         int townsfolkDeath = WEREWOLF_VICTORY, godDeath = WEREWOLF_VICTORY;
 		for(int i = 0; i < config -> user.size(); i++)
@@ -305,7 +315,7 @@ namespace server {
 		}
 		return max(townsfolkDeath, godDeath);
 	}
-	int KillAll :: judgeGen()
+    int KillAll :: judgeGen()//屠城判断狼人是否胜利
 	{
 		int werewolfWin = WEREWOLF_VICTORY;
 		for(int i = 0; i < config -> user.size(); i++)
@@ -313,7 +323,7 @@ namespace server {
 				werewolfWin = DRAW;
 		return werewolfWin;
 	}
-	int VictoryJudge :: judgeSpe()
+    int VictoryJudge :: judgeSpe()//判断村民，吹笛者，人狼恋是否胜利
 	{
 		bool piedpiperwin = true;
 		bool loverswin = true;
@@ -337,15 +347,15 @@ namespace server {
 			res = max(res, VILLIAGER_VICTORY);
 		return res;
 	}
-	int VictoryJudge :: judge()
+    int VictoryJudge :: judge()//最后的胜利判断
 	{
 		return max(judgeGen(), judgeSpe());
 	}
-	void Broadcast :: broadcast(const char *info)
+    void Broadcast :: broadcast(const char *info)
 	{
 		broadcastInfo(info);
 	}
-	void Character :: killed()
+    void Character :: killed()// 某人死了的动作
 	{
 		string info("dead/");
 		broadcastInfo((info + transNumToString(num)).c_str());
@@ -376,12 +386,12 @@ namespace server {
             broadcastInfo((info2 + transNumToString(config -> sheriffNum)).c_str());
 		}
 	}
-	void Vote :: vote()
+    void Vote :: vote()//投票主过程
 	{
 		show();
 		int playerNum = config -> playerNum;
 		//cout<<playerNum<<"pl\n";
-		vector<int> tmp;
+        vector<int> tmp;
 		for(int i = 0; i < playerNum; i++)
 		{
 			tmp.push_back(0);
@@ -391,7 +401,7 @@ namespace server {
 		int flag = 0;
 		for(int i = 0; i < playerNum; i++)
         {
-			if(canVote(i))
+            if(canVote(i) && !config -> user[i].death)
 			{
 				//cout<<i<<endl;
 
@@ -408,11 +418,11 @@ namespace server {
 				{
                     qDebug() << i;
 					if(canBeVoted(transCharToNum(resp[5])))
-						tmp[transCharToNum(resp[5])]++;
+                        tmp[transCharToNum(resp[5])] += 2;
                     qDebug() << "sfaaf" << transCharToNum(resp[5]);
 					voting[i] = transCharToNum(resp[5]);
                     if(voteInterval() != 0 && i == config -> sheriffNum && canBeVoted(transCharToNum(resp[5])))//只是为了简单判断是不是狼人投票
-						tmp[transCharToNum(resp[5])] += 0.5;
+                        tmp[transCharToNum(resp[5])] += 1;
                     qDebug() << i;
 				}
 				//cout<<transCharToNum(resp[5])<<endl;
@@ -436,13 +446,13 @@ namespace server {
 		else
 			result = res[0].second;
 	}
-	bool WerewolfVote :: canVote(int num)
+    bool WerewolfVote :: canVote(int num)//哪些人能进行狼人投票
 	{
 		if(config -> user[num].characterType == WEREWOLF && !config -> user[num].death)
 			return true;
 		return false;
 	}
-	int WerewolfVote :: ifDraw()
+    int WerewolfVote :: ifDraw()//平局随机选一个
 	{
 		vector<int> sel;
 		for(int i = 0; i < config -> playerNum; i++)
@@ -457,7 +467,7 @@ namespace server {
             return -1;
 		return sel[rand() % sel.size()];
 	}
-	void WerewolfVote :: show()
+    void WerewolfVote :: show()//狼人间实时显示投票过程
 	{
 		for(int i = 0; i < config -> playerNum; i++)
 			for(int j = 0; j < config -> playerNum; j++)
@@ -469,7 +479,7 @@ namespace server {
 				}
 		broadcastInfo("setTime/15");
         for(int i = 0; i < config -> playerNum; i++)
-            if(canVote(i))
+            if(canVote(i) && !config -> user[i].death)
                 transferInfoToClient(i, "startVote");
 		clock_t cl = clock();
         while(clock() - cl < 15000)
@@ -480,12 +490,17 @@ namespace server {
 					for(int j = 0; j < config -> user[i].messeges.size(); j++)
 						for(int k =0; k < config -> playerNum; k++)
 							if(canVote(k))
-								transferInfoToClient(k,(config -> user[i].messeges[j].toStdString() + '/' + transNumToString(i)).c_str());
+                            {
+                                string str1 = config -> user[i].messeges[j].toStdString();
+                                string str2(str1, str1.length() - 1);
+                                str2 = str2 + '/' + transNumToString(transCharToNum(str1[5])) + '/' + transNumToString(i);
+                                transferInfoToClient(k,str2.c_str());
+                            }
 					config -> user[i].messeges.clear();
 				}
 		}
 	}
-	bool dayVote :: canVote(int num)
+    bool dayVote :: canVote(int num)
 	{
 		if(!config -> user[num].death && config -> user[num].canVote)
 			return true;
@@ -496,8 +511,22 @@ namespace server {
     {
         broadcastInfo("startDayVote");
 		for(int i = 0; i < config -> playerNum; i++)
-            if(canVote(i))
+            if(canVote(i) && !config -> user[i].death)
                 transferInfoToClient(i, "startVote");
+    }
+    int dayVote :: ifDraw()
+    {
+        if(!config -> characterNumber[7].empty() && !config -> loseAbility)
+        {
+            int scapegoatNum = *(config -> characterNumber[7].begin());
+            if(!config -> user[scapegoatNum].death)
+            {
+                config -> canAssign = true;
+                return scapegoatNum;
+            }
+        }
+
+        return -1;
     }
 	bool SheriffVote :: canVote(int num)
 	{
@@ -507,7 +536,7 @@ namespace server {
 	{
 		return isCandidate[num];
 	}
-	void SheriffVote :: show()
+    void SheriffVote :: show()//警长候选人发言
 	{
         qDebug() << "show";
         for(int i = 0; i < config -> playerNum; i++)
@@ -519,16 +548,19 @@ namespace server {
 				for(vector<int> :: iterator it = tmp.begin(); it != tmp.end(); it++)
 					isCandidate[*it] = false;
 			}
+        for(int i = 0; i < config -> playerNum; i++)
+            if(canVote(i) && !config -> user[i].death)
+                transferInfoToClient(i, "startVote");
 	}
     int SheriffVote :: ifDraw()
 	{
-		if(isDraw)
+        if(isDraw)
 			return -1;
 		SheriffVote *sv = new SheriffVote;
         for(int i = 0; i < config -> playerNum; i++)
 		{
-			sv -> isCandidate[i] = 0;
-			sv -> canVoting[i] = canVoting[i];
+            sv -> isCandidate.push_back(0);
+            sv -> canVoting.push_back(canVoting[i]);
 		}
 		sv -> isDraw = true;
         for(int i = 0; i < config -> playerNum; i++)
@@ -539,22 +571,8 @@ namespace server {
 		}
 		sv -> vote();
         return sv -> result;
-	}
-	int dayVote :: ifDraw()
-	{
-		if(!config -> characterNumber[7].empty() && !config -> loseAbility)
-		{
-			int scapegoatNum = *(config -> characterNumber[7].begin());
-			if(!config -> user[scapegoatNum].death)
-			{
-				config -> canAssign = true;
-				return scapegoatNum;
-			}
-        }
-
-        return -1;
-	}
-	void WerewolfOperation :: operation()//0
+    }
+    void WerewolfOperation :: operation()//狼人行动
 	{
 		//cout<<"3";
 		Vote *vote = new WerewolfVote(config);
@@ -563,10 +581,11 @@ namespace server {
 		string info("werewolfKill/");
 		info = info + transNumToString(vote -> result);
 		for(int i = 0; i < config -> playerNum; i++)
-			if(vote -> canVote(i))
+            if(vote -> canVote(i) && !config -> user[i].death)
 				transferInfoToClient(i, info.c_str());
 		config -> killedPlayer = vote -> result;
 	}
+    //下一部分为各角色的行动
 	void Ancient :: init()
 	{
 		hasKilled = false;
@@ -695,6 +714,8 @@ namespace server {
 	}
 	void Scapegoat :: killedByVoting()
 	{
+        if(!config -> canAssign)
+            return ;
         if(config -> loseAbility)
         {
             transferInfoToClient(num, "roleActLoseAbility");
@@ -705,12 +726,15 @@ namespace server {
         for(int i = 0; i < config -> playerNum; i++)
             config -> user[i].canVote = false;
         vector<string> infos = manyRespond(num, 30000);
+        qDebug() << infos.size();
         for(int i = 0; i < infos.size(); i++)
         {
             string resp = infos[i], info("showVoteResult/");
+            qDebug() << infos[i].c_str();
             config -> user[transCharToNum(resp[5])].canVote = true;
             broadcastInfo((info +  transNumToString(num) + '/' + transNumToString(transCharToNum(resp[5]))).c_str());
         }
+        killed();
     }
 	void Seer :: nightOperation()
 	{
@@ -813,7 +837,7 @@ namespace server {
         config -> user[num].characterType = transNumToCharacterType(config -> user[num].characterNum);
 		config -> characterNumber[config -> user[num].characterNum].push_back(num);
 	}
-    void HasSheriffSelection :: selection()
+    void HasSheriffSelection :: selection()//精选警长
 	{
         SheriffVote sheriffVote(config);
 		sheriffVote.isDraw = false;
@@ -823,7 +847,7 @@ namespace server {
             sheriffVote.canVoting.push_back(0);
 		}
 		broadcastInfo("chooseSheriff");
-		bool flag = false;
+        bool flag = false, hasSheriff = false;;
 		string str, info("showSheriffCandidate/");
 		for(int i = 0; i < config -> playerNum; i++)
 		{
@@ -838,10 +862,18 @@ namespace server {
 			{
 				broadcastInfo((info + transNumToString(i)).c_str());
 				sheriffVote.isCandidate[i] = 1;
+                hasSheriff = true;
 			}
 			else
 				sheriffVote.canVoting[i] = 1;
 		}
+        if(!hasSheriff)
+        {
+            config -> sheriffNum = -1;
+            broadcastInfo("determineSheriff/-1");
+            return ;
+        }
+        broadcastInfo("startVoteSheriff");
         qDebug() << "votevoet";
 		sheriffVote.vote();
 		config -> sheriffNum = sheriffVote.result;
@@ -897,7 +929,7 @@ namespace server {
         QString Qinfo2 = QString::fromStdString(info2);
 		QByteArray ba;
 		clock_t cl = clock();
-		while(clock() - cl < 20100)
+        while(clock() - cl < 20100)
 		{
 			if(!config -> user[num].messeges.empty())
 			{
@@ -916,7 +948,7 @@ namespace server {
 					if(i != num && !config -> user[i].messeges.empty())
 					{
 						config -> user[i].messeges.clear();
-						string str("quit");
+                        string str("exit/");
 						broadcastInfo((str + transNumToString(i)).c_str());
 						res.push_back(i);
 					}
@@ -926,7 +958,7 @@ namespace server {
 		while(clock() - cl < 1000) ;
 		return res;
     }
-	void Wake :: wake()
+    void Wake :: wake()//被迷惑的人醒来相互确认
 	{
 		vector<int> puzzledPlayers;
         for(int i = 0; i < config -> playerNum; i++)
@@ -942,7 +974,7 @@ namespace server {
 		clock_t cl = clock();
 		while(!puzzledPlayers.empty() && clock() - cl < 10000) ;
 	}
-	void SheriffChooseOrder :: sheriffChooseOrder(int onedead)
+    void SheriffChooseOrder :: sheriffChooseOrder(int onedead)//警长决定投票顺序
 	{
 		if(config -> sheriffNum == -1)
         {
@@ -954,7 +986,7 @@ namespace server {
 		else
 		{
             broadcastInfo("waitingSheriff");
-			string str, resp;
+            string str, resp, str2("order");
 			if(onedead == -1)
 			{
 				str = "sheriff/";
@@ -964,8 +996,8 @@ namespace server {
 				str = "deadPlayer/";
 			str = str + transNumToString(onedead);
 			transferInfoToClient(config -> sheriffNum, str.c_str());
-			resp = respond(config -> sheriffNum, 15000);
-			str = str + '/' + resp;
+            resp = respond(config -> sheriffNum, 15000, false);
+            str = str2 + str + '/' + resp;
 			broadcastInfo(str.c_str());
             for(int i = 0; i < config -> playerNum; i++)
 			{
@@ -976,7 +1008,7 @@ namespace server {
 			}
 		}
 	}
-	int GameServer :: day(bool isFirstDay)
+    int GameServer :: day(bool isFirstDay)//白天过程
     {
         qDebug() <<config.deads.size()<<"size"<<endl;
 		for(int i = 0 ; i < config.deads.size(); i++)
@@ -1025,7 +1057,7 @@ namespace server {
 		}
         return 0;
 	}
-	void GameServer :: night()
+    void GameServer :: night()//夜晚过程
 	{
 		config.savedPlayer = config.poisonedPlayer = config.killedPlayer = config.lastSavee = -1;
 		//cout<<"1"<<endl;
@@ -1034,9 +1066,11 @@ namespace server {
 		w.operation();
 		//cout<<config.killedPlayer <<"kp\n";
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
+            if(!config.user[(*it) -> num].death)
 				(*it) -> nightTransferInfo();
 		clock_t cl = clock();
 		for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
+            if(!config.user[(*it) -> num].death)
 				(*it) -> nightOperation();
 		bool flag  = false;
 		while(clock() - cl < 15000) 
@@ -1046,6 +1080,7 @@ namespace server {
 				broadcast -> broadcastInfo("setTime/15");
 			}
         for(vector<Character*> :: iterator it = character.begin(); it != character.end(); it++)
+            if(!config.user[(*it) -> num].death)
 				(*it) -> processInfo();
 		if(((config.savedPlayer == config.lastSavee && config.savedPlayer != -1) || (config.lastSavee != config.killedPlayer && config.savedPlayer != config.killedPlayer) )&& config.killedPlayer != -1)
 			character[config.killedPlayer] -> killedByWerewolf();
@@ -1055,7 +1090,7 @@ namespace server {
         Wake wake(&config);
         wake.wake();
 	}
-	int GameServer :: firstDay()
+    int GameServer :: firstDay()//第一天过程
 	{
 		broadcast -> broadcast("day");
 		for(int i = 0; i < config.playerNum; i++)
@@ -1064,7 +1099,7 @@ namespace server {
 		sheriffSelection -> selection();
 		return day(true);
 	}
-	void GameServer :: firstNight()
+    void GameServer :: firstNight()//第一晚过程
 	{
 		broadcast -> broadcast("night");
 		if(config.hasThief)
@@ -1083,10 +1118,10 @@ namespace server {
 		//cout<<"w";
 		night();
 	}
-	int GameServer :: mainProcess()
+    int GameServer :: mainProcess()//主过程
 	{
 		int v;
-        //firstNight();
+        firstNight();
 		//character[*config.characterNumber[4].begin()] -> killedByWerewolf();
 		if(victoryJudge -> judge())
 			return victoryJudge -> judge();
@@ -1109,20 +1144,26 @@ namespace server {
 				return victoryJudge -> judge();
 		}
 	}
-	void GameServer :: endGame(int winCode)
+    void GameServer :: endGame(int winCode)//结束游戏
 	{
 		string info1("showWin/"),info2("win/");
         broadcast -> broadcast((info1 + transNumToString(winCode - 1)).c_str());
         for(int i = 0; i < config .playerNum; i++)
         {
-            qDebug() << i;
-            if((winCode == WEREWOLF_VICTORY && config.user[i].characterType == WEREWOLF) || (winCode == VILLIAGER_VICTORY && (config.user[i].characterType == GOD || config.user[i].characterType == TOWNSFOLK) && !(config.hasCupid && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || ((winCode == LOVERS_VICTORY && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || (winCode = PIEDPIPER_VICTORY && config.user[i].characterType == PIEDPIPER))
-				broadcast -> broadcast((info2 + transNumToString(i)).c_str());
+            qDebug() << "jaskfhugfuie" << config.user[i].characterType;
+            /*if(config.lovers -> isWVLove)
+                qDebug() << config.lovers -> first << config.lovers ->second << config.lovers -> cupidNum;
+            if((winCode == WEREWOLF_VICTORY && config.user[i].characterType == WEREWOLF) || (winCode == VILLIAGER_VICTORY && (config.user[i].characterType == GOD || config.user[i].characterType == TOWNSFOLK) && !(config.hasCupid && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second))) || ((winCode == LOVERS_VICTORY && config.lovers -> isWVLove && (i == config.lovers -> first || i == config.lovers -> second || i == config.lovers ->cupidNum))) || (winCode = PIEDPIPER_VICTORY && config.user[i].characterType == PIEDPIPER))
+                broadcast -> broadcast((info2 + transNumToString(i)).c_str());*/
+            string info("setEndList/");
+            info = info + transNumToString(i) + '/' + characterName[config.user[i].characterNum];
+            broadcast -> broadcastInfo(info.c_str());
             qDebug() << i;
         }
-        qDebug() << "ok";
 		broadcast -> broadcast("endGame");
-		config.serverConn -> close();
+        qDebug() << "ok";
+
+        qDebug() << "ok";
 	}
 }
 }

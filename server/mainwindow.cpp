@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(QString(u8"游戏设置"));
+    setStyleSheet(QString::fromUtf8("QDialog#MainWindow{border-image: url(:/new/prefix1/09.jpg);}"));
+
 }
 
 

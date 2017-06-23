@@ -19,6 +19,7 @@ Connect::Connect(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(QString(u8"连接中"));
     void showConnect(int* player,int a);
+
 }
 
 Connect::~Connect()
@@ -51,6 +52,7 @@ void Connect::showConnect(bool* player,int a)
     ui->textBrowser->setPlainText("");
 
     ui->textBrowser->append(tr("Connecting..."));
+
 
 
     for(int i=0;i<a;i++)

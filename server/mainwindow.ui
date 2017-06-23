@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
@@ -22,6 +25,14 @@
       <width>93</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -39,6 +50,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>村民人数</string>
     </property>
@@ -46,7 +62,7 @@
    <widget class="QLineEdit" name="townsfolk">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>510</x>
       <y>40</y>
       <width>61</width>
       <height>21</height>
@@ -65,6 +81,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>狼人人数</string>
     </property>
@@ -72,7 +93,7 @@
    <widget class="QLineEdit" name="wolf">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>320</x>
       <y>40</y>
       <width>61</width>
       <height>21</height>
@@ -91,6 +112,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>女巫人数</string>
     </property>
@@ -98,7 +124,7 @@
    <widget class="QLineEdit" name="witch">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>510</x>
       <y>130</y>
       <width>61</width>
       <height>21</height>
@@ -117,6 +143,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>猎人人数</string>
     </property>
@@ -124,7 +155,7 @@
    <widget class="QLineEdit" name="hunter">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>700</x>
       <y>40</y>
       <width>61</width>
       <height>21</height>
@@ -143,6 +174,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>守卫人数</string>
     </property>
@@ -150,7 +186,7 @@
    <widget class="QLineEdit" name="savior">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>130</x>
       <y>130</y>
       <width>61</width>
       <height>21</height>
@@ -168,6 +204,11 @@
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <property name="text">
      <string>预言家人数</string>
@@ -195,6 +236,11 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>丘比特人数</string>
     </property>
@@ -221,6 +267,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>白痴人数</string>
     </property>
@@ -228,7 +279,7 @@
    <widget class="QLineEdit" name="idiot">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>700</x>
       <y>220</y>
       <width>61</width>
       <height>21</height>
@@ -247,6 +298,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>长老人数</string>
     </property>
@@ -254,7 +310,7 @@
    <widget class="QLineEdit" name="ancient">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>130</x>
       <y>220</y>
       <width>61</width>
       <height>21</height>
@@ -273,6 +329,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>盗贼人数</string>
     </property>
@@ -280,7 +341,7 @@
    <widget class="QLineEdit" name="theif">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>320</x>
       <y>220</y>
       <width>61</width>
       <height>21</height>
@@ -298,6 +359,11 @@
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <property name="text">
      <string>吹笛者人数</string>
@@ -325,6 +391,11 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>游戏人数</string>
     </property>
@@ -332,7 +403,7 @@
    <widget class="QLineEdit" name="playernum">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>130</x>
       <y>40</y>
       <width>61</width>
       <height>21</height>
@@ -350,6 +421,11 @@
       <width>135</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <property name="currentIndex">
      <number>1</number>
@@ -374,6 +450,11 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="currentIndex">
      <number>1</number>
     </property>
@@ -397,6 +478,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>是否选举警长</string>
     </property>
@@ -410,6 +496,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>选择游戏模式</string>
     </property>
@@ -422,6 +513,11 @@
       <width>131</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <property name="text">
      <string>请输入服务器名称</string>
@@ -449,6 +545,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
     <property name="text">
      <string>选择常用配置</string>
     </property>
@@ -461,6 +562,11 @@
       <width>331</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <item>
      <property name="text">
@@ -488,9 +594,17 @@
      <rect>
       <x>500</x>
       <y>470</y>
-      <width>81</width>
+      <width>91</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>填入</string>
@@ -504,6 +618,11 @@
       <width>81</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
     </property>
     <property name="text">
      <string>替罪羊人数</string>

@@ -31,11 +31,14 @@ void InProcess::startGame() {
 
     thr = new GameThr();
     thr->start();
+
+    QObject::connect(thr, SIGNAL(onGameEnd()), this, SLOT(onGameEnd()));
 }
 
 void InProcess::onGameEnd() {
     close();
-
+    qDebug() << "end";
+    temp.config.serverConn -> close();
     Over* ov = new Over;
     ov->show();
 }

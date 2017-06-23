@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/new/prefix1">
         <file>01~1.png</file>
-        <file>02~1.png</file>
         <file>04.jpg</file>
         <file>03.jpg</file>
         <file>05.jpg</file>
@@ -9,5 +8,6 @@
         <file>07.jpg</file>
         <file>08.jpg</file>
         <file>09.jpg</file>
+        <file>02~1.png</file>
     </qresource>
 </RCC>
