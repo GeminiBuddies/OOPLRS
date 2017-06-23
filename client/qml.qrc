@@ -13,6 +13,7 @@
         <file>ThiefChooseForm.qml</file>
         <file>WitchChooseForm.qml</file>
         <file>Temp.qml</file>
+        <file>SheriffChooseForm.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/ancient.jpg</file>

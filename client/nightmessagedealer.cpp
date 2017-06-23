@@ -22,6 +22,8 @@ void NightMessageDealer::receiveMessage(QString str1, QString str2, QString str3
     if(str1== "clicked")clicked(str2,str3);
     if(str1=="puzzledConfirm") puzzledConfirm(str2);
     if(str1=="cannotVote") cannotVote();
+    if(str1=="puzzled") showPuzzled(str2);
+    if(str1=="number") number=str2;
     else if(str1=="playerNum"){
         for(int i=1;i<=QVariant(str2).toInt();i++){
             alive[i]=1;
@@ -114,12 +116,14 @@ void NightMessageDealer::clicked(QString str1, QString str2){
         emit sendMessage("toServer","vote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你选择了")+temp+QStringLiteral("号"));
+        showVote(number,temp);
     }
     else if(str2=="0"&&canCancelVote==true){
         emit changeVoteStates("night",-1);
         emit sendMessage("toServer","cancelVote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消选择了")+temp+QStringLiteral("号"));
+        emit sendMessage("dealer", number, "hideVote");
     }
 }
 
@@ -134,4 +138,8 @@ void NightMessageDealer::cannotVote(){
         emit sendMessage("dealer", temp, "mouseAreaDisabled");
     }
     emit sendMessage(GAMEMESSAGE, QStringLiteral("因白痴或替罪羊的选择，你无法投票"));
+}
+
+void NightMessageDealer::showPuzzled(QString str){
+    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家已被迷惑"));
 }

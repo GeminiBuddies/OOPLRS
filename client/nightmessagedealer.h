@@ -38,8 +38,10 @@ private:
     void showVoteResult(QString str1,QString str2);
     void puzzledConfirm(QString str);
     void cannotVote();
+    void showPuzzled(QString str);
     MessageDealer* character;
     bool alive[21];
+    QString number;//玩家编号
 };
 
 #endif // NIGHTMESSAGEDEALER_H

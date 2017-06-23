@@ -30,6 +30,10 @@ void DayMessageDealer::receiveMessage(QString str1, QString str2, QString str3, 
     else if(str1=="draw") draw();
     else if(str1=="startLastWords") startLastWords(str2);
     else if(str1=="canDetermine") emit sendMessage(GAMEMESSAGE, QStringLiteral("等待替罪羊选择下回合可以投票的人"));
+    else if(str1=="exit") sheriffCandidateExit(str2);//选警长时退水
+    else if(str1=="number") number=str2;
+    else if(str1=="isSheriffCandidate") isSheriffCandidate=1;
+    else if(str1=="changeSheriff") emit sendMessage(GAMEMESSAGE, QStringLiteral("请选择警徽给谁，如果不选则代表撕警徽"));
     else if(str1=="playerNum"){
         for(int i=1;i<=QVariant(str2).toInt();i++){
             alive[i]=1;
@@ -56,17 +60,24 @@ void DayMessageDealer::startDayVote(){
 
 void DayMessageDealer::chooseSheriff(){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("开始选警长啦~请选择是否竞选"));
+    emit sendMessage("dealer", "chooseSheriff");
 }
 
 void DayMessageDealer::showSheriffCandidate(QString str){
     emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家竞选警长"));
     QString temp="characterImage"+str;
     emit sendMessage("dealer", temp, "mouseAreaEnabled");
+    if(isSheriffCandidate)
+        emit sendMessage("dealer", "showSheriffExitButton");
 }
 
 void DayMessageDealer::determineSheriff(QString str){
-    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家当选警长"));
-    emit sendMessage("dealer", "clearClicked");
+    if(str!="-1"){
+        emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家当选警长"));
+        emit sendMessage("dealer", "clearClicked");
+        emit sendMessage("dealer", "hideSheriffExitButton");
+    }else if(str=="-1")//撕警徽
+        emit sendMessage(GAMEMESSAGE, QStringLiteral("警长撕掉了警徽"));
 }
 
 void DayMessageDealer::showDied(QString str){
@@ -135,12 +146,15 @@ void DayMessageDealer::clicked(QString str1, QString str2){
         emit sendMessage("toServer","vote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你选择了")+temp+QStringLiteral("号"));
+        showVote(number,temp);
+
     }
     else if(str2=="0"&&canCancelVote==true){
         emit changeVoteStates("day",-1);
         emit sendMessage("toServer","cancelvote",temp2);
         emit sendMessage("dealer",str1,"finishClicked");
         emit sendMessage(GAMEMESSAGE, QStringLiteral("你取消选择了")+temp+QStringLiteral("号"));
+        emit sendMessage("dealer", number, "hideVote");
     }
 }
 
@@ -185,4 +199,10 @@ void DayMessageDealer::draw(){
 void DayMessageDealer::startLastWords(QString str){
     emit sendMessage(GAMEMESSAGE, QStringLiteral("请")+str+QStringLiteral("号玩家发表遗言"));
     emit judge(str,"2");
+}
+
+void DayMessageDealer::sheriffCandidateExit(QString str){
+    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家退水"));
+    QString temp="characterImage"+str;
+    emit sendMessage("dealer", temp, "mouseAreaDisabled");
 }

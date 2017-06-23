@@ -18,7 +18,7 @@ Rectangle{
     }
 
 
-    signal thiefChoose(int i)
+    signal sheriffChoose(int i)
 
     RowLayout {
         x: 75
@@ -29,26 +29,11 @@ Rectangle{
         objectName: "rowLayout"
 
         Image {
-            id: image
-            Layout.preferredHeight: 150
-            Layout.preferredWidth: 150
-            source: "qrc:/images/images/townsfolk.jpg"
-        }
-
-        Image {
             id: image1
             objectName: "image1"
             Layout.preferredHeight: 150
             Layout.preferredWidth: 150
-            source: ""
-        }
-
-        Image {
-            id: image2
-            objectName: "image2"
-            Layout.preferredHeight: 150
-            Layout.preferredWidth: 150
-            source: ""
+            source: "qrc:/images/images/sheriff.jpg"
         }
     }
 
@@ -58,11 +43,6 @@ Rectangle{
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: 125
-
-        RadioButton {
-            id: radioButton
-            checked: true
-        }
 
         RadioButton {
             id: radioButton1
@@ -80,13 +60,31 @@ Rectangle{
 
         onClicked:{
             rectangle.visible=false
-            if(radioButton.checked==true)
-                thiefChoose(0)
-            else if(radioButton1.checked==true)
-                thiefChoose(1)
+            if(radioButton1.checked==true)
+                sheriffChoose(1)
             else if(radioButton2.checked==true)
-                thiefChoose(2)
+                sheriffChoose(2)
         }
+    }
+
+    Text {
+        id: text1
+        x: 202
+        y: 327
+        width: 64
+        height: 33
+        text: qsTr("竞选")
+        font.pixelSize: 30
+    }
+
+    Text {
+        id: text2
+        x: 358
+        y: 327
+        width: 96
+        height: 33
+        text: qsTr("不竞选")
+        font.pixelSize: 30
     }
 
 }

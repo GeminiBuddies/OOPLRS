@@ -27,6 +27,7 @@ public slots:
     void dayAnimation();
     void roleActionStartAnimation();
     void roleActionEndAnimation();
+    void sheriffExit();
 
 private:
     QObject* weather=0;
@@ -35,8 +36,10 @@ private:
     QObject* roleActionStart=0;
     QObject* roleActionEnd=0;
     QObject* bigText=0;
+    QObject* sheriffExitButton=0;
     void showBigText(QString str, QString str2="10000");
     void hideBigText();
+    void showSheriffExitButton();
 };
 
 #endif // MAINFORMPROXY_H

@@ -53,6 +53,7 @@ public slots:
 
 private:
     QString name;//自己的人物名字
+    QString sex;//性别
     QString number;//自己的编号
     QString time="notInGame";
     BeforeStartMessageDealer* BSMDealer;
@@ -64,6 +65,7 @@ private:
     void constructCharacter(QString role);
     void initialClient(QString str);
     void changeRole(QString str);
+    void getInfo();
 };
 
 

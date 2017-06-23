@@ -41,7 +41,8 @@ SOURCES += main.cpp \
     client.cpp \
     clientconn.cpp \
     ..\cih\globalConf.cpp \
-    temp.cpp
+    temp.cpp \
+    sheriffchooseformproxy.cpp
 
 RESOURCES += qml.qrc
 
@@ -89,4 +90,5 @@ HEADERS += \
     client.h \
     clientconn.h \
     ..\cih\globalConf.h \
-    temp.h
+    temp.h \
+    sheriffchooseformproxy.h

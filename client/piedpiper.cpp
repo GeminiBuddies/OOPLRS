@@ -2,13 +2,17 @@
 
 void PiedPiper::receiveMessage(QString str1, QString str2 , QString str3, QString str4 , QString str5 ){
     Character::receiveMessage(str1,str2,str3,str4,str5);
-    if(str1=="roleAct") roleAct(str2);
+    if(str1=="roleAct") roleAct();
+    else if(str1=="hasPuzzled") hasPuzzled(str2);
 }
 
-void PiedPiper::roleAct(QString str){
+void PiedPiper::hasPuzzled(QString str){
+    emit sendMessage(GAMEMESSAGE, str+QStringLiteral("号玩家已被迷惑"));
+}
+
+void PiedPiper::roleAct(){
     if(flag==0)
         emit sendMessage(GAMEMESSAGE, QStringLiteral("请选择两人迷惑"));
-    emit sendMessage(GAMEMESSAGE,str+QStringLiteral("已被迷惑"));
 }
 void PiedPiper::changeVoteStates(QString time, int delta){
     static int vote = 0;

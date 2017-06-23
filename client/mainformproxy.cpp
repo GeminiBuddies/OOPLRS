@@ -4,6 +4,8 @@ void MainFormProxy::connectSignal(){
     QObject::connect(this,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),player,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     QObject::connect(player,SIGNAL(sendMessage(QString,QString,QString,QString,QString)),this,SLOT(receiveMessage(QString,QString,QString,QString,QString)));
     bigText=this->item->findChild<QObject*>("bigText");
+    sheriffExitButton=this->item->findChild<QObject*>("sheriffExit");
+    QObject::connect(item,SIGNAL(sheriffExit()), this, SLOT(sheriffExit()));
 }
 
 void MainFormProxy::receiveMessage(QString str1, QString str2, QString str3, QString str4, QString str5){
@@ -19,7 +21,10 @@ void MainFormProxy::receiveMessage(QString str1, QString str2, QString str3, QSt
         showBigText(str2);
     else if(str1==QString("hideBigText"))
         hideBigText();
-
+    else if(str1==QString("showSheriffExitButton"))
+        showSheriffExitButton();
+    else if(str1=="hideSheriffExitButton")
+        sheriffExitButton->setProperty("visible",QVariant(false));
 }
 
 void MainFormProxy::dayAnimation(){
@@ -63,4 +68,12 @@ void MainFormProxy::showBigText(QString str, QString str2){
 
 void MainFormProxy::hideBigText(){
     bigText->setProperty("visible",QVariant(false));
+}
+
+void MainFormProxy::showSheriffExitButton(){
+    sheriffExitButton->setProperty("visible",QVariant(true));
+}
+
+void MainFormProxy::sheriffExit(){
+    emit sendMessage("toServer", "exit");
 }

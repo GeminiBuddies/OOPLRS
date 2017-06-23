@@ -17,11 +17,20 @@ void Player::receiveMessage(QString str1, QString str2, QString str3, QString st
     else if(str1=="toServer")
         emit sendMessageToServer(str2,str3,str4,str5);
     else if(str1=="ui") emit sendMessageToUiDealer(str2,str3,str4,str5);
-    else if(str1=="setPlayer") initialClient(str2);
+    else if(str1=="setPlayer") {
+        initialClient(str2);
+        name=str2;
+        sex=str3;
+    }
     else if(str1=="setTime") emit sendMessage("timer",str2);
     else if(str1=="server") serverToUi(str2,str3,str4);
+    else if(str1=="getInfo") getInfo();
     else
         serverToUi(str1,str2,str3);
+}
+
+void Player::getInfo(){
+    emit sendMessageToServer(name,sex);
 }
 
 void Player::serverToUi(QString str1, QString str2, QString str3){
@@ -31,7 +40,7 @@ void Player::serverToUi(QString str1, QString str2, QString str3){
             playerNum++;
             emit sendMessageToBSMDealer(str1,str2,str3);
         }
-        else if(str1=="setImage"){emit sendMessageToBSMDealer(str1,str2,str3);}
+        else if(str1=="setImage"||str1=="info"){emit sendMessageToBSMDealer(str1,str2,str3);}
         else if(str1=="position") {this->number=str2;}
         else if(str1=="assignRoles") {
             emit sendMessageToBSMDealer(str1,str2,this->number);
@@ -41,8 +50,8 @@ void Player::serverToUi(QString str1, QString str2, QString str3){
             emit sendMessage(str1,str2);
         }else if(str1=="connectSucceed"){
             emit sendMessage("connectServerSucceed");
-
-        }
+        }else if(str1=="disconn")
+            emit sendMessage("sendGameMessage",QStringLiteral("你断线了~退了吧，并不能重连"));
     }
     else if(str1=="changeRole") changeRole(str2);
     else

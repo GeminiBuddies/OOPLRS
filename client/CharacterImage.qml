@@ -3,7 +3,7 @@
 Rectangle {
     id: background
     width: 80
-    height: 140
+    height: 180
     color: "#00000000"
     visible: true
 
@@ -23,6 +23,19 @@ Rectangle {
         onClicked:{
             mouseAreaClicked();
         }
+
+        Text {
+            id: text3
+            x: 55
+            y: 99
+            width: 21
+            height: 23
+            color: "#0c16c6"
+            text:""
+            font.bold: true
+            font.pixelSize: 20
+            horizontalAlignment: Text.AlignRight
+        }
     }
 
     Image {
@@ -34,7 +47,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.top: parent.top
-        anchors.topMargin: 53
+        anchors.topMargin: 73
         objectName: "role"
     }
 
@@ -47,7 +60,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.top: parent.top
-        anchors.topMargin: 0
+        anchors.topMargin: 20
         source: ""
         objectName: "characterImage"
     }
@@ -58,7 +71,7 @@ Rectangle {
         width: 80
         height: 20
         horizontalAlignment: Text.AlignHCenter
-        anchors.bottomMargin: -8
+        anchors.bottomMargin: 0
         anchors.leftMargin: 0
         anchors.left: parent.left
         anchors.bottom: parent.bottom
@@ -69,9 +82,10 @@ Rectangle {
     Image {
         id: image2
         x: 35
-        y: -30
         width: 68
         height: 100
+        anchors.top: parent.top
+        anchors.topMargin: 10
         source: "qrc:/images/images/vote.png"
         visible: false
         objectName: "voteImage"

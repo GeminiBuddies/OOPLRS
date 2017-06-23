@@ -47,10 +47,13 @@ private:
     void draw();
     void startLastWords(QString str);
     void startDayVote();
+    void sheriffCandidateExit(QString str);
     MessageDealer* character;
     bool alive[21];
     bool lastWords = 1;//被狼人杀死是否还有遗言
     bool voting=0;//是否正在进行白天的公投
+    bool isSheriffCandidate=0;//是否是警长候选人
+    QString number;//玩家编号
 };
 
 #endif // DAYMESSAGEDEALER_H

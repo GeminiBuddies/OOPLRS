@@ -11,6 +11,8 @@ Character::Character(Messager *player, QString number):MessageDealer(player){
     QObject::connect(DMDealer,SIGNAL(noLastWords()),this,SLOT(noLastWords()));
     time="day";
     this->number=number;
+    emit sendMessageToDMDealer("number", number);
+    emit sendMessageToNMDealer("number",number);
     for(int i=0;i<20;i++){
         alive[i]=0;
     }

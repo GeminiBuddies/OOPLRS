@@ -7,6 +7,7 @@ Rectangle {
     width: 1280
     height: 800
     color: "#00000000"
+    property alias mouseArea: mouseArea
     property alias myTimer: myTimer
     property alias thiefChooseForm: thiefChooseForm
     z: 2147483646
@@ -421,6 +422,17 @@ Rectangle {
         objectName: "witchChooseForm"
     }
 
+    SheriffChooseForm{
+        id:sheriffChooseForm
+        x: 316
+        y: 176
+        objectName: "sheriffChooseForm"
+        width: 640
+        height: 480
+        z: 11
+        visible:false
+    }
+
     Text {
         id: text1
         x: 251
@@ -449,5 +461,35 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 45
         objectName: "tempBox"
+    }
+
+    signal sheriffExit()
+    Rectangle {
+        id: rectangle1
+        x: 581
+        y: 633
+        width: 100
+        height: 50
+        color: "#25f20d"
+        visible: false
+        objectName: "sheriffExit"
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            z: -1
+            objectName: "sheriffExitButton"
+            onClicked: {
+                sheriffExit()
+                rectangle1.visible=false
+            }
+        }
+
+        Text {
+            id: text2
+            text: "退水"
+            z: 1
+            anchors.fill: parent
+            font.pixelSize: 30
+        }
     }
 }
